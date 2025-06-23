@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS prestamos;
 DROP TABLE IF EXISTS tarjetas_bancarias;
 DROP TABLE IF EXISTS metodos_de_pago_cuenta;
 DROP TABLE IF EXISTS cuenta;
@@ -190,3 +191,22 @@ CREATE TABLE IF NOT EXISTS tarjetas_bancarias (
     FOREIGN KEY (marca_tarjeta_id) REFERENCES marca_tarjeta (id) ON DELETE CASCADE,
     FOREIGN KEY (nivel_tarjeta_id) REFERENCES nivel_tarjeta (id) ON DELETE CASCADE
 );
+
+
+
+CREATE TABLE IF NOT EXISTS prestamos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cuenta_id BIGINT NOT NULL,
+    monto DECIMAL (15,2) NOT NULL,
+    interes_id BIGINT NOT NULL,
+    fecha_desembolso TIMESTAMP NOT NULL,
+    plazo_meses TINYINT(2) NOT NULL,
+    frecuencia_pago ENUM('DIARIO','SEMANAL', 'QUINCENAL', 'MENSUAL', 'BIMESTRAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'UNICO', 'OTRO') NOT NULL,
+    estado ENUM('SOLICITADO', 'EN EVALUACION', 'APROBADO', 'DESEMBOLSADO', 'EN CURSO', 'EN MORA', 'REESTRUCTURADO', 'CASTIGADO', 'PAGADO', 'CANCELADO', 'CERRADO') NOT NULL,
+    saldo_restante DECIMAL (15,2) NOT NULL,
+    fecha_solicitud TIMESTAMP NOT NULL,
+    FOREIGN KEY (interes_id) REFERENCES interes (id) ON DELETE CASCADE,
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta (id) ON DELETE CASCADE
+);
+
+
