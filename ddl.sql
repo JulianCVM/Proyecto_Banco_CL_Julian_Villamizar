@@ -13,6 +13,13 @@ DROP TABLE IF EXISTS tipo_cuota_de_manejo;
 DROP TABLE IF EXISTS descuento;
 DROP TABLE IF EXISTS tipo_nit;
 DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS metodos_de_pago;
+DROP TABLE IF EXISTS monedas;
+DROP TABLE IF EXISTS interes;
+DROP TABLE IF EXISTS cuenta;
+DROP TABLE IF EXISTS metodos_de_pago_cuenta;
+
+
 
 
 
@@ -86,10 +93,10 @@ CREATE TABLE IF NOT EXISTS descuento (
 CREATE TABLE IF NOT EXISTS tipo_nit (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre ENUM('GRAN CONTRIBUYENTE','REGIMEN COMUN','REGIMEN SIMPLE','REGIMEN ESPECIAL','REGIMEN SIMPLIFICADO','NO RESPONSABLE DE IVA','RESPONSABLE DE IVA','AUTORRETENEDOR','ENTIDAD EXTRANJERA','SIN CLASIFICAR') NOT NULL,
-    descripcion VARCHAR(120)
+    descripcion VARCHAR(120) NOT NULL
 );
 
-CREATE TABLE clientes (
+CREATE TABLE IF NOT EXISTS clientes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     NIT VARCHAR(20) NOT NULL UNIQUE,
     primer_nombre VARCHAR(50),
@@ -102,5 +109,63 @@ CREATE TABLE clientes (
     tipo_cliente_id BIGINT NOT NULL,
     tipo_nit_id BIGINT NOT NULL,
     FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id),
-    FOREIGN KEY (tipo_nit_id) REFERENCES tipo_nit(id)
+    FOREIGN KEY (tipo_nit_id_fk) REFERENCES tipo_nit(id)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS metodos_de_pago (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre ENUM('EFECTIVO', 'TRANSFERENCIA BANCARIA', 'DEBITO AUTOMATICO', 'TARJETA CREDITO', 'TARJETA DEBITO', 'CHEQUES', 'BILLETERA DIGITAL', 'PAGO EN LINEA', 'CONSIGNACION', 'DESCUENTO NOMINA', 'PAGO MOVIL', 'CUENTA CORRIENTE', 'CUENTA AHORRO', 'PSE', 'OTRO') NOT NULL,
+    descripcion VARCHAR(120) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS monedas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre ENUM('COP', 'USD', 'EUR', 'GBP', 'JPY', 'CNY', 'CHF', 'CAD', 'AUD', 'BRL', 'MXN', 'CLP', 'PEN', 'ARS', 'VES', 'INR', 'otros')
+    simbolo ENUM ('$', '€', '£', '¥', 'Fr', 'R$', '₹', 'S/', 'Bs', '$U') NOT NULL,
+    descripcion VARCHAR(120) NOT NULL
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS interes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tipo ENUM ('FIJO', 'VARIABLE', 'MIXTO', 'SIMPLE', 'COMPUESTO', 'NOMINAL', 'EFECTIVO', 'MORA', 'NO APLICA') NOT NULL,
+    valor DECIMAL (5,4) NOT NULL
+);
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS cuenta (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    tipo_cuenta_id BIGINT NOT NULL,
+    num VARCHAR(30) NOT NULL UNIQUE,
+    saldo_disponible DECIMAL(15,2) NOT NULL DEFAULT 0,
+    transacciones_realizadas INT NOT NULL DEFAULT 0,
+    estado ENUM('ACTIVA', 'CERRADA', 'BLOQUEADA') NOT NULL,
+    monedas_id BIGINT NOT NULL,
+    fecha_apertura TIMESTAMP NOT NULL,
+    fecha_cierre TIMESTAMP,
+    interes_id BIGINT NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes (id),
+    FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuenta (id),
+    FOREIGN KEY (monedas_id) REFERENCES monedas (id),
+    FOREIGN KEY (interes_id) REFERENCES interes (id)
+);
+
+
+
+CREATE TABLE metodos_de_pago_cuenta (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    metodos_de_pago_id BIGINT NOT NULL,
+    cuenta_id BIGINT NOT NULL,
+    FOREIGN KEY (metodos_de_pago_id) REFERENCES metodos_de_pago (id),
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta (id)
 );
