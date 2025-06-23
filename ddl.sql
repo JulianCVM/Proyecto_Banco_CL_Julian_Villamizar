@@ -3,22 +3,24 @@
 
 USE Banco_CL;
 
-DROP TABLE IF EXISTS tipo_cliente;
-DROP TABLE IF EXISTS tipo_cuenta;
-DROP TABLE IF EXISTS tipo_tarjetas;
-DROP TABLE IF EXISTS marca_tarjeta;
-DROP TABLE IF EXISTS nivel_tarjeta;
-DROP TABLE IF EXISTS tipo_prestamo;
-DROP TABLE IF EXISTS tipo_cuota_de_manejo;
-DROP TABLE IF EXISTS descuento;
-DROP TABLE IF EXISTS tipo_nit;
-DROP TABLE IF EXISTS clientes;
-DROP TABLE IF EXISTS metodos_de_pago;
-DROP TABLE IF EXISTS monedas;
-DROP TABLE IF EXISTS interes;
-DROP TABLE IF EXISTS cuenta;
-DROP TABLE IF EXISTS metodos_de_pago_cuenta;
 
+
+DROP TABLE IF EXISTS tarjetas_bancarias;
+DROP TABLE IF EXISTS metodos_de_pago_cuenta;
+DROP TABLE IF EXISTS cuenta;
+DROP TABLE IF EXISTS interes;
+DROP TABLE IF EXISTS monedas;
+DROP TABLE IF EXISTS metodos_de_pago;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS tipo_nit;
+DROP TABLE IF EXISTS descuento;
+DROP TABLE IF EXISTS tipo_cuota_de_manejo;
+DROP TABLE IF EXISTS tipo_prestamo;
+DROP TABLE IF EXISTS nivel_tarjeta;
+DROP TABLE IF EXISTS marca_tarjeta;
+DROP TABLE IF EXISTS tipo_tarjetas;
+DROP TABLE IF EXISTS tipo_cuenta;
+DROP TABLE IF EXISTS tipo_cliente;
 
 
 
@@ -108,8 +110,8 @@ CREATE TABLE IF NOT EXISTS clientes (
     tipo_persona ENUM('NATURAL', 'JURIDICA') NOT NULL,
     tipo_cliente_id BIGINT NOT NULL,
     tipo_nit_id BIGINT NOT NULL,
-    FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id),
-    FOREIGN KEY (tipo_nit_id_fk) REFERENCES tipo_nit(id)
+    FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_nit_id) REFERENCES tipo_nit(id) ON DELETE CASCADE
 );
 
 
@@ -124,7 +126,7 @@ CREATE TABLE IF NOT EXISTS metodos_de_pago (
 
 CREATE TABLE IF NOT EXISTS monedas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre ENUM('COP', 'USD', 'EUR', 'GBP', 'JPY', 'CNY', 'CHF', 'CAD', 'AUD', 'BRL', 'MXN', 'CLP', 'PEN', 'ARS', 'VES', 'INR', 'otros')
+    nombre ENUM('COP', 'USD', 'EUR', 'GBP', 'JPY', 'CNY', 'CHF', 'CAD', 'AUD', 'BRL', 'MXN', 'CLP', 'PEN', 'ARS', 'VES', 'INR', 'otros'),
     simbolo ENUM ('$', '€', '£', '¥', 'Fr', 'R$', '₹', 'S/', 'Bs', '$U') NOT NULL,
     descripcion VARCHAR(120) NOT NULL
 );
@@ -154,18 +156,37 @@ CREATE TABLE IF NOT EXISTS cuenta (
     fecha_apertura TIMESTAMP NOT NULL,
     fecha_cierre TIMESTAMP,
     interes_id BIGINT NOT NULL,
-    FOREIGN KEY (cliente_id) REFERENCES clientes (id),
-    FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuenta (id),
-    FOREIGN KEY (monedas_id) REFERENCES monedas (id),
-    FOREIGN KEY (interes_id) REFERENCES interes (id)
+    FOREIGN KEY (cliente_id) REFERENCES clientes (id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuenta (id) ON DELETE CASCADE,
+    FOREIGN KEY (monedas_id) REFERENCES monedas (id) ON DELETE CASCADE,
+    FOREIGN KEY (interes_id) REFERENCES interes (id) ON DELETE CASCADE
 );
 
 
 
-CREATE TABLE metodos_de_pago_cuenta (
+CREATE TABLE IF NOT EXISTS metodos_de_pago_cuenta (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     metodos_de_pago_id BIGINT NOT NULL,
     cuenta_id BIGINT NOT NULL,
-    FOREIGN KEY (metodos_de_pago_id) REFERENCES metodos_de_pago (id),
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta (id)
+    FOREIGN KEY (metodos_de_pago_id) REFERENCES metodos_de_pago (id) ON DELETE CASCADE,
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta (id) ON DELETE CASCADE
+);
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS tarjetas_bancarias (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    estado ENUM('ACTIVA', 'CERRADA', 'BLOQUEADA') NOT NULL,
+    fecha_emision TIMESTAMP NOT NULL,
+    fecha_vencimiento TIMESTAMP NOT NULL,
+    num VARCHAR(30) NOT NULL UNIQUE,
+    codigo_seguridad VARCHAR(4) UNIQUE,
+    tipo_tarjetas_id BIGINT NOT NULL,
+    marca_tarjeta_id BIGINT NOT NULL,
+    nivel_tarjeta_id BIGINT NOT NULL,
+    FOREIGN KEY (tipo_tarjetas_id) REFERENCES tipo_tarjetas (id) ON DELETE CASCADE,
+    FOREIGN KEY (marca_tarjeta_id) REFERENCES marca_tarjeta (id) ON DELETE CASCADE,
+    FOREIGN KEY (nivel_tarjeta_id) REFERENCES nivel_tarjeta (id) ON DELETE CASCADE
 );
