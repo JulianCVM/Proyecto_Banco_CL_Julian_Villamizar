@@ -11,7 +11,8 @@ DROP TABLE IF EXISTS nivel_tarjeta;
 DROP TABLE IF EXISTS tipo_prestamo;
 DROP TABLE IF EXISTS tipo_cuota_de_manejo;
 DROP TABLE IF EXISTS descuento;
-
+DROP TABLE IF EXISTS tipo_nit;
+DROP TABLE IF EXISTS clientes;
 
 
 
@@ -77,4 +78,29 @@ CREATE TABLE IF NOT EXISTS descuento (
     valor DECIMAL (15,2),
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS tipo_nit (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre ENUM('GRAN CONTRIBUYENTE','REGIMEN COMUN','REGIMEN SIMPLE','REGIMEN ESPECIAL','REGIMEN SIMPLIFICADO','NO RESPONSABLE DE IVA','RESPONSABLE DE IVA','AUTORRETENEDOR','ENTIDAD EXTRANJERA','SIN CLASIFICAR') NOT NULL,
+    descripcion VARCHAR(120)
+);
+
+CREATE TABLE clientes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    NIT VARCHAR(20) NOT NULL UNIQUE,
+    primer_nombre VARCHAR(50),
+    segundo_nombre VARCHAR(50),
+    primer_apellido VARCHAR(50),
+    segundo_apellido VARCHAR(50),
+    num_contacto VARCHAR(20) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    tipo_persona ENUM('NATURAL', 'JURIDICA') NOT NULL,
+    tipo_cliente_id BIGINT NOT NULL,
+    tipo_nit_id BIGINT NOT NULL,
+    FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id),
+    FOREIGN KEY (tipo_nit_id) REFERENCES tipo_nit(id)
 );
