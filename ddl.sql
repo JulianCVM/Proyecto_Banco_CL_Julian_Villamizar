@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS extracto_bancario;
 DROP TABLE IF EXISTS registro_cuota;
 DROP TABLE IF EXISTS cuotas_manejo;
 DROP TABLE IF EXISTS prestamos;
@@ -242,3 +243,23 @@ CREATE TABLE IF NOT EXISTS registro_cuota (
     monto_abonado DECIMAL(15,2) NOT NULL,
     FOREIGN KEY (cuotas_manejo_id) REFERENCES cuotas_manejo (id)
 );
+
+
+
+CREATE TABLE IF NOT EXISTS extracto_bancario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cuenta_id BIGINT NOT NULL,
+    fecha_inicial_extracto DATE NOT NULL,
+    fecha_final_extracto DATE NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    saldo_post_operacion DECIMAL(15,2) NOT NULL,
+    tipo_operacion ENUM('DEPOSITO EFECTIVO', 'TRANSFERENCIA RECIBIDA', 'PAGO NOMINA', 'INTERESES GANADOS', 'DEVOLUCION COMPRA', 'ABONO PRESTAMO', 'CASHBACK', 'OTRO CREDITO', 'RETIRO EFECTIVO', 'TRANSFERENCIA ENVIADA', 'PAGO SERVICIOS', 'PAGO TARJETA CREDITO', 'COMPRA TARJETA', 'CUOTA MANEJO', 'COMISION', 'RETIRO AUTOMATICO','PAGO PRESTAMO', 'OTRO DEBITO') NOT NULL,
+    referencia VARCHAR(30) NOT NULL UNIQUE,
+    descripcion VARCHAR (120) NOT NULL,
+    metodo_transaccion ENUM('EFECTIVO', 'TRANSFERENCIA', 'PAGO EN LINEA', 'TARJETA', 'OTRO') NOT NULL,
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta (id) ON DELETE CASCADE
+);
+
+
+
+
