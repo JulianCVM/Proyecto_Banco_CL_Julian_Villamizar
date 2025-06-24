@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS registro_cuota;
 DROP TABLE IF EXISTS cuotas_manejo;
 DROP TABLE IF EXISTS prestamos;
 DROP TABLE IF EXISTS tarjetas_bancarias;
@@ -222,6 +223,22 @@ CREATE TABLE IF NOT EXISTS cuotas_manejo (
     fecha_inicio DATE NOT NULL,
     frecuencia ENUM('DIARIO','SEMANAL', 'QUINCENAL', 'MENSUAL', 'BIMESTRAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'UNICO', 'OTRO') NOT NULL,
     fecha_fin DATE NOT NULL,
-    FOREIGN KEY (tarjetas_bancarias_id) REFERENCES tarjetas_bancarias (id)
+    FOREIGN KEY (tarjetas_bancarias_id) REFERENCES tarjetas_bancarias (id),
     FOREIGN KEY (tipo_cuota_de_manejo_id) REFERENCES tipo_cuota_de_manejo (id)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS registro_cuota (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cuotas_manejo_id BIGINT NOT NULL,
+    fecha_ultimo_cobro DATE NOT NULL,
+    monto_facturado DECIMAL(15,2) NOT NULL,
+    fecha_corte TIMESTAMP NOT NULL,
+    fecha_limite_pago TIMESTAMP NOT NULL,
+    estado_cuota ENUM('GENERADA','PENDIENTE','PAGADA','VENCIDA','EN MORA','EXONERADA','CANCELADA','AJUSTADA','NO_APLICA') NOT NULL,
+    monto_a_pagar DECIMAL(15,2) NOT NULL,
+    monto_abonado DECIMAL(15,2) NOT NULL,
+    FOREIGN KEY (cuotas_manejo_id) REFERENCES cuotas_manejo (id)
 );
