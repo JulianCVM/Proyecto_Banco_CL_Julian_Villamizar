@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS registro_prestamos;
 DROP TABLE IF EXISTS historial_tarjetas_credito;
 DROP TABLE IF EXISTS descuentos_aplicados;
 DROP TABLE IF EXISTS transacciones;
@@ -92,7 +93,7 @@ CREATE TABLE IF NOT EXISTS descuento (
     tipo ENUM('POR USO', 'DEBITO AUTOMATICO', 'CUOTA MANEJO', 'CONVENIO', 'CASHBACK', 'SEGUROS', 'INTERESES', 'COMPRAS') NOT NULL,
     descripcion VARCHAR(120) NOT NULL,
     valor DECIMAL (15,2),
-    fecha_inicio DATE NOT NULL,
+    fecha_inicio TIMESTAMP NOT NULL,
     fecha_fin DATE NOT NULL
 );
 
@@ -224,7 +225,7 @@ CREATE TABLE IF NOT EXISTS cuotas_manejo (
     tarjetas_bancarias_id BIGINT NOT NULL,
     tipo_cuota_de_manejo_id BIGINT NOT NULL,
     monto_apertura DECIMAL(15,2) NOT NULL,
-    fecha_inicio DATE NOT NULL,
+    fecha_inicio TIMESTAMP NOT NULL,
     frecuencia ENUM('DIARIO','SEMANAL', 'QUINCENAL', 'MENSUAL', 'BIMESTRAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'UNICO', 'OTRO') NOT NULL,
     fecha_fin DATE NOT NULL,
     FOREIGN KEY (tarjetas_bancarias_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE,
@@ -237,7 +238,7 @@ CREATE TABLE IF NOT EXISTS cuotas_manejo (
 CREATE TABLE IF NOT EXISTS registro_cuota (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cuotas_manejo_id BIGINT NOT NULL,
-    fecha_ultimo_cobro DATE NOT NULL,
+    fecha_ultimo_cobro TIMESTAMP NOT NULL,
     monto_facturado DECIMAL(15,2) NOT NULL,
     fecha_corte TIMESTAMP NOT NULL,
     fecha_limite_pago TIMESTAMP NOT NULL,
@@ -252,7 +253,7 @@ CREATE TABLE IF NOT EXISTS registro_cuota (
 CREATE TABLE IF NOT EXISTS extracto_bancario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cuenta_id BIGINT NOT NULL,
-    fecha_inicial_extracto DATE NOT NULL,
+    fecha_inicial_extracto TIMESTAMP NOT NULL,
     fecha_final_extracto DATE NOT NULL,
     monto DECIMAL(15,2) NOT NULL,
     saldo_post_operacion DECIMAL(15,2) NOT NULL,
@@ -312,4 +313,20 @@ CREATE TABLE IF NOT EXISTS historial_tarjetas_credito (
     descripcion VARCHAR(120) NOT NULL,
     fecha_registro TIMESTAMP NOT NULL,
     FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS registro_prestamos(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    prestammo_id BIGINT NOT NULL,
+    ultimo_pago DECIMAL (15,2) NOT NULL,
+    feacha TIMESTAMP NOT  NULL,
+    ultimo_estado VARCHAR(40),
+    monto_restante DECIMAL(15,2) NOT NULL,
+    tiempo_restante TIMESTAMP NOT NULL,
+    FOREIGN KEY (prestammo_id) REFERENCES prestamos (id) ON DELETE CASCADE
 );
