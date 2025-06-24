@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS descuentos_aplicados;
 DROP TABLE IF EXISTS transacciones;
 DROP TABLE IF EXISTS extracto_bancario;
 DROP TABLE IF EXISTS registro_cuota;
@@ -225,8 +226,8 @@ CREATE TABLE IF NOT EXISTS cuotas_manejo (
     fecha_inicio DATE NOT NULL,
     frecuencia ENUM('DIARIO','SEMANAL', 'QUINCENAL', 'MENSUAL', 'BIMESTRAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'UNICO', 'OTRO') NOT NULL,
     fecha_fin DATE NOT NULL,
-    FOREIGN KEY (tarjetas_bancarias_id) REFERENCES tarjetas_bancarias (id),
-    FOREIGN KEY (tipo_cuota_de_manejo_id) REFERENCES tipo_cuota_de_manejo (id)
+    FOREIGN KEY (tarjetas_bancarias_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_cuota_de_manejo_id) REFERENCES tipo_cuota_de_manejo (id) ON DELETE CASCADE
 );
 
 
@@ -242,7 +243,7 @@ CREATE TABLE IF NOT EXISTS registro_cuota (
     estado_cuota ENUM('GENERADA','PENDIENTE','PAGADA','VENCIDA','EN MORA','EXONERADA','CANCELADA','AJUSTADA','NO_APLICA') NOT NULL,
     monto_a_pagar DECIMAL(15,2) NOT NULL,
     monto_abonado DECIMAL(15,2) NOT NULL,
-    FOREIGN KEY (cuotas_manejo_id) REFERENCES cuotas_manejo (id)
+    FOREIGN KEY (cuotas_manejo_id) REFERENCES cuotas_manejo (id) ON DELETE CASCADE
 );
 
 
@@ -275,7 +276,23 @@ CREATE TABLE IF NOT EXISTS transacciones (
     descripcion VARCHAR(120),
     fecha_operacion TIMESTAMP NOT NULL,
     cobro_operacion DECIMAL(15,2) NOT NULL,
-    FOREIGN KEY (cuenta_origen_id) REFERENCES cuenta (id)
+    FOREIGN KEY (cuenta_origen_id) REFERENCES cuenta (id) ON DELETE CASCADE
 );
 
 
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS descuentos_aplicados (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tarjeta_id BIGINT NOT NULL,
+    descuento_id BIGINT NOT NULL,
+    monto_inicial DECIMAL (15,2) NOT NULL,
+    descuento_aplicado DECIMAL (15,2) NOT NULL,
+    monto_con_descuento DECIMAL (15,2) NOT NULL,
+    fecha_aplicado TIMESTAMP NOT NULL,
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE,
+    FOREIGN KEY (descuento_id) REFERENCES descuento (id) ON DELETE CASCADE
+);
