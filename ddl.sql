@@ -5,8 +5,9 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS cuotas_prestamo;
 DROP TABLE IF EXISTS registro_prestamos;
-DROP TABLE IF EXISTS historial_tarjetas_credito;
+DROP TABLE IF EXISTS historial_tarjetas;
 DROP TABLE IF EXISTS descuentos_aplicados;
 DROP TABLE IF EXISTS transacciones;
 DROP TABLE IF EXISTS extracto_bancario;
@@ -306,7 +307,7 @@ CREATE TABLE IF NOT EXISTS descuentos_aplicados (
 
 
 
-CREATE TABLE IF NOT EXISTS historial_tarjetas_credito (
+CREATE TABLE IF NOT EXISTS historial_tarjetas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tarjeta_id BIGINT NOT NULL,
     evento ENUM('ACTIVADA', 'CERRADA', 'BLOQUEADA') NOT NULL,
@@ -329,4 +330,19 @@ CREATE TABLE IF NOT EXISTS registro_prestamos(
     monto_restante DECIMAL(15,2) NOT NULL,
     tiempo_restante TIMESTAMP NOT NULL,
     FOREIGN KEY (prestammo_id) REFERENCES prestamos (id) ON DELETE CASCADE
+);
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS cuotas_prestamo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    prestamo_id BIGINT NOT NULL,
+    numero_cuota INT(2) NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    estado ENUM('PENDIENTE','PAGADA','PAGADA_PARCIAL','VENCIDA','EN_MORA','CONDONADA','REPROGRAMADA','ANULADA') NOT NULL,
+    fecha_pago TIMESTAMP NOT NULL,
+    FOREIGN KEY (prestamo_id) REFERENCES prestamos (id) ON DELETE CASCADE
 );
