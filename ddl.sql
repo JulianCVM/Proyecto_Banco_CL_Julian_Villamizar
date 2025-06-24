@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS historial_tarjetas_credito;
 DROP TABLE IF EXISTS descuentos_aplicados;
 DROP TABLE IF EXISTS transacciones;
 DROP TABLE IF EXISTS extracto_bancario;
@@ -295,4 +296,20 @@ CREATE TABLE IF NOT EXISTS descuentos_aplicados (
     fecha_aplicado TIMESTAMP NOT NULL,
     FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE,
     FOREIGN KEY (descuento_id) REFERENCES descuento (id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS historial_tarjetas_credito (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tarjeta_id BIGINT NOT NULL,
+    evento ENUM('ACTIVADA', 'CERRADA', 'BLOQUEADA') NOT NULL,
+    descripcion VARCHAR(120) NOT NULL,
+    fecha_registro TIMESTAMP NOT NULL,
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias (id) ON DELETE CASCADE
 );
