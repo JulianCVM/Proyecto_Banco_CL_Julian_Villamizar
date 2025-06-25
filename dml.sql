@@ -110,3 +110,25 @@ INSERT INTO monedas (activo,codigo,descripcion,nombre,simbolo) VALUES
 (TRUE,'ARS','Moneda oficial de Argentina','Peso Argentino','$'),
 (TRUE,'VES','Moneda oficial de Venezuela','Bolivar Venezolano','Bs'),
 (TRUE,'INR','Moneda oficial de India','Rupia India','₹');
+
+
+
+INSERT INTO estados (activo,codigo,contexto,descripcion,nombre) VALUES 
+(TRUE,'CTA_ACT','CUENTA','Cuenta activa y operativa','ACTIVA'),
+(TRUE,'CTA_CER','CUENTA','Cuenta cerrada definitivamente','CERRADA'),
+(TRUE,'CTA_BLO','CUENTA','Cuenta bloqueada temporalmente','BLOQUEADA'),
+(TRUE,'TAR_ACT','TARJETA','Tarjeta activa para uso','ACTIVA'),
+(TRUE,'TAR_CER','TARJETA','Tarjeta cerrada','CERRADA'),
+(TRUE,'TAR_BLO','TARJETA','Tarjeta bloqueada','BLOQUEADA'),
+(TRUE,'TAR_VEN','TARJETA','Tarjeta vencida','VENCIDA'),
+(TRUE,'PRE_SOL','PRESTAMO','Prestamo solicitado','SOLICITADO'),
+(TRUE,'PRE_EVA','PRESTAMO','En proceso de evaluacion','EN EVALUACION'),
+(TRUE,'PRE_APR','PRESTAMO','Prestamo aprobado','APROBADO'),
+(TRUE,'PRE_DES','PRESTAMO','Prestamo desembolsado','DESEMBOLSADO'),
+(TRUE,'PRE_CUR','PRESTAMO','Prestamo en curso de pago','EN CURSO'),
+(TRUE,'PRE_MOR','PRESTAMO','Prestamo en mora','EN MORA'),
+(TRUE,'PRE_REE','PRESTAMO','Prestamo reestructurado','REESTRUCTURADO'),
+(TRUE,'PRE_CAS','PRESTAMO','Prestamo castigado','CASTIGADO'),
+(TRUE,'PRE_PAG','PRESTAMO','Prestamo totalmente pagado','PAGADO'),
+(TRUE,'PRE_CAN','PRESTAMO','Prestamo cancelado','CANCELADO');
+
