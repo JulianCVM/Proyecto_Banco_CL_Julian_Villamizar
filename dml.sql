@@ -64,3 +64,11 @@ INSERT INTO tipo_prestamo  (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'LIB','Prestamo de libre inversion','LIBRE INVERSION'),
 (TRUE,'ROT','Prestamo para creditos rotativos con cupos disponibles','CREDITO ROTATIVO'),
 (TRUE,'PRE','Prestamo con garantia prendaria','PRENDARIO');
+
+
+
+INSERT INTO tipo_cuota_de_manejo (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'PER','Cuota de manejo cobrada periodicamente','PERIODICA'),
+(TRUE,'PRO','Cuota basada en el tipo de producto','TIPO PRODUCTO'),
+(TRUE,'CLI','Cuota segun perfil del cliente','PERFIL CLIENTE'),
+(TRUE,'EXO','Cliente exonerado de cuota de manejo','EXONERADA');
