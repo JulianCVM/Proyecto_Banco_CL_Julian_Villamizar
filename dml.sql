@@ -217,3 +217,19 @@ INSERT INTO estados_pago (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'VEN','Pago vencido','VENCIDO'),
 (TRUE,'EXO','Pago exonerado','EXONERADO');
 
+
+
+
+INSERT INTO estados_cuota (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'GEN','Cuota generada','GENERADA'),
+(TRUE,'PAG_PAR','Cuota pagada parcialmente','PAGADA_PARCIAL'),
+(TRUE,'VEN','Cuota vencida','VENCIDA'),
+(TRUE,'MOR','Cuota en mora','EN_MORA'),
+(TRUE,'CON','Cuota condonada','CONDONADA'),
+(TRUE,'REP','Cuota reprogramada','REPROGRAMADA'),
+(TRUE,'ANU','Cuota anulada','ANULADA'),
+(TRUE,'EXO','Cuota exonerada','EXONERADA'),
+(TRUE,'CAN','Cuota cancelada','CANCELADA'),
+(TRUE,'AJS','Cuota ajustada','AJUSTADA'),
+(TRUE,'NAP','No aplica','NO_APLICA');
+
