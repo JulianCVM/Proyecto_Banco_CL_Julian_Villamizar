@@ -132,3 +132,15 @@ INSERT INTO estados (activo,codigo,contexto,descripcion,nombre) VALUES
 (TRUE,'PRE_PAG','PRESTAMO','Prestamo totalmente pagado','PAGADO'),
 (TRUE,'PRE_CAN','PRESTAMO','Prestamo cancelado','CANCELADO');
 
+INSERT INTO frecuencias_pago (activo,codigo,descripcion,dias_frecuencia,nombre) VALUES
+(TRUE,'DIA','Pago diario',1,'DIARIO'),
+(TRUE,'SEM','Pago semanal',7,'SEMANAL'),
+(TRUE,'QUI','Pago quincenal',15,'QUINCENAL'),
+(TRUE,'MEN','Pago mensual',30,'MENSUAL'),
+(TRUE,'BIM','Pago cada dos meses',60,'BIMESTRAL'),
+(TRUE,'TRI','Pago trimestral',90,'TRIMESTRAL'),
+(TRUE,'CUA','Pago cuatrimestral',120,'CUATRIMESTRAL'),
+(TRUE,'SEM_A','Pago semestral',180,'SEMESTRAL'),
+(TRUE,'ANU','Pago anual',365,'ANUAL'),
+(TRUE,'UNI','Pago unico',0,'UNICO'),
+(TRUE,'OTR','Otra frecuencia especifica',0,'OTRO');
