@@ -200,3 +200,20 @@ INSERT INTO metodos_transaccion (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'PSE','Pagos Seguros en Linea','PSE'),
 (TRUE,'BID','Billetera digital','BILLETERA DIGITAL'),
 (TRUE,'OTR','Otro metodo','OTRO');
+
+
+
+
+
+INSERT INTO estados_pago (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'PEN','Pago pendiente de procesamiento','PENDIENTE'),
+(TRUE,'COM','Pago completado exitosamente','COMPLETADO'),
+(TRUE,'REC','Pago rechazado','RECHAZADO'),
+(TRUE,'FAL','Pago fallido por error tecnico','FALLIDO'),
+(TRUE,'CAN','Pago cancelado por el usuario','CANCELADO'),
+(TRUE,'PRO','Pago en proceso','EN PROCESO'),
+(TRUE,'REV','Pago revertido','REVERTIDO'),
+(TRUE,'PAR','Pago parcial realizado','ABONADO PARCIAL'),
+(TRUE,'VEN','Pago vencido','VENCIDO'),
+(TRUE,'EXO','Pago exonerado','EXONERADO');
+
