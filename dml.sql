@@ -40,3 +40,14 @@ INSERT INTO marca_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'UNI','Tarjeta de la red UNION PLAY CHI-CHI-CHI LE-LE-LE','UNION PAY'),
 (TRUE,'SER','Tarjeta de la red Nacion Servibanca','SERVIBANCA'),
 (TRUE,'CRB','Tarjeta de la red Credibanco','CREDIBANCO');
+
+
+
+INSERT INTO nivel_tarjeta (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'CLA','Tarjeta de nivel basico con beneficios estandares','CLASICA'),
+(TRUE,'GOL','Tarjeta dorada con beneficios mejorados','GOLD'),
+(TRUE,'PLA','Tarjeta platino con beneficios premiun exclusivos','PLATINO'),
+(TRUE,'BLA','Tarjeta negra para segmento totalmente exclusivo','BLACK'),
+(TRUE,'SIG','Tarjeta signature con servicios de lujooo','SIGNATURE'),
+(TRUE,'INF','Tarjeta infinite sin LIMITES!','INFINITE'),
+(TRUE,'EMP','Tarjeta especial para empresas','EMPRESARIAL');
