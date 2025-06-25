@@ -18,3 +18,13 @@ INSERT INTO tipo_cuenta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'EMP','Cuenta para empresas y personas juridicas.','EMPRESARIAL'),
 (TRUE,'DIV','Cuenta en moneda extranjera.','DIVISA EXTRANJERA'),
 (TRUE,'DIG','Cuenta 101% digital sin papeleria.','DIGITAL');
+
+
+
+INSERT INTO tipo_tarjetas (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'DEB','Tarjeta de debito','DEBITO'),
+(TRUE,'CRE','Tarjeta de credito','CREDITO'),
+(TRUE,'PRE','Tarjeta prepago','PREPAGO'),
+(TRUE,'EMP','Tarjeta empresarial','EMPRESARIAL'),
+(TRUE,'NOM','Tarjeta de nomina','NOMINA'),
+(TRUE,'VIR','Tarjeta virtual','VIRTUAL');
