@@ -144,3 +144,26 @@ INSERT INTO frecuencias_pago (activo,codigo,descripcion,dias_frecuencia,nombre) 
 (TRUE,'ANU','Pago anual',365,'ANUAL'),
 (TRUE,'UNI','Pago unico',0,'UNICO'),
 (TRUE,'OTR','Otra frecuencia especifica',0,'OTRO');
+
+
+
+INSERT INTO tipos_operacion (activo,codigo,descripcion,nombre,tipo_movimiento) VALUES
+(TRUE,'DEP_EFE','Deposito en efectivo','DEPOSITO EFECTIVO','CREDITO'),
+(TRUE,'TRA_REC','Transferencia recibida','TRANSFERENCIA RECIBIDA','CREDITO'),
+(TRUE,'PAG_NOM','Pago de nomina','PAGO NOMINA','CREDITO'),
+(TRUE,'INT_GAN','Intereses ganados','INTERESES GANADOS','CREDITO'),
+(TRUE,'DEV_COM','Devolucion de compra','DEVOLUCION COMPRA','CREDITO'),
+(TRUE,'ABO_PRE','Abono a prestamo','ABONO PRESTAMO','CREDITO'),
+(TRUE,'CASHB','Cashback por compras','CASHBACK','CREDITO'),
+(TRUE,'OTR_CRE','Otro credito','OTRO CREDITO','CREDITO'),
+(TRUE,'RET_EFE','Retiro en efectivo','RETIRO EFECTIVO','DEBITO'),
+(TRUE,'TRA_ENV','Transferencia enviada','TRANSFERENCIA ENVIADA','DEBITO'),
+(TRUE,'PAG_SER','Pago de servicios','PAGO SERVICIOS','DEBITO'),
+(TRUE,'PAG_TAR','Pago tarjeta credito','PAGO TARJETA CREDITO','DEBITO'),
+(TRUE,'COM_TAR','Compra con tarjeta','COMPRA TARJETA','DEBITO'),
+(TRUE,'CUO_MAN','Cuota de manejo','CUOTA MANEJO','DEBITO'),
+(TRUE,'COMIS','Comision bancaria','COMISION','DEBITO'),
+(TRUE,'RET_AUT','Retiro automatico','RETIRO AUTOMATICO','DEBITO'),
+(TRUE,'PAG_PRE','Pago de prestamo','PAGO PRESTAMO','DEBITO'),
+(TRUE,'OTR_DEB','Otro debito','OTRO DEBITO','DEBITO');
+
