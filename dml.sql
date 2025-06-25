@@ -51,3 +51,16 @@ INSERT INTO nivel_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'SIG','Tarjeta signature con servicios de lujooo','SIGNATURE'),
 (TRUE,'INF','Tarjeta infinite sin LIMITES!','INFINITE'),
 (TRUE,'EMP','Tarjeta especial para empresas','EMPRESARIAL');
+
+
+
+INSERT INTO tipo_prestamo  (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'PER','Prestamo personal de libre destinacion','PERSONAL'),
+(TRUE,'HIP','Prestamo para compra de vivienda','HIPOTECARIO'),
+(TRUE,'AUT','Prestamo para compra de vehiculos','AUTOMOTRIZ'),
+(TRUE,'EST','Prestamo para financiar estudios','ESTUDIANTIL'),
+(TRUE,'LCR','Prestamo para lineas de credito rotativas','LINEA DE CREDITO'),
+(TRUE,'COM','Prestamo para actividades del comercio/comerciales','COMERCIAL'),
+(TRUE,'LIB','Prestamo de libre inversion','LIBRE INVERSION'),
+(TRUE,'ROT','Prestamo para creditos rotativos con cupos disponibles','CREDITO ROTATIVO'),
+(TRUE,'PRE','Prestamo con garantia prendaria','PRENDARIO');
