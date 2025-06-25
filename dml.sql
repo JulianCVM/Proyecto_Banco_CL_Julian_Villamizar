@@ -72,3 +72,17 @@ INSERT INTO tipo_cuota_de_manejo (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'PRO','Cuota basada en el tipo de producto','TIPO PRODUCTO'),
 (TRUE,'CLI','Cuota segun perfil del cliente','PERFIL CLIENTE'),
 (TRUE,'EXO','Cliente exonerado de cuota de manejo','EXONERADA');
+
+
+
+INSERT INTO tipo_nit (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'GC','Grandes contribuyentes segun la DIAN','GRAN CONTRIBUYENTE'),
+(TRUE,'RC','Regimen comun de IVA','REGIMEN COMUN'),
+(TRUE,'RS','Regimen simple de tributacion','REGIMEN SIMPLE'),
+(TRUE,'RE','Regimen especial de IVA','REGIMEN ESPECIAL'),
+(TRUE,'RSI','Regimen simplificado','REGIMEN SIMPLIFICADO'),
+(TRUE,'NRI','No responsable de IVA','NO RESPONSABLE DE IVA'),
+(TRUE,'RIV','Responsable de IVA','RESPONSABLE DE IVA'),
+(TRUE,'AUT','Agente autorretenedor','AUTORRETENEDOR'),
+(TRUE,'EXT','Entidad del exterior','ENTIDAD EXTRANJERA'),
+(TRUE,'SC','Sin clasificacion tributaria','SIN CLASIFICAR');
