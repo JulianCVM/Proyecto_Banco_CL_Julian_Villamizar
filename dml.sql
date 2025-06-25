@@ -167,3 +167,25 @@ INSERT INTO tipos_operacion (activo,codigo,descripcion,nombre,tipo_movimiento) V
 (TRUE,'PAG_PRE','Pago de prestamo','PAGO PRESTAMO','DEBITO'),
 (TRUE,'OTR_DEB','Otro debito','OTRO DEBITO','DEBITO');
 
+
+
+INSERT INTO tipos_transaccion (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'DEP_EFE','Deposito en efectivo','DEPOSITO EFECTIVO'),
+(TRUE,'TRA_REC','Transferencia recibida','TRANSFERENCIA RECIBIDA'),
+(TRUE,'INT_ACR','Interes acreditado','INTERES ACREDITADO'),
+(TRUE,'DEV_COM','Devolucion de compra','DEVOLUCION COMPRA'),
+(TRUE,'PAG_NOM','Pago de nomina','PAGO NOMINA'),
+(TRUE,'ABO_PRE','Abono a prestamo','ABONO PRESTAMO'),
+(TRUE,'BON_PRO','Bono promocional','BONO PROMOCIONAL'),
+(TRUE,'RET_EFE','Retiro en efectivo','RETIRO EFECTIVO'),
+(TRUE,'TRA_ENV','Transferencia enviada','TRANSFERENCIA ENVIADA'),
+(TRUE,'PAG_SER','Pago de servicios','PAGO SERVICIOS'),
+(TRUE,'PAG_TAR','Pago tarjeta credito','PAGO TARJETA CREDITO'),
+(TRUE,'COM_TAR','Compra con tarjeta','COMPRA TARJETA'),
+(TRUE,'CUO_MAN','Cuota de manejo','CUOTA MANEJO'),
+(TRUE,'COMIS','Comision','COMISION'),
+(TRUE,'PAG_PRE','Pago de prestamo','PAGO PRESTAMO'),
+(TRUE,'DEB_AUT','Debito automatico','DEBITO AUTOMATICO'),
+(TRUE,'IMPUEST','Impuesto','IMPUESTO'),
+(TRUE,'OTRO','Otra transaccion','OTRO');
+
