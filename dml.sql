@@ -28,3 +28,15 @@ INSERT INTO tipo_tarjetas (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'EMP','Tarjeta empresarial','EMPRESARIAL'),
 (TRUE,'NOM','Tarjeta de nomina','NOMINA'),
 (TRUE,'VIR','Tarjeta virtual','VIRTUAL');
+
+
+
+INSERT INTO marca_tarjeta (activo,codigo,descripcion,nombre) VALUES
+(TRUE,'VIS','Tarjeta de la red Visa International','VISA'),
+(TRUE,'MAS','Tarjeta de la red Mastercard','MASTERCARD'),
+(TRUE,'AMX','Tarjeta de la red AMERICAN EXPRESOOO','AMERICAN EXPRESS'),
+(TRUE,'DIN','Tarjeta de la red Diners Club International','DINERS CLUB'),
+(TRUE,'DIS','Tarjeta de la red Discover','DISCOVER'),
+(TRUE,'UNI','Tarjeta de la red UNION PLAY CHI-CHI-CHI LE-LE-LE','UNION PAY'),
+(TRUE,'SER','Tarjeta de la red Nacion Servibanca','SERVIBANCA'),
+(TRUE,'CRB','Tarjeta de la red Credibanco','CREDIBANCO');
