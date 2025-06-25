@@ -221,6 +221,8 @@ INSERT INTO estados_pago (activo,codigo,descripcion,nombre) VALUES
 
 
 INSERT INTO estados_cuota (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'PEN','Cuota pendiente de pago','PENDIENTE'),
+(TRUE,'PAG','Cuota pagada completamente','PAGADA'),
 (TRUE,'GEN','Cuota generada','GENERADA'),
 (TRUE,'PAG_PAR','Cuota pagada parcialmente','PAGADA_PARCIAL'),
 (TRUE,'VEN','Cuota vencida','VENCIDA'),
