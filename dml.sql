@@ -1,13 +1,13 @@
--- insertar los datos (hasta aqui llego mi salud mental)
+-- =============================================
+-- INSERTS COMPLETOS - SISTEMA BANCARIO
+-- =============================================
 
-
-
+-- Datos ya proporcionados por el usuario (mantener igual)
 INSERT INTO tipo_cliente (activo,codigo,descripcion,nombre) VALUES
 (TRUE, 'REG', 'Cliente regular, no tiene beneficios especiales.', 'REGULAR'),
 (TRUE, 'EST', 'Cliente estandar, tiene beneficios basicos.', 'ESTANDAR'),
 (TRUE, 'PREF', 'Cliente preferencial, tiene beneficios preferenciales.', 'PREFERENCIAL'),
 (TRUE, 'VIP', 'Cliente regular, tiene beneficios especiales y atencion personalizada.', 'VIP');
-
 
 INSERT INTO tipo_cuenta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'AHO','Cuenta de ahorros para personas naturales.','AHORRO'),
@@ -19,8 +19,6 @@ INSERT INTO tipo_cuenta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'DIV','Cuenta en moneda extranjera.','DIVISA EXTRANJERA'),
 (TRUE,'DIG','Cuenta 101% digital sin papeleria.','DIGITAL');
 
-
-
 INSERT INTO tipo_tarjetas (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'DEB','Tarjeta de debito','DEBITO'),
 (TRUE,'CRE','Tarjeta de credito','CREDITO'),
@@ -28,8 +26,6 @@ INSERT INTO tipo_tarjetas (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'EMP','Tarjeta empresarial','EMPRESARIAL'),
 (TRUE,'NOM','Tarjeta de nomina','NOMINA'),
 (TRUE,'VIR','Tarjeta virtual','VIRTUAL');
-
-
 
 INSERT INTO marca_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'VIS','Tarjeta de la red Visa International','VISA'),
@@ -41,8 +37,6 @@ INSERT INTO marca_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'SER','Tarjeta de la red Nacion Servibanca','SERVIBANCA'),
 (TRUE,'CRB','Tarjeta de la red Credibanco','CREDIBANCO');
 
-
-
 INSERT INTO nivel_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'CLA','Tarjeta de nivel basico con beneficios estandares','CLASICA'),
 (TRUE,'GOL','Tarjeta dorada con beneficios mejorados','GOLD'),
@@ -52,9 +46,7 @@ INSERT INTO nivel_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'INF','Tarjeta infinite sin LIMITES!','INFINITE'),
 (TRUE,'EMP','Tarjeta especial para empresas','EMPRESARIAL');
 
-
-
-INSERT INTO tipo_prestamo  (activo,codigo,descripcion,nombre) VALUES
+INSERT INTO tipo_prestamo (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'PER','Prestamo personal de libre destinacion','PERSONAL'),
 (TRUE,'HIP','Prestamo para compra de vivienda','HIPOTECARIO'),
 (TRUE,'AUT','Prestamo para compra de vehiculos','AUTOMOTRIZ'),
@@ -65,15 +57,11 @@ INSERT INTO tipo_prestamo  (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'ROT','Prestamo para creditos rotativos con cupos disponibles','CREDITO ROTATIVO'),
 (TRUE,'PRE','Prestamo con garantia prendaria','PRENDARIO');
 
-
-
 INSERT INTO tipo_cuota_de_manejo (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'PER','Cuota de manejo cobrada periodicamente','PERIODICA'),
 (TRUE,'PRO','Cuota basada en el tipo de producto','TIPO PRODUCTO'),
 (TRUE,'CLI','Cuota segun perfil del cliente','PERFIL CLIENTE'),
 (TRUE,'EXO','Cliente exonerado de cuota de manejo','EXONERADA');
-
-
 
 INSERT INTO tipo_nit (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'GC','Grandes contribuyentes segun la DIAN','GRAN CONTRIBUYENTE'),
@@ -86,7 +74,6 @@ INSERT INTO tipo_nit (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'AUT','Agente autorretenedor','AUTORRETENEDOR'),
 (TRUE,'EXT','Entidad del exterior','ENTIDAD EXTRANJERA'),
 (TRUE,'SC','Sin clasificacion tributaria','SIN CLASIFICAR');
-
 
 INSERT INTO metodos_de_pago (activo,codigo,descripcion,nombre) VALUES
 (TRUE, 'EFE','Pago en efectivo','EFECTIVO'),
@@ -105,3 +92,21 @@ INSERT INTO metodos_de_pago (activo,codigo,descripcion,nombre) VALUES
 (TRUE, 'PSE','Pagos seguros en linea','PSE'),
 (TRUE, 'OTR','Otro metodo de pago','OTRO');
 
+
+INSERT INTO monedas (activo,codigo,descripcion,nombre,simbolo) VALUES 
+(TRUE,'COP','Moneda oficial de Colombia','Peso Colombiano','$'),
+(TRUE,'USD','Moneda de Estados Unidos','Dolar Estadounidense','$'),
+(TRUE,'EUR','Moneda oficial de la Eurozona','Euro','€'),
+(TRUE,'GBP','Moneda del Reino Unido','Libra Esterlina','£'),
+(TRUE,'JPY','Moneda oficial de Japon','Yen Japones','¥'),
+(TRUE,'CNY','Moneda oficial de China','Yuan Chino','¥'),
+(TRUE,'CHF','Moneda de Suiza','Franco Suizo','Fr'),
+(TRUE,'CAD','Moneda de Canada','Dolar Canadiense','$'),
+(TRUE,'AUD','Moneda de Australia','Dolar Australiano','$'),
+(TRUE,'BRL','Moneda oficial de Brasil','Real Brasileno','R$'),
+(TRUE,'MXN','Moneda oficial de Mexico','Peso Mexicano','$'),
+(TRUE,'CLP','Moneda oficial de Chile','Peso Chileno','$'),
+(TRUE,'PEN','Moneda oficial de Peru','Sol Peruano','S/'),
+(TRUE,'ARS','Moneda oficial de Argentina','Peso Argentino','$'),
+(TRUE,'VES','Moneda oficial de Venezuela','Bolivar Venezolano','Bs'),
+(TRUE,'INR','Moneda oficial de India','Rupia India','₹');
