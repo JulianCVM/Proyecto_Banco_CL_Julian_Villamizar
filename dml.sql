@@ -189,3 +189,14 @@ INSERT INTO tipos_transaccion (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'IMPUEST','Impuesto','IMPUESTO'),
 (TRUE,'OTRO','Otra transaccion','OTRO');
 
+
+
+INSERT INTO metodos_transaccion (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'EFE','Operacion en efectivo','EFECTIVO'),
+(TRUE,'TRN','Transferencia bancaria','TRANSFERENCIA'),
+(TRUE,'POL','Pago en linea','PAGO EN LINEA'),
+(TRUE,'TAR','Operacion con tarjeta','TARJETA'),
+(TRUE,'CHE','Pago con cheque','CHEQUE'),
+(TRUE,'PSE','Pagos Seguros en Linea','PSE'),
+(TRUE,'BID','Billetera digital','BILLETERA DIGITAL'),
+(TRUE,'OTR','Otro metodo','OTRO');
