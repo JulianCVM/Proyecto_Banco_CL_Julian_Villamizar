@@ -86,3 +86,22 @@ INSERT INTO tipo_nit (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'AUT','Agente autorretenedor','AUTORRETENEDOR'),
 (TRUE,'EXT','Entidad del exterior','ENTIDAD EXTRANJERA'),
 (TRUE,'SC','Sin clasificacion tributaria','SIN CLASIFICAR');
+
+
+INSERT INTO metodos_de_pago (activo,codigo,descripcion,nombre) VALUES
+(TRUE, 'EFE','Pago en efectivo','EFECTIVO'),
+(TRUE, 'TRB','Transferencia entre cuentas','TRANSFERENCIA BANCARIA'),
+(TRUE, 'DBA','Debito automatico de cuenta','DEBITO AUTOMATICO'),
+(TRUE, 'TCR','Pago con tarjeta de credito','TARJETA CREDITO'),
+(TRUE, 'TDE','Pago con tarjeta de debito','TARJETA DEBITO'),
+(TRUE, 'CHE','Pago con cheque','CHEQUE'),
+(TRUE, 'BID','Billetera digital/movil','BILLETERA DIGITAL'),
+(TRUE, 'POL','Pago en linea/internet','PAGO EN LINEA'),
+(TRUE, 'CON','Consignacion bancaria','CONSIGNACION'),
+(TRUE, 'DNO','Descuento por nomina','DESCUENTO NOMINA'),
+(TRUE, 'PMO','Pago movil','PAGO MOVIL'),
+(TRUE, 'CCO','Debito a cuenta corriente','CUENTA CORRIENTE'),
+(TRUE, 'CAH','Debito a cuenta de ahorros','CUENTA AHORRO'),
+(TRUE, 'PSE','Pagos seguros en linea','PSE'),
+(TRUE, 'OTR','Otro metodo de pago','OTRO');
+
