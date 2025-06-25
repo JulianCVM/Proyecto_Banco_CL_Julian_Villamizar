@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS pagos_prestamo;
 DROP TABLE IF EXISTS historial_de_pagos;
 DROP TABLE IF EXISTS pagos;
 DROP TABLE IF EXISTS cuotas_prestamo;
@@ -382,4 +383,18 @@ CREATE TABLE IF NOT EXISTS historial_de_pagos (
     descripcion VARCHAR(120) NOT NULL,
     metodo_operacion ENUM('EFECTIVO','TRANSFERENCIA BANCARIA','DEBITO AUTOMATICO','TARJETA CREDITO','TARJETA DEBITO','CHEQUE','PSE','BILLETERA DIGITAL','PAGO MOVIL','CONSIGNACION BANCARIA','DESCUENTO NOMINA','CAJERO AUTOMATICO','PAGO EN LINEA','CUENTA CORRIENTE','CUENTA AHORRO','OTRO') NOT NULL,
     FOREIGN KEY (pagos_id) REFERENCES pagos (id) ON DELETE CASCADE
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS pagos_prestamo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cuota_prestamo_id BIGINT NOT NULL,
+    monto_pagado DECIMAL(15,2) NOT NULL,
+    fecha_pago TIMESTAMP NOT NULL,
+    metodos_de_pago_id BIGINT NOT NULL,
+    descripcion VARCHAR(120) NOT NULL,
+    FOREIGN KEY (cuota_prestamo_id) REFERENCES cuotas_prestamo (id),
+    FOREIGN KEY (metodos_de_pago_id) REFERENCES metodos_de_pago (id)
 );
