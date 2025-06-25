@@ -248,3 +248,20 @@ INSERT INTO eventos_tarjeta (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'PER','Tarjeta reportada como perdida','PERDIDA'),
 (TRUE,'ROB','Tarjeta reportada como robada','ROBADA'),
 (TRUE,'REE','Tarjeta reemplazada','REEMPLAZADA');
+
+
+
+
+
+INSERT INTO tipos_pago (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'CUO_PRE','Pago de cuota de prestamo','CUOTA PRESTAMO'),
+(TRUE,'CUO_MAN','Pago de cuota de manejo','CUOTA MANEJO'),
+(TRUE,'TAR_CRE','Pago de tarjeta de credito','TARJETA CREDITO'),
+(TRUE,'TAR_DEB','Pago con tarjeta debito','TARJETA DEBITO'),
+(TRUE,'SERVIC','Pago de servicios','SERVICIO'),
+(TRUE,'PRE_TOT','Pago total de prestamo','PRESTAMO TOTAL'),
+(TRUE,'TRA_ENT','Transferencia entrante','TRANSFERENCIA ENTRANTE'),
+(TRUE,'TRA_SAL','Transferencia saliente','TRANSFERENCIA SALIENTE'),
+(TRUE,'RECARG','Recarga de servicios','RECARGA'),
+(TRUE,'OTRO','Otro tipo de pago','OTRO');
+
