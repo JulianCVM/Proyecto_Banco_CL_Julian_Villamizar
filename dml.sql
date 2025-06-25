@@ -235,3 +235,16 @@ INSERT INTO estados_cuota (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'AJS','Cuota ajustada','AJUSTADA'),
 (TRUE,'NAP','No aplica','NO_APLICA');
 
+
+
+
+INSERT INTO eventos_tarjeta (activo,codigo,descripcion,nombre) VALUES 
+(TRUE,'ACT','Tarjeta activada','ACTIVADA'),
+(TRUE,'CER','Tarjeta cerrada','CERRADA'),
+(TRUE,'BLO','Tarjeta bloqueada','BLOQUEADA'),
+(TRUE,'DES','Tarjeta desbloqueada','DESBLOQUEADA'),
+(TRUE,'VEN','Tarjeta vencida','VENCIDA'),
+(TRUE,'REN','Tarjeta renovada','RENOVADA'),
+(TRUE,'PER','Tarjeta reportada como perdida','PERDIDA'),
+(TRUE,'ROB','Tarjeta reportada como robada','ROBADA'),
+(TRUE,'REE','Tarjeta reemplazada','REEMPLAZADA');
