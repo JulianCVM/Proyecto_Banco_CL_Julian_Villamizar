@@ -1,0 +1,479 @@
+erDiagram
+    %% =====================================
+    %% TABLAS DE CATÁLOGO/LOOKUP
+    %% =====================================
+    
+    tipo_cliente {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipo_cuenta {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipo_tarjetas {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    marca_tarjeta {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    nivel_tarjeta {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipo_prestamo {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipo_cuota_de_manejo {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipo_nit {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    metodos_de_pago {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    monedas {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar simbolo
+        varchar descripcion
+        boolean activo
+    }
+    
+    estados {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar contexto
+        varchar descripcion
+        boolean activo
+    }
+    
+    frecuencias_pago {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        int dias_frecuencia
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipos_operacion {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        enum tipo_movimiento
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipos_transaccion {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    metodos_transaccion {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    estados_pago {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    estados_cuota {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    eventos_tarjeta {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    tipos_pago {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        boolean activo
+    }
+    
+    %% =====================================
+    %% TABLAS PRINCIPALES
+    %% =====================================
+    
+    clientes {
+        bigint id PK
+        varchar nit UK
+        varchar primer_nombre
+        varchar segundo_nombre
+        varchar primer_apellido
+        varchar segundo_apellido
+        varchar num_contacto
+        varchar email
+        enum tipo_persona
+        bigint tipo_cliente_id FK
+        bigint tipo_nit_id FK
+        timestamp fecha_creacion
+        boolean activo
+    }
+    
+    cuenta {
+        bigint id PK
+        bigint cliente_id FK
+        bigint tipo_cuenta_id FK
+        varchar numero UK
+        decimal saldo_disponible
+        int transacciones_realizadas
+        bigint estado_id FK
+        bigint moneda_id FK
+        timestamp fecha_apertura
+        timestamp fecha_cierre
+        bigint interes_id FK
+    }
+    
+    tarjetas_bancarias {
+        bigint id PK
+        varchar numero UK
+        varchar codigo_seguridad
+        bigint estado_id FK
+        timestamp fecha_emision
+        date fecha_vencimiento
+        bigint tipo_tarjeta_id FK
+        bigint marca_tarjeta_id FK
+        bigint nivel_tarjeta_id FK
+        decimal limite_credito
+    }
+    
+    prestamos {
+        bigint id PK
+        bigint cuenta_id FK
+        bigint tipo_prestamo_id FK
+        decimal monto_solicitado
+        decimal monto_aprobado
+        bigint interes_id FK
+        timestamp fecha_solicitud
+        timestamp fecha_desembolso
+        smallint plazo_meses
+        bigint frecuencia_pago_id FK
+        bigint estado_id FK
+        decimal saldo_restante
+    }
+    
+    interes {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        enum tipo
+        decimal valor
+        boolean activo
+    }
+    
+    descuento {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        decimal valor
+        enum tipo_valor
+        timestamp fecha_inicio
+        date fecha_fin
+        boolean activo
+    }
+    
+    %% =====================================
+    %% TABLAS DE RELACIÓN Y TRANSACCIONALES
+    %% =====================================
+    
+    metodos_de_pago_cuenta {
+        bigint id PK
+        bigint metodo_pago_id FK
+        bigint cuenta_id FK
+        timestamp fecha_asociacion
+        boolean activo
+    }
+    
+    cuenta_tarjeta {
+        bigint id PK
+        bigint cuenta_id FK
+        bigint tarjeta_id FK
+        timestamp fecha_asociacion
+        boolean activo
+    }
+    
+    cuotas_manejo {
+        bigint id PK
+        bigint tarjeta_id FK
+        bigint tipo_cuota_manejo_id FK
+        decimal monto_apertura
+        timestamp fecha_inicio
+        bigint frecuencia_pago_id FK
+        date fecha_fin
+        boolean activo
+    }
+    
+    registro_cuota {
+        bigint id PK
+        bigint cuota_manejo_id FK
+        timestamp fecha_ultimo_cobro
+        decimal monto_facturado
+        timestamp fecha_corte
+        timestamp fecha_limite_pago
+        bigint estado_cuota_id FK
+        decimal monto_a_pagar
+        decimal monto_abonado
+    }
+    
+    extracto_bancario {
+        bigint id PK
+        bigint cuenta_id FK
+        timestamp fecha_inicial_extracto
+        date fecha_final_extracto
+        decimal monto
+        decimal saldo_post_operacion
+        bigint tipo_operacion_id FK
+        varchar referencia UK
+        varchar descripcion
+        bigint metodo_transaccion_id FK
+    }
+    
+    transacciones {
+        bigint id PK
+        bigint cuenta_origen_id FK
+        bigint cuenta_destino_id FK
+        bigint tipo_transaccion_id FK
+        decimal monto
+        varchar descripcion
+        timestamp fecha_operacion
+        decimal cobro_operacion
+        varchar referencia UK
+    }
+    
+    descuentos_aplicados {
+        bigint id PK
+        bigint tarjeta_id FK
+        bigint descuento_id FK
+        decimal monto_inicial
+        decimal descuento_aplicado
+        decimal monto_con_descuento
+        timestamp fecha_aplicado
+    }
+    
+    historial_tarjetas {
+        bigint id PK
+        bigint tarjeta_id FK
+        bigint evento_id FK
+        varchar descripcion
+        timestamp fecha_registro
+        bigint usuario_id FK
+    }
+    
+    registro_prestamos {
+        bigint id PK
+        bigint prestamo_id FK
+        decimal ultimo_pago
+        timestamp fecha_ultimo_pago
+        bigint ultimo_estado_id FK
+        decimal monto_restante
+        smallint tiempo_restante_meses
+        timestamp fecha_registro
+    }
+    
+    cuotas_prestamo {
+        bigint id PK
+        bigint prestamo_id FK
+        smallint numero_cuota
+        date fecha_vencimiento
+        decimal monto_cuota
+        decimal monto_capital
+        decimal monto_interes
+        bigint estado_cuota_id FK
+        timestamp fecha_pago
+        decimal monto_pagado
+    }
+    
+    pagos {
+        bigint id PK
+        bigint cuenta_id FK
+        bigint tipo_pago_id FK
+        decimal monto
+        timestamp fecha_pago
+        bigint estado_pago_id FK
+        varchar referencia UK
+        varchar descripcion
+        bigint metodo_transaccion_id FK
+    }
+    
+    historial_de_pagos {
+        bigint id PK
+        bigint pago_id FK
+        bigint estado_pago_id FK
+        timestamp fecha_registro
+        varchar descripcion
+        bigint metodo_pago_id FK
+        bigint usuario_id FK
+    }
+    
+    pagos_prestamo {
+        bigint id PK
+        bigint cuota_prestamo_id FK
+        bigint pago_id FK
+        decimal monto_pagado
+        timestamp fecha_pago
+        bigint metodo_pago_id FK
+        varchar descripcion
+    }
+    
+    pago_cuota_manejo {
+        bigint id PK
+        bigint cuota_manejo_id FK
+        bigint pago_id FK
+        decimal monto_pagado
+        timestamp fecha_pago
+        bigint metodo_pago_id FK
+    }
+    
+    %% =====================================
+    %% RELACIONES PRINCIPALES
+    %% =====================================
+    
+    %% Cliente y sus relaciones
+    clientes ||--o{ cuenta : "tiene"
+    clientes }o--|| tipo_cliente : "es_de_tipo"
+    clientes }o--|| tipo_nit : "tiene_tipo_nit"
+    
+    %% Cuenta y sus relaciones
+    cuenta }o--|| tipo_cuenta : "es_de_tipo"
+    cuenta }o--|| estados : "tiene_estado"
+    cuenta }o--|| monedas : "usa_moneda"
+    cuenta }o--|| interes : "tiene_interes"
+    cuenta ||--o{ extracto_bancario : "genera"
+    cuenta ||--o{ transacciones : "origen"
+    cuenta ||--o{ transacciones : "destino"
+    cuenta ||--o{ prestamos : "asociado_a"
+    cuenta ||--o{ pagos : "realiza"
+    
+    %% Métodos de pago para cuentas
+    cuenta ||--o{ metodos_de_pago_cuenta : "acepta"
+    metodos_de_pago ||--o{ metodos_de_pago_cuenta : "disponible_en"
+    
+    %% Tarjetas y relaciones
+    tarjetas_bancarias }o--|| tipo_tarjetas : "es_de_tipo"
+    tarjetas_bancarias }o--|| marca_tarjeta : "tiene_marca"
+    tarjetas_bancarias }o--|| nivel_tarjeta : "tiene_nivel"
+    tarjetas_bancarias }o--|| estados : "tiene_estado"
+    
+    %% Relación cuenta-tarjeta
+    cuenta ||--o{ cuenta_tarjeta : "asociada_a"
+    tarjetas_bancarias ||--o{ cuenta_tarjeta : "pertenece_a"
+    
+    %% Cuotas de manejo
+    tarjetas_bancarias ||--o{ cuotas_manejo : "tiene"
+    cuotas_manejo }o--|| tipo_cuota_de_manejo : "es_de_tipo"
+    cuotas_manejo }o--|| frecuencias_pago : "con_frecuencia"
+    cuotas_manejo ||--o{ registro_cuota : "genera"
+    cuotas_manejo ||--o{ pago_cuota_manejo : "se_paga_con"
+    
+    %% Préstamos
+    prestamos }o--|| tipo_prestamo : "es_de_tipo"
+    prestamos }o--|| interes : "tiene_interes"
+    prestamos }o--|| frecuencias_pago : "con_frecuencia"
+    prestamos }o--|| estados : "tiene_estado"
+    prestamos ||--o{ cuotas_prestamo : "se_divide_en"
+    prestamos ||--o{ registro_prestamos : "registra"
+    
+    %% Cuotas de préstamo
+    cuotas_prestamo }o--|| estados_cuota : "tiene_estado"
+    cuotas_prestamo ||--o{ pagos_prestamo : "se_paga_con"
+    
+    %% Pagos
+    pagos }o--|| tipos_pago : "es_de_tipo"
+    pagos }o--|| estados_pago : "tiene_estado"
+    pagos }o--|| metodos_transaccion : "usa_metodo"
+    pagos ||--o{ historial_de_pagos : "registra_en"
+    pagos ||--o{ pagos_prestamo : "aplica_a"
+    pagos ||--o{ pago_cuota_manejo : "aplica_a"
+    
+    %% Transacciones
+    transacciones }o--|| tipos_transaccion : "es_de_tipo"
+    
+    %% Extractos
+    extracto_bancario }o--|| tipos_operacion : "registra"
+    extracto_bancario }o--|| metodos_transaccion : "usa_metodo"
+    
+    %% Descuentos
+    tarjetas_bancarias ||--o{ descuentos_aplicados : "recibe"
+    descuento ||--o{ descuentos_aplicados : "se_aplica_en"
+    
+    %% Historial
+    tarjetas_bancarias ||--o{ historial_tarjetas : "registra_eventos"
+    historial_tarjetas }o--|| eventos_tarjeta : "tipo_evento"
+    
+    %% Estados y cuotas
+    registro_cuota }o--|| estados_cuota : "tiene_estado"
+    historial_de_pagos }o--|| estados_pago : "registra_estado"
+    historial_de_pagos }o--|| metodos_de_pago : "usa_metodo"
+    pagos_prestamo }o--|| metodos_de_pago : "usa_metodo"
+    pago_cuota_manejo }o--|| metodos_de_pago : "usa_metodo"
+    registro_prestamos }o--|| estados : "ultimo_estado"
