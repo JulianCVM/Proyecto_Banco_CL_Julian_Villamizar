@@ -5,6 +5,7 @@ USE Banco_CL;
 
 
 
+DROP TABLE IF EXISTS pago_cuota_manejo;
 DROP TABLE IF EXISTS pagos_prestamo;
 DROP TABLE IF EXISTS historial_de_pagos;
 DROP TABLE IF EXISTS pagos;
@@ -397,4 +398,16 @@ CREATE TABLE IF NOT EXISTS pagos_prestamo (
     descripcion VARCHAR(120) NOT NULL,
     FOREIGN KEY (cuota_prestamo_id) REFERENCES cuotas_prestamo (id),
     FOREIGN KEY (metodos_de_pago_id) REFERENCES metodos_de_pago (id)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS pago_cuota_manejo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cuotas_manejo_id BIGINT NOT NULL,
+    monto_pagado DECIMAL(15,2) NOT NULL,
+    fecha_pago TIMESTAMP NOT NULL,
+    metodos_pago_id BIGINT NOT NULL,
+    FOREIGN KEY (cuotas_manejo_id) REFERENCES cuotas_manejo (id),
+    FOREIGN KEY (metodos_pago_id) REFERENCES metodos_de_pago (id)
 );
