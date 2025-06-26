@@ -1,6 +1,7 @@
 CREATE DATABASE Banco_CL
     DEFAULT CHARACTER SET = 'utf8mb4';
 
+
 USE Banco_CL;
 -- DROP DATABASE Banco_CL;
 
