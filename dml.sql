@@ -1,8 +1,4 @@
--- =============================================
--- INSERTS COMPLETOS - SISTEMA BANCARIO
--- =============================================
 
--- Datos ya proporcionados por el usuario (mantener igual)
 INSERT INTO tipo_cliente (activo,codigo,descripcion,nombre) VALUES
 (TRUE, 'REG', 'Cliente regular, no tiene beneficios especiales.', 'REGULAR'),
 (TRUE, 'EST', 'Cliente estandar, tiene beneficios basicos.', 'ESTANDAR'),
@@ -302,7 +298,6 @@ INSERT INTO descuento (activo,codigo,descripcion,fecha_fin,fecha_inicio,nombre,t
 (TRUE,'DESC_DIG','Descuento cuenta digital','2025-12-31',NOW(),'Descuento Digital','MONTO_FIJO',750.00),
 (TRUE,'DESC_LO','Descuento lealtad','2025-12-31',NOW(),'Descuento Lealtad','PORCENTAJE',10.00);
 
-
 -- tipo_cliente (1,4)     tipo_nit (1,10)
 INSERT INTO clientes (activo,email,fecha_creacion,nit,num_contacto,primer_apellido,primer_nombre,segundo_apellido,segundo_nombre,tipo_cliente_id,tipo_nit_id,tipo_persona) VALUES 
 (TRUE,'julian.c@email.com',NOW(),'1095849038','3029390826','Villamizar','Julian','Montañez','Camilo',4,6,'NATURAL'),
@@ -354,5 +349,80 @@ INSERT INTO clientes (activo,email,fecha_creacion,nit,num_contacto,primer_apelli
 (TRUE,'darth.vader@email.com',NOW(),'1023948573','3029390129','Rojas','Curry','Peralta','Sukuna',3,6,'NATURAL'),
 (TRUE,'lu keskywalker@email.com',NOW(),'1032938475','30293102934','Castillo','Estephano','Campoverde','La marmota',4,7,'JURIDICA'),
 (TRUE,'sarita@email.com',NOW(),'1023928374','3920392032','Campoverde','Espehen','Peralta','joshep',1,8,'NATURAL'),
-(TRUE,'sara@email.com',NOW(),'10932039384','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL');
+(TRUE,'sara@email.com',NOW(),'10932039381','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039382','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039383','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039385','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039386','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039387','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039388','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039389','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039310','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039311','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL'),
+(TRUE,'sara@email.com',NOW(),'10932039312','3209123233','Peralta','Patrimonio','Castillo','Nacional',2,9,'NATURAL');
+
+
+
+DESCRIBE  cuenta;INSERT INTO cuenta (cliente_id,estado_id,fecha_apertura,fecha_cierre,interes_id,moneda_id,numero,saldo_disponible,tipo_cuenta_id,transacciones_realizadas) VALUES 
+(1,1,NOW(),NULL,1,1,'1001234567890',2500000.00,1,15),
+(1,1,NOW(),NULL,2,1,'2001234567890',850000.00,2,8),
+(2,1,NOW(),NULL,1,1,'1002345678901',1750000.00,1,12),
+(3,1,NOW(),NULL,9,1,'3003456789012',3200000.00,3,6),
+(4,1,NOW(),NULL,1,1,'1004567890123',950000.00,1,9),
+(5,1,NOW(),NULL,2,1,'2005678901234',2100000.00,2,14),
+(6,1,NOW(),NULL,8,1,'4006789012345',5500000.00,4,3),
+(7,1,NOW(),NULL,1,1,'1007890123456',680000.00,1,11),
+(8,1,NOW(),NULL,9,1,'3008901234567',2800000.00,3,7),
+(9,1,NOW(),NULL,2,1,'2009012345678',1950000.00,2,13),
+(10,1,NOW(),NULL,1,1,'1010123456789',4200000.00,1,5),
+(11,1,NOW(),NULL,1,1,'1011234567890',1320000.00,1,8),
+(12,1,NOW(),NULL,9,1,'3012345678901',3650000.00,3,4),
+(13,1,NOW(),NULL,2,1,'2013456789012',780000.00,2,16),
+(14,1,NOW(),NULL,8,1,'4014567890123',8900000.00,4,2),
+(15,1,NOW(),NULL,1,1,'1015678901234',2150000.00,1,10),
+(16,1,NOW(),NULL,5,1,'5016789012345',450000.00,5,25),
+(17,1,NOW(),NULL,2,1,'2017890123456',3100000.00,2,9),
+(18,1,NOW(),NULL,1,1,'1018901234567',1580000.00,1,14),
+(19,1,NOW(),NULL,9,1,'3019012345678',2950000.00,3,6),
+(20,1,NOW(),NULL,2,1,'2020123456789',4800000.00,2,11),
+(21,1,NOW(),NULL,1,1,'1021234567890',825000.00,1,18),
+(22,1,NOW(),NULL,8,1,'4022345678901',12500000.00,4,1),
+(23,1,NOW(),NULL,2,1,'2023456789012',1750000.00,2,12),
+(24,1,NOW(),NULL,1,1,'1024567890123',3400000.00,1,7),
+(25,1,NOW(),NULL,9,1,'3025678901234',2200000.00,3,8),
+(26,1,NOW(),NULL,2,1,'2026789012345',5200000.00,2,15),
+(27,1,NOW(),NULL,1,1,'1027890123456',975000.00,1,20),
+(28,1,NOW(),NULL,5,1,'5028901234567',680000.00,5,22),
+(29,1,NOW(),NULL,2,1,'2029012345678',3850000.00,2,10),
+(30,1,NOW(),NULL,1,1,'1030123456789',1465000.00,1,13),
+(31,1,NOW(),NULL,9,1,'3031234567890',4100000.00,3,5),
+(32,1,NOW(),NULL,2,1,'2032345678901',2650000.00,2,17),
+(33,1,NOW(),NULL,8,1,'4033456789012',15200000.00,4,3),
+(34,1,NOW(),NULL,1,1,'1034567890123',785000.00,1,19),
+(35,1,NOW(),NULL,2,1,'2035678901234',3950000.00,2,8),
+(36,1,NOW(),NULL,1,1,'1036789012345',2280000.00,1,11),
+(37,1,NOW(),NULL,9,1,'3037890123456',1850000.00,3,9),
+(38,1,NOW(),NULL,5,1,'5038901234567',525000.00,5,24),
+(39,1,NOW(),NULL,2,1,'2039012345678',4650000.00,2,14),
+(40,1,NOW(),NULL,1,1,'1040123456789',1125000.00,1,16),
+(41,1,NOW(),NULL,8,1,'4041234567890',9800000.00,4,2),
+(42,1,NOW(),NULL,2,1,'2042345678901',3150000.00,2,12),
+(43,1,NOW(),NULL,1,1,'1043456789012',2750000.00,1,15),
+(44,1,NOW(),NULL,9,1,'3044567890123',3850000.00,3,6),
+(45,1,NOW(),NULL,2,1,'2045678901234',1950000.00,2,18),
+(46,1,NOW(),NULL,1,1,'1046789012345',4250000.00,1,7),
+(47,1,NOW(),NULL,5,1,'5047890123456',350000.00,5,26),
+(48,1,NOW(),NULL,2,1,'2048901234567',5150000.00,2,10),
+(49,1,NOW(),NULL,1,1,'1049012345678',1680000.00,1,21),
+(50,1,NOW(),NULL,8,1,'4050123456789',18500000.00,4,1),
+(51,1,NOW(),NULL,2,1,'6051234567890',45000000.00,6,25),
+(52,1,NOW(),NULL,2,1,'6052345678901',28000000.00,6,18),
+(53,1,NOW(),NULL,2,1,'6053456789012',35200000.00,6,22),
+(54,1,NOW(),NULL,2,1,'6054567890123',15800000.00,6,16),
+(55,1,NOW(),NULL,2,1,'6055678901234',42500000.00,6,28),
+(56,1,NOW(),NULL,2,1,'6056789012345',38900000.00,6,31),
+(57,1,NOW(),NULL,2,1,'6057890123456',52000000.00,6,24),
+(58,1,NOW(),NULL,2,1,'6058901234567',29500000.00,6,19),
+(59,1,NOW(),NULL,2,1,'6059012345678',48200000.00,6,26),
+(60,1,NOW(),NULL,2,1,'6060123456789',33700000.00,6,21);
 
