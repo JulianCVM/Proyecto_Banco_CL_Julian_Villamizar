@@ -265,3 +265,22 @@ INSERT INTO tipos_pago (activo,codigo,descripcion,nombre) VALUES
 (TRUE,'RECARG','Recarga de servicios','RECARGA'),
 (TRUE,'OTRO','Otro tipo de pago','OTRO');
 
+
+
+
+INSERT INTO interes (activo,codigo,nombre,tipo,valor) VALUES
+(TRUE,'INT_AHO','Interes Ahorros','FIJO',0.0250),
+(TRUE,'INT_COR','Interes Corriente','VARIABLE',0.0150),
+(TRUE,'INT_PRE_PER','Interes Prestamo Personal','FIJO',0.1850),
+(TRUE,'INT_PRE_HIP','Interes Hipotecario','VARIABLE',0.0950),
+(TRUE,'INT_PRE_AUT','Interes Automotriz','FIJO',0.1350),
+(TRUE,'INT_TAR_CRE','Interes Tarjeta Credito','VARIABLE',0.2450),
+(TRUE,'INT_MORA','Interes de Mora','MORA',0.0500),
+(TRUE,'INT_PF','Interes Plazo Fijo','FIJO',0.0650),
+(TRUE,'NO_APLICA','No Aplica Interes','NO_APLICA',0.0000),
+(TRUE,'INT_EST','Interes Estudiantil','FIJO',0.0850),
+(TRUE,'INT_COM','Interes Comercial','VARIABLE',0.1650),
+(TRUE,'INT_LIB','Interes Libre Inversion','FIJO',0.1950),
+(TRUE,'INT_ROT','Interes Credito Rotativo','VARIABLE',0.2250),
+(TRUE,'INT_PRE_PRE','Interes Prendario','FIJO',0.1450);
+
