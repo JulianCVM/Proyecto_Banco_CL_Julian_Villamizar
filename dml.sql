@@ -284,3 +284,21 @@ INSERT INTO interes (activo,codigo,nombre,tipo,valor) VALUES
 (TRUE,'INT_ROT','Interes Credito Rotativo','VARIABLE',0.2250),
 (TRUE,'INT_PRE_PRE','Interes Prendario','FIJO',0.1450);
 
+
+
+
+
+INSERT INTO descuento (activo,codigo,descripcion,fecha_fin,fecha_inicio,nombre,tipo_valor,valor) VALUES 
+(TRUE,'DESC_USO','Descuento por uso frecuente de productos','2025-12-31',NOW(),'Descuento por Uso','MONTO_FIJO',500.00),
+(TRUE,'DESC_DEB_AUT','Descuento por tener debito automatico','2025-12-31',NOW(),'Descuento Debito Automatico','PORCENTAJE',15.00),
+(TRUE,'DESC_CUO_MAN','Exencion de cuota de manejo','2025-12-31',NOW(),'Exencion Cuota Manejo','PORCENTAJE',100.00),
+(TRUE,'DESC_CONV','Descuento por convenio empresarial','2025-12-31',NOW(),'Descuento Convenio','PORCENTAJE',20.00),
+(TRUE,'CASHBACK','Devolucion por compras','2025-12-31',NOW(),'Cashback Compras','PORCENTAJE',2.50),
+(TRUE,'DESC_SEG','Descuento en seguros','2025-12-31',NOW(),'Descuento Seguros','PORCENTAJE',25.00),
+(TRUE,'DESC_NOM','Descuento por cuenta nomina','2025-12-31',NOW(),'Descuento Nomina','MONTO_FIJO',1000.00),
+(TRUE,'DESC_VIP','Descuento cliente VIP','2025-12-31',NOW(),'Descuento VIP','PORCENTAJE',30.00),
+(TRUE,'DESC_JUV','Descuento cuenta juvenil','2025-12-31',NOW(),'Descuento Juvenil','PORCENTAJE',50.00),
+(TRUE,'DESC_EMP','Descuento empresarial','2025-12-31',NOW(),'Descuento Empresarial','PORCENTAJE',25.00),
+(TRUE,'DESC_DIG','Descuento cuenta digital','2025-12-31',NOW(),'Descuento Digital','MONTO_FIJO',750.00),
+(TRUE,'DESC_LO','Descuento lealtad','2025-12-31',NOW(),'Descuento Lealtad','PORCENTAJE',10.00);
+
