@@ -574,10 +574,32 @@ CALL exonerar_cuota(1);
 
 
 
-5. obtener_cuotas_tarjeta
+-- 5. obtener_cuotas_tarjeta
+-- Mostrar todas las cuotas de una tarjeta específica
+-- Parámetros: tarjeta_id
 
-Mostrar todas las cuotas de una tarjeta específica
-Parámetros: tarjeta_id
+DROP PROCEDURE IF EXISTS obtener_cuotas_tarjeta;
+
+DELIMITER $$
+
+CREATE PROCEDURE obtener_cuotas_tarjeta(
+    IN p_tarjeta_id BIGINT
+)
+BEGIN
+    START TRANSACTION;
+        SELECT *
+        FROM cuotas_manejo
+        WHERE tarjeta_id = p_tarjeta_id;
+    COMMIT;
+END $$
+
+DELIMITER ;
+
+CALL obtener_cuotas_tarjeta(1);
+
+
+
+
 
 💳 PAGOS (Básicos)
 6. registrar_pago_efectivo
