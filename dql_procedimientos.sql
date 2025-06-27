@@ -601,11 +601,60 @@ CALL obtener_cuotas_tarjeta(1);
 
 
 
-💳 PAGOS (Básicos)
-6. registrar_pago_efectivo
+-- 💳 PAGOS (Básicos)
+-- 6. registrar_pago_efectivo
+-- Registrar un pago simple en efectivo
+-- Parámetros: cuenta_id, monto, descripcion
 
-Registrar un pago simple en efectivo
-Parámetros: cuenta_id, monto, concepto
+DESCRIBE pagos;
+SELECT * FROM metodos_de_pago; -- 1
+SELECT * FROM tipos_pago; -- 10
+SELECT * FROM estados_pago; -- 2
+SELECT * FROM metodos_transaccion; -- 1
+SELECT * FROM pagos; 
+
+DROP PROCEDURE IF EXISTS registrar_pago_efectivo;
+
+DELIMITER $$
+
+CREATE PROCEDURE registrar_pago_efectivo(
+    IN p_cuenta_id BIGINT,
+    IN p_monto DECIMAL(15,2),
+    IN p_descripcion VARCHAR(120)
+)
+BEGIN
+    DECLARE vr VARCHAR(40); -- referencia de pago
+    START TRANSACTION;
+
+    SET vr = fn_generar_codigo_unico();
+
+
+    INSERT INTO pagos (cuenta_id,descripcion,estado_pago_id,fecha_pago,metodo_transaccion_id,monto,referencia,tipo_pago_id) VALUES 
+    (p_cuenta_id, p_descripcion, 2, NOW(), 1, p_monto, vr, 10);
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+SELECT id FROM cuenta;
+CALL registrar_pago_efectivo(1, 1000, 'pq si');
+
+SELECT * FROM pagos WHERE cuenta_id = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 7. cancelar_pago
 
