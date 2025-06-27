@@ -497,10 +497,51 @@ SHOW PROCEDURE STATUS WHERE Name = 'aplicar_descuento_fijo';
 
 
 
-3. marcar_cuota_pagada
+-- 3. marcar_cuota_pagada
+-- Cambiar estado de una cuota a "PAGADA"
+-- Parámetros: cuota_id
 
-Cambiar estado de una cuota a "PAGADA"
-Parámetros: cuota_id
+
+
+DROP PROCEDURE IF EXISTS marcar_cuota_pagada;
+
+-- SELECT * FROM registro_cuota;
+-- SELECT * FROM estados_cuota;
+-- SELECT * FROM cuotas_manejo;
+
+DELIMITER $$
+
+CREATE PROCEDURE marcar_cuota_pagada(
+    IN p_cuota_id BIGINT
+)
+BEGIN
+
+
+    START TRANSACTION;
+
+
+    UPDATE registro_cuota
+    SET estado_cuota_id = 2
+    WHERE id = p_cuota_id;
+
+    COMMIT;
+
+
+
+END $$
+
+
+DELIMITER ;
+
+CALL marcar_cuota_pagada(1);
+
+SELECT * FROM registro_cuota WHERE id = 1;
+
+
+
+
+
+
 
 4. exonerar_cuota
 
