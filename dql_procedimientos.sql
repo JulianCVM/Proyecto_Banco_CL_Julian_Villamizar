@@ -682,10 +682,38 @@ CALL cancelar_pago(1);
 
 
 
-8. completar_pago
+-- 8. completar_pago
+-- Cambiar estado de un pago a "COMPLETADO"
+-- Parámetros: pago_id
+SELECT * FROM pagos;
 
-Cambiar estado de un pago a "COMPLETADO"
-Parámetros: pago_id
+DROP PROCEDURE IF EXISTS completar_pago;
+
+DELIMITER $$
+
+CREATE PROCEDURE completar_pago(
+    IN p_pago_id BIGINT
+)
+BEGIN
+    START TRANSACTION;
+
+    UPDATE pagos
+    SET estado_pago_id = 2
+    WHERE id = p_pago_id;
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+
+CALL completar_pago(1);
+
+
+
+
+
 
 9. buscar_pago_referencia
 
