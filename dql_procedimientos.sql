@@ -715,10 +715,34 @@ CALL completar_pago(1);
 
 
 
-9. buscar_pago_referencia
+-- 9. buscar_pago_referencia
+-- Buscar un pago por su referencia
+-- Parámetros: referencia
 
-Buscar un pago por su referencia
-Parámetros: referencia
+SELECT * FROM pagos;
+
+DROP PROCEDURE IF EXISTS buscar_pago_referencia;
+
+DELIMITER $$
+
+CREATE PROCEDURE buscar_pago_referencia(
+    IN p_referencia VARCHAR(40)
+)
+BEGIN
+    START TRANSACTION;
+
+    SELECT * FROM pagos WHERE referencia = p_referencia;
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+
+CALL buscar_pago_referencia('PAY001');
+
+
 
 10. sumar_pagos_cuenta
 
