@@ -36,19 +36,19 @@ CREATE PROCEDURE cuota_manejo_calc_descuento (
 )
 BEGIN
     -- Variables para manejar los datos de la tarjeta a asignarle la cuota de manejo
-    DECLARE vttid BIGINT;
-    DECLARE vntid BIGINT;
-    DECLARE vctid BIGINT;
+    DECLARE vttid BIGINT; --tipo tarjeta
+    DECLARE vntid BIGINT; --nivel tarjeta
+    DECLARE vctid BIGINT; --tipo cliente
     
     -- Variables para el descuento
     DECLARE vdid BIGINT DEFAULT 1; -- Descuento por defecto
-    DECLARE vdv DECIMAL(15,2);
-    DECLARE vdt VARCHAR(20);
+    DECLARE vdv DECIMAL(15,2);--valor descuento
+    DECLARE vdt VARCHAR(20);--tipo valor
     
     -- Variables para manejar los calculos
-    DECLARE vda DECIMAL(15,2) DEFAULT 0.00;
-    DECLARE vmf DECIMAL(15,2);
-    DECLARE vcmid BIGINT;
+    DECLARE vda DECIMAL(15,2) DEFAULT 0.00; --descuento aplicado
+    DECLARE vmf DECIMAL(15,2); --monto final
+    DECLARE vcmid BIGINT; --cuota manejo id
     
     -- Variables para manejo de errores
     DECLARE verrmsg VARCHAR(255);
@@ -207,3 +207,247 @@ LIMIT 10;
 
 
 
+
+-- 📋 CUOTAS DE MANEJO
+-- 1. crear_cuota_simple
+-- Crear una cuota de manejo básica para una tarjeta
+-- Parámetros: tarjeta_id, monto
+
+
+DESCRIBE cuotas_manejo;
+SELECT * FROM tipo_cuota_de_manejo;
+SELECT * FROM tipo_tarjetas;
+SELECT * FROM nivel_tarjeta;
+SELECT * FROM tipo_cliente;
+
+
+
+DROP PROCEDURE IF EXISTS crear_cuota_simple;
+
+DELIMITER $$
+
+
+CREATE PROCEDURE crear_cuota_simple(
+    IN p_tarjeta_id bigint(20),
+    IN p_monto_apertura DECIMAL(15,2)
+)
+
+BEGIN
+
+    DECLARE vttid BIGINT; -- tipo tarjeta
+    DECLARE vntid BIGINT; -- nivel tarjeta
+    DECLARE vtcmid BIGINT; -- valor tipo cuota manejo id
+    DECLARE vctid BIGINT; -- tipo cliente
+    DECLARE vcid BIGINT; -- cuota id
+
+    DECLARE verrmsg VARCHAR(255);
+    DECLARE exit handler FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        GET DIAGNOSTICS CONDITION 1 verrmsg = MESSAGE_TEXT;
+        SELECT CONCAT('Error: ', verrmsg) as resultado;
+    END;
+
+    START TRANSACTION;
+
+    SELECT 
+        tb.tipo_tarjeta_id,
+        tb.nivel_tarjeta_id,
+        c.tipo_cliente_id
+    INTO 
+        vttid,
+        vntid,
+        vctid
+    FROM tarjetas_bancarias tb
+    JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+    JOIN cuenta cu ON ct.cuenta_id = cu.id
+    JOIN clientes c ON cu.cliente_id = c.id
+    WHERE tb.id = p_tarjeta_id
+    LIMIT 1;
+
+
+SET vtcmid = CASE
+        WHEN vctid = 4 AND vntid >= 4 THEN 4
+        WHEN vctid = 4 AND vntid >= 2 THEN 3
+        
+        WHEN vntid = 7 THEN 2
+        
+        WHEN vntid >= 4 THEN 1
+        WHEN vntid = 3 THEN 3
+        
+        WHEN vntid = 2 AND vttid = 4 THEN 2
+        WHEN vntid = 2 AND vttid = 5 THEN 4
+        WHEN vntid = 2 AND vttid = 6 THEN 4
+        WHEN vntid = 2 THEN 2
+        
+        ELSE 1  
+    END;
+
+
+
+
+    INSERT INTO cuotas_manejo(activo,fecha_inicio,frecuencia_pago_id,monto_apertura,tarjeta_id,tipo_cuota_manejo_id,fecha_fin) VALUES
+    (TRUE, NOW(), 4, p_monto_apertura, p_tarjeta_id, vtcmid,DATE_ADD(NOW(), INTERVAL 1 YEAR));
+
+    SET vcid = LAST_INSERT_ID();
+
+    COMMIT;
+
+    SELECT 
+        vcid AS cuota_id,
+        p_tarjeta_id AS tarjeta_id,
+        p_monto_apertura AS monto_apertura,
+        (SELECT nombre FROM tipo_cuota_de_manejo WHERE id = vtcmid) AS tipo_cuota,
+        (SELECT CONCAT(nt.nombre, ' - ', tt.nombre) 
+        FROM tarjetas_bancarias tb 
+        JOIN nivel_tarjeta nt ON tb.nivel_tarjeta_id = nt.id
+        JOIN tipo_tarjetas tt ON tb.tipo_tarjeta_id = tt.id
+        WHERE tb.id = p_tarjeta_id) AS tarjeta_info,
+        (SELECT CONCAT(c.primer_nombre, ' ', c.primer_apellido, ' (', tc.nombre, ')')
+        FROM tarjetas_bancarias tb
+        JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+        JOIN cuenta cu ON ct.cuenta_id = cu.id
+        JOIN clientes c ON cu.cliente_id = c.id
+        JOIN tipo_cliente tc ON c.tipo_cliente_id = tc.id
+        WHERE tb.id = p_tarjeta_id) AS cliente_info,
+        NOW() AS fecha_creacion,
+        'Cuota creada exitosamente' AS mensaje;
+
+    
+END $$
+
+
+DELIMITER ;
+
+
+
+CALL crear_cuota_simple(1, 15000.00);
+
+CALL crear_cuota_simple(4, 25000.00);
+
+CALL crear_cuota_simple(5, 35000.00);
+
+
+SELECT 
+    cm.id,
+    tb.numero AS tarjeta,
+    cm.monto_apertura,
+    tcm.nombre AS tipo_cuota,
+    cm.fecha_inicio,
+    CONCAT(c.primer_nombre, ' ', c.primer_apellido) AS cliente
+FROM cuotas_manejo cm
+JOIN tarjetas_bancarias tb ON cm.tarjeta_id = tb.id
+JOIN tipo_cuota_de_manejo tcm ON cm.tipo_cuota_manejo_id = tcm.id
+JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+JOIN cuenta cu ON ct.cuenta_id = cu.id
+JOIN clientes c ON cu.cliente_id = c.id
+ORDER BY cm.fecha_inicio DESC
+LIMIT 5;
+
+SHOW PROCEDURE STATUS WHERE Name = 'crear_cuota_simple';
+
+
+
+
+
+
+
+
+2. aplicar_descuento_fijo
+
+Aplicar un descuento de monto fijo a una cuota específica
+Parámetros: cuota_id, monto_descuento
+
+
+
+
+
+
+3. marcar_cuota_pagada
+
+Cambiar estado de una cuota a "PAGADA"
+Parámetros: cuota_id
+
+4. exonerar_cuota
+
+Marcar una cuota como exonerada (sin pago)
+Parámetros: cuota_id, motivo
+
+5. obtener_cuotas_tarjeta
+
+Mostrar todas las cuotas de una tarjeta específica
+Parámetros: tarjeta_id
+
+💳 PAGOS (Básicos)
+6. registrar_pago_efectivo
+
+Registrar un pago simple en efectivo
+Parámetros: cuenta_id, monto, concepto
+
+7. cancelar_pago
+
+Cambiar estado de un pago a "CANCELADO"
+Parámetros: pago_id
+
+8. completar_pago
+
+Cambiar estado de un pago a "COMPLETADO"
+Parámetros: pago_id
+
+9. buscar_pago_referencia
+
+Buscar un pago por su referencia
+Parámetros: referencia
+
+10. sumar_pagos_cuenta
+
+Sumar todos los pagos de una cuenta en un mes
+Parámetros: cuenta_id, mes
+
+🔄 ESTADOS (Súper Simples)
+11. activar_tarjeta
+
+Cambiar estado de tarjeta a "ACTIVA"
+Parámetros: tarjeta_id
+
+12. bloquear_tarjeta
+
+Cambiar estado de tarjeta a "BLOQUEADA"
+Parámetros: tarjeta_id
+
+13. actualizar_saldo_cuenta
+
+Actualizar el saldo disponible de una cuenta
+Parámetros: cuenta_id, nuevo_saldo
+
+14. contar_transacciones_cuenta
+
+Contar cuántas transacciones tiene una cuenta
+Parámetros: cuenta_id
+
+📊 CONSULTAS (Muy Fáciles)
+15. ver_saldo_cliente
+
+Mostrar el saldo total de todas las cuentas de un cliente
+Parámetros: cliente_id
+
+16. listar_tarjetas_activas
+
+Mostrar todas las tarjetas con estado ACTIVA
+Parámetros: cliente_id (opcional)
+
+17. cuotas_del_mes
+
+Mostrar cuotas generadas en un mes específico
+Parámetros: año, mes
+
+🛠️ UTILIDADES (Sencillísimas)
+18. generar_referencia_pago
+
+Generar una referencia única para un nuevo pago
+Parámetros: prefijo (ej: "PAY")
+
+19. calcular_total_cuota
+
+Calcular el total de una cuota después de descuentos
+Parámetros: cuota_id
