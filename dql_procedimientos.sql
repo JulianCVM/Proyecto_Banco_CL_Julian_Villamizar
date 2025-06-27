@@ -353,10 +353,144 @@ SHOW PROCEDURE STATUS WHERE Name = 'crear_cuota_simple';
 
 
 
-2. aplicar_descuento_fijo
+-- 2. aplicar_descuento_fijo
+-- Aplicar un descuento de monto fijo a una cuota específica
+-- Parámetros: cuota_id, monto_descuento
 
-Aplicar un descuento de monto fijo a una cuota específica
-Parámetros: cuota_id, monto_descuento
+
+-- SELECT * FROM descuento WHERE tipo_valor = 'MONTO_FIJO';
+-- SELECT tarjeta_id
+-- FROM cuotas_manejo
+-- WHERE id = 2;
+
+
+DROP PROCEDURE IF EXISTS aplicar_descuento_fijo;
+
+DELIMITER $$
+
+
+CREATE PROCEDURE aplicar_descuento_fijo(
+    IN p_cuota_id BIGINT,
+    IN p_monto_descuento DECIMAL(15,2)
+)
+BEGIN
+
+    DECLARE vtid BIGINT; -- Tarjeta id
+    DECLARE vmacm BIGINT; -- valor monto apertura cuota manejo
+    DECLARE vda DECIMAL(15,2); -- valor descuento aplicado
+
+
+    DECLARE vce INT DEFAULT 0; -- validador de que exista la cuota UnU
+    DECLARE verrmsg VARCHAR(255);
+    
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        GET DIAGNOSTICS CONDITION 1 verrmsg = MESSAGE_TEXT;
+        SELECT CONCAT('Error: ', verrmsg) AS resultado;
+    END;
+
+
+
+    START TRANSACTION;
+
+
+
+    IF p_monto_descuento <= 0 THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'El monto del descuento debe ser mayor a cero';
+        END IF;
+
+
+
+
+
+
+    SELECT tarjeta_id, monto_apertura, 1
+    INTO vtid, vmacm, vce
+    FROM cuotas_manejo
+    WHERE id = p_cuota_id
+    AND activo = TRUE;
+
+
+    IF vce = 0 THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Cuota de manejo no encontrada o inactiva';
+        END IF;
+
+
+    IF p_monto_descuento > vmacm THEN
+        SET vda = 0.00; -- si el descuento es mayor la cuota queda en $0
+    ELSE
+        SET vda = vmacm - p_monto_descuento; -- monto final despues de aplicar el fukin descuento
+    END IF;
+
+
+    IF EXISTS (
+            SELECT 1 FROM descuentos_aplicados 
+            WHERE tarjeta_id = vtid 
+            AND DATE(fecha_aplicado) = CURDATE()
+        ) THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Ya existe un descuento aplicado para esta tarjeta';
+        END IF;
+
+
+
+
+    INSERT INTO descuentos_aplicados (descuento_aplicado,descuento_id,fecha_aplicado,monto_con_descuento,monto_inicial,tarjeta_id) VALUES 
+    (LEAST(p_monto_descuento, vmacm), 1, NOW(), vda, vmacm, vtid);
+
+
+
+    COMMIT;
+
+
+    SELECT
+        p_cuota_id AS cuota_id,
+        vtid AS tarjeta_id,
+        vmacm AS monto_original,
+        LEAST(p_monto_descuento, vmacm) AS descuento_aplicado,
+        vda AS monto_final,
+        CONCAT('$', FORMAT(LEAST(p_monto_descuento, vmacm), 0)) AS descuento_formato,
+        CONCAT(ROUND((LEAST(p_monto_descuento, vmacm) / vmacm) * 100, 2), '%') AS porcentaje_descuento,
+        CASE 
+            WHEN p_monto_descuento >= vmacm THEN 'Cuota completamente exonerada'
+            ELSE 'Descuento aplicado exitosamente'
+        END AS mensaje;
+
+
+
+
+END $$
+
+
+DELIMITER ;
+
+CALL aplicar_descuento_fijo(1, 500.00);
+CALL aplicar_descuento_fijo(2, 1000.00);
+CALL aplicar_descuento_fijo(3, 50000.00);
+
+SELECT 
+    da.id,
+    tb.numero AS tarjeta,
+    da.monto_inicial,
+    da.descuento_aplicado,
+    da.monto_con_descuento,
+    da.fecha_aplicado,
+    CONCAT(c.primer_nombre, ' ', c.primer_apellido) AS cliente
+FROM descuentos_aplicados da
+JOIN tarjetas_bancarias tb ON da.tarjeta_id = tb.id
+JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+JOIN cuenta cu ON ct.cuenta_id = cu.id
+JOIN clientes c ON cu.cliente_id = c.id
+WHERE da.descuento_id = 1 -- Solo descuentos por uso (fijos)
+ORDER BY da.fecha_aplicado DESC
+LIMIT 5;
+
+SHOW PROCEDURE STATUS WHERE Name = 'aplicar_descuento_fijo';
+
 
 
 
