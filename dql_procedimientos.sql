@@ -543,10 +543,36 @@ SELECT * FROM registro_cuota WHERE id = 1;
 
 
 
-4. exonerar_cuota
+-- 4. exonerar_cuota
+-- Marcar una cuota como exonerada (sin pago)
+-- Parámetros: cuota_id
 
-Marcar una cuota como exonerada (sin pago)
-Parámetros: cuota_id, motivo
+DROP PROCEDURE IF EXISTS exonerar_cuota;
+
+SELECT * FROM tipo_cuota_de_manejo WHERE id = 4;
+SELECT * FROM cuotas_manejo;
+
+
+DELIMITER $$
+CREATE PROCEDURE exonerar_cuota(
+    IN p_cuota_id BIGINT
+    )
+BEGIN
+    START TRANSACTION;
+    UPDATE cuotas_manejo
+    SET tipo_cuota_manejo_id = 4
+    WHERE id = p_cuota_id;
+    COMMIT;
+END $$
+
+
+DELIMITER ;
+
+SELECT * FROM cuotas_manejo WHERE id = 1;
+
+CALL exonerar_cuota(1);
+
+
 
 5. obtener_cuotas_tarjeta
 
