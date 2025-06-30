@@ -935,11 +935,39 @@ DELIMITER ;
 CALL contar_transacciones_cuenta(1);
 
 
-📊 CONSULTAS (Muy Fáciles)
-15. ver_saldo_cliente
+-- 15. ver_saldo_cliente
+-- Mostrar el saldo total de todas las cuentas de un cliente
+-- Parámetros: cliente_id
+SELECT saldo_disponible, id AS cuenta_id
+FROM cuenta
+WHERE cliente_id = 1;
 
-Mostrar el saldo total de todas las cuentas de un cliente
-Parámetros: cliente_id
+
+
+DROP PROCEDURE IF EXISTS ver_saldo_cliente;
+
+DELIMITER $$
+
+CREATE PROCEDURE ver_saldo_cliente(
+    IN p_cliente_id BIGINT
+)
+BEGIN
+
+    START TRANSACTION;
+
+    SELECT saldo_disponible, id AS cuenta_id
+    FROM cuenta
+    WHERE cliente_id = p_cliente_id;
+
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL ver_saldo_cliente(1);
 
 16. listar_tarjetas_activas
 
