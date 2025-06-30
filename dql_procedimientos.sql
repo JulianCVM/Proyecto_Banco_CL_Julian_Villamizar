@@ -820,7 +820,7 @@ BEGIN
     START TRANSACTION;
 
     UPDATE tarjetas_bancarias
-    SET estado_id = 1
+    SET estado_id = 4
     WHERE id = p_tarjeta_id;
 
 
@@ -834,10 +834,36 @@ CALL activar_tarjeta(1);
 
 
 
-12. bloquear_tarjeta
+-- 12. bloquear_tarjeta
+-- Cambiar estado de tarjeta a "BLOQUEADA"
+-- Parámetros: tarjeta_id
 
-Cambiar estado de tarjeta a "BLOQUEADA"
-Parámetros: tarjeta_id
+DROP PROCEDURE IF EXISTS bloquear_tarjeta;
+
+DELIMITER $$
+
+CREATE PROCEDURE bloquear_tarjeta(
+    IN p_tarjeta_id BIGINT
+)
+BEGIN
+
+
+    START TRANSACTION;
+
+    UPDATE tarjetas_bancarias
+    SET estado_id = 6
+    WHERE id = p_tarjeta_id;
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL bloquear_tarjeta(1);
+
+SELECT * FROM tarjetas_bancarias WHERE id = 1;
 
 13. actualizar_saldo_cuenta
 
