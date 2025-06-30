@@ -212,6 +212,32 @@ SELECT fn_total_cuotas_mes(2024,6);
 
 -- Calcular la edad de una cuenta bancaria en días desde su fecha de apertura hasta la fecha actual.
 
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_edad_cuenta_dias $$
+CREATE FUNCTION fn_edad_cuenta_dias
+(
+    f_cuenta_id BIGINT
+)
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE dias_cuenta INT DEFAULT 0;
+
+    SELECT DATEDIFF(CURDATE(), DATE(fecha_apertura)) INTO dias_cuenta
+    FROM cuenta
+    WHERE id = f_cuenta_id;
+
+    RETURN dias_cuenta;
+
+END $$
+
+DELIMITER;
+
+SELECT fn_edad_cuenta_dias(1);
+
+
 
 -- Determinar el nivel de riesgo crediticio de un cliente basado en su historial de pagos y mora en préstamos.
 
