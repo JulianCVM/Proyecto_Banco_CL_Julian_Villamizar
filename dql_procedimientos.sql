@@ -969,10 +969,52 @@ DELIMITER ;
 
 CALL ver_saldo_cliente(1);
 
-16. listar_tarjetas_activas
+-- 16. listar_tarjetas_activas
+-- Mostrar todas las tarjetas con estado ACTIVA
+-- Parámetros: cliente_id (opcional)
 
-Mostrar todas las tarjetas con estado ACTIVA
-Parámetros: cliente_id (opcional)
+SELECT * FROM estados;
+SELECT * FROM tarjetas_bancarias;
+SELECT *
+FROM tarjetas_bancarias
+LEFT JOIN cuenta_tarjeta ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+LEFT JOIN cuenta ON cuenta_tarjeta.cuenta_id = cuenta.id
+WHERE tarjetas_bancarias.estado_id = 4
+    AND (cuenta.cliente_id = p_cliente_id OR p_cliente_id IS NULL);
+
+
+
+
+DROP PROCEDURE IF EXISTS listar_tarjetas_activas;
+
+DELIMITER $$
+
+CREATE PROCEDURE listar_tarjetas_activas(
+    IN p_cliente_id BIGINT
+)
+BEGIN
+
+    START TRANSACTION;
+
+    SELECT *
+    FROM tarjetas_bancarias
+    LEFT JOIN cuenta_tarjeta ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+    LEFT JOIN cuenta ON cuenta_tarjeta.cuenta_id = cuenta.id
+    WHERE tarjetas_bancarias.estado_id = 4
+    AND (cuenta.cliente_id = p_cliente_id OR p_cliente_id IS NULL);
+
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL listar_tarjetas_activas(NULL);
+CALL listar_tarjetas_activas(1);
+
+
 
 17. cuotas_del_mes
 
