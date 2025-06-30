@@ -1016,10 +1016,42 @@ CALL listar_tarjetas_activas(1);
 
 
 
-17. cuotas_del_mes
+-- 17. cuotas_del_mes
+-- Mostrar cuotas generadas en un mes específico
+-- Parámetros: año, mes
 
-Mostrar cuotas generadas en un mes específico
-Parámetros: año, mes
+SELECT * FROM cuotas_manejo WHERE YEAR(fecha_fin) >= 2024 AND MONTH(fecha_fin) >= 5;
+
+
+DROP PROCEDURE IF EXISTS cuotas_del_mes;
+
+DELIMITER $$
+
+CREATE PROCEDURE cuotas_del_mes(
+    IN p_año INT,
+    IN p_mes INT
+)
+BEGIN
+
+    START TRANSACTION;
+
+    SELECT * 
+    FROM cuotas_manejo 
+    WHERE YEAR(fecha_fin) >= p_año 
+    AND MONTH(fecha_fin) >= p_mes;
+
+
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL cuotas_del_mes(2025,4);
+
+
 
 🛠️ UTILIDADES (Sencillísimas)
 18. generar_referencia_pago
