@@ -241,6 +241,57 @@ SELECT fn_edad_cuenta_dias(1);
 
 -- Determinar el nivel de riesgo crediticio de un cliente basado en su historial de pagos y mora en préstamos.
 
+SELECT * FROM cuotas_prestamo;
+SELECT * FROM estados_cuota;
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_nivel_riesgo_cliente $$
+CREATE FUNCTION fn_nivel_riesgo_cliente(
+    f_cliente_id BIGINT
+)
+RETURNS VARCHAR(20)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_cuotas_mora INT DEFAULT 0;
+    DECLARE valor_total_cuotas INT DEFAULT 0;
+    DECLARE valor_porcentaje_mora DECIMAL(5,2) DEFAULT 0.00;
+    DECLARE valor_nivel_riesgo VARCHAR(20) DEFAULT 'BAJO';
+
+    SELECT
+        COUNT(CASE WHEN cp.estado_cuota_id = 6 THEN 1 END),
+        COUNT (*)
+        INTO valor_cuotas_mora, valor_total_cuotas
+    FROM cuotas_prestamo cp
+    JOIN prestamos pr ON cp.prestamo_id = pr.id
+    JOIN cuenta c ON pr.cuenta_id = c.id
+    WHERE c.cliente_id = f_cliente_id;
+
+    IF valor_total_cuotas > 0 THEN
+        SET valor_porcentaje_mora = (valor_cuotas_mora/valor_total_cuotas) * 100;
+
+        IF valor_porcentaje_mora >= 30 THEN
+            SET valor_nivel_riesgo = 'ALTO';
+        ELSEIF valor_porcentaje_mora >= 15 THEN
+            SET valor_nivel_riesgo = 'MEDIO';
+        ELSE
+            SET valor_nivel_riesgo = 'BAJO';
+        END IF;
+    END IF;
+
+    RETURN valor_nivel_riesgo;
+
+END $$
+
+
+DELIMITER ;
+SELECT * FROM cuotas_prestamo;
+SELECT fn_nivel_riesgo_cliente(5);
+
+
+
+
 
 -- Calcular el interés acumulado de un préstamo desde su fecha de desembolso hasta una fecha específica.
 
