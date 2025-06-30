@@ -208,7 +208,6 @@ LIMIT 10;
 
 
 
--- 📋 CUOTAS DE MANEJO
 -- 1. crear_cuota_simple
 -- Crear una cuota de manejo básica para una tarjeta
 -- Parámetros: tarjeta_id, monto
@@ -601,7 +600,6 @@ CALL obtener_cuotas_tarjeta(1);
 
 
 
--- 💳 PAGOS (Básicos)
 -- 6. registrar_pago_efectivo
 -- Registrar un pago simple en efectivo
 -- Parámetros: cuenta_id, monto, descripcion
@@ -798,11 +796,43 @@ CALL sumar_pagos_cuenta(1, 6);
 
 
 
-🔄 ESTADOS (Súper Simples)
-11. activar_tarjeta
+-- 11. activar_tarjeta
+-- Cambiar estado de tarjeta a "ACTIVA"
+-- Parámetros: tarjeta_id
 
-Cambiar estado de tarjeta a "ACTIVA"
-Parámetros: tarjeta_id
+-- SELECT * FROM tarjetas_bancarias;
+-- SELECT * FROM estados;
+
+-- UPDATE tarjetas_bancarias
+-- SET estado_id = 2 
+-- WHERE id = 1;
+
+DROP PROCEDURE IF EXISTS activar_tarjeta;
+
+DELIMITER $$
+
+CREATE PROCEDURE activar_tarjeta(
+    IN p_tarjeta_id BIGINT
+)
+BEGIN
+
+
+    START TRANSACTION;
+
+    UPDATE tarjetas_bancarias
+    SET estado_id = 1
+    WHERE id = p_tarjeta_id;
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL activar_tarjeta(1);
+
+
 
 12. bloquear_tarjeta
 
