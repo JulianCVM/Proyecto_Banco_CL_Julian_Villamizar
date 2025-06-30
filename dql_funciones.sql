@@ -60,7 +60,42 @@ END$$
 DELIMITER ;
 SELECT fn_calcular_cuota_manejo_cliente_tarjeta_monto(1,100000000);
 
+
+
+
 -- Estimar el descuento total aplicado sobre la cuota de manejo.
+
+SELECT * FROM descuento;
+
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_descuento_aplicado_cuotas $$
+CREATE FUNCTION fn_descuento_aplicado_cuotas(
+    f_tipo_tarjeta BIGINT, 
+    f_monto_apertura DECIMAL(15,2),
+    f_descuento_aplicar BIGINT
+)
+RETURNS DECIMAL(15,2)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    
+    DECLARE valor_cuota_manejo DECIMAL(15,2);
+    DECLARE valor_descuento DECIMAL(15,2);
+
+    SET valor_cuota_manejo = fn_calcular_cuota_manejo_cliente_tarjeta_monto(f_tipo_tarjeta, f_monto_apertura);
+
+
+    SELECT valor INTO valor_descuento
+    FROM descuento
+    WHERE id = f_descuento_aplicar
+    AND tipo_valor = 'PORCENTAJE';
+
+    RETURN valor_descuento * valor_cuota_manejo;
+
+END$$
+DELIMITER ;
+SELECT fn_descuento_aplicado_cuotas(1,1000000,2);
 
 
 -- Calcular el saldo pendiente de pago de un cliente.
