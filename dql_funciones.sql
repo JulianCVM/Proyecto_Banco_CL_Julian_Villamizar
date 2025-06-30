@@ -295,6 +295,42 @@ SELECT fn_nivel_riesgo_cliente(5);
 
 -- Calcular el interés acumulado de un préstamo desde su fecha de desembolso hasta una fecha específica.
 
+DROP FUNCTION fn_calcular_interes_fecha $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_calcular_interes_fecha(
+    f_prestamo_id BIGINT,
+    f_fecha_calculo DATE
+)
+RETURNS DECIMAL(15,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE valor_monto_prestamo DECIMAL(15,2);
+    DECLARE valor_tasa_interes DECIMAL(8,6);
+    DECLARE valor_dias_pasados INT;
+    DECLARE valor_interes_acumulado DECIMAL(15,2) DEFAULT 0.00;
+
+    SELECT pr.monto_aprobado, i.valor, DATEDIFF(f_fecha_calculo, DATE(pr.fecha_desembolso))
+    INTO valor_monto_prestamo, valor_tasa_interes, valor_dias_pasados
+    FROM prestamos pr
+    JOIN interes i ON pr.interes_id = i.id
+    WHERE pr.id = f_prestamo_id
+    AND pr.fecha_desembolso IS NOT NULL;
+
+    IF valor_dias_pasados > 0 THEN
+        SET valor_interes_acumulado = valor_monto_prestamo * valor_tasa_interes * (valor_dias_pasados/365);
+    END IF;
+
+    RETURN valor_interes_acumulado;
+END $$
+
+DELIMITER ;
+
+SELECT fn_calcular_interes_fecha(1, '2025-06-30') AS interes_calculado;
+
+
 
 -- Obtener el promedio de transacciones mensuales realizadas por una cuenta en los últimos 6 meses.
 
