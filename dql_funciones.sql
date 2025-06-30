@@ -146,9 +146,9 @@ SELECT fn_calc_saldo_pendiente(1);
 DELIMITER $$
 DROP FUNCTION IF EXISTS fn_total_pagos_tarjeta $$
 CREATE FUNCTION fn_total_pagos_tarjeta(
-    p_tarjeta_id BIGINT,
-    p_fecha_inicio DATE,
-    p_fecha_fin DATE
+    f_tarjeta_id BIGINT,
+    f_fecha_inicio DATE,
+    f_fecha_fin DATE
 ) 
 RETURNS DECIMAL(15,2)
 READS SQL DATA
@@ -163,10 +163,10 @@ BEGIN
         JOIN cuotas_manejo cm ON tb.id = cm.tarjeta_id
         JOIN pago_cuota_manejo pcm ON cm.id = pcm.cuota_manejo_id
         JOIN pagos p ON pcm.pago_id = p.id
-        WHERE tb.id = p_tarjeta_id
+        WHERE tb.id = f_tarjeta_id
         AND p.estado_pago_id = 2  
-        AND (p_fecha_inicio IS NULL OR DATE(p.fecha_pago) >= p_fecha_inicio)
-        AND (p_fecha_fin IS NULL OR DATE(p.fecha_pago) <= p_fecha_fin);
+        AND (p_fecha_inicio IS NULL OR DATE(p.fecha_pago) >= f_fecha_inicio)
+        AND (p_fecha_fin IS NULL OR DATE(p.fecha_pago) <= f_fecha_fin);
     
     SET v_total_final = v_total_cuotas + v_total_credito;
     
@@ -177,6 +177,37 @@ DELIMITER ;
 SELECT fn_total_pagos_tarjeta(1, NULL, NULL);
 
 -- Calcular el monto total de las cuotas de manejo para todos los clientes de un mes.
+
+SELECT IFNULL(SUM(rc.monto_facturado), 0.00)
+    FROM registro_cuota rc
+    WHERE YEAR(rc.fecha_corte) = 2024
+    AND MONTH(rc.fecha_corte) = 6;
+
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_total_cuotas_mes $$
+CREATE FUNCTION fn_total_cuotas_mes(
+    f_anho INT,
+    f_mes INT
+)
+RETURNS DECIMAL(15,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_total_cuotas DECIMAL(15,2) DEFAULT 0.00;
+
+    SELECT IFNULL(SUM(rc.monto_facturado), 0.00) INTO valor_total_cuotas
+    FROM registro_cuota rc
+    WHERE YEAR(rc.fecha_corte) = f_anho
+    AND MONTH(rc.fecha_corte) = f_mes;
+
+
+    RETURN valor_total_cuotas;
+
+END $$
+
+SELECT fn_total_cuotas_mes(2024,6);
 
 
 -- Calcular la edad de una cuenta bancaria en días desde su fecha de apertura hasta la fecha actual.
