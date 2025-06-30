@@ -100,6 +100,45 @@ SELECT fn_descuento_aplicado_cuotas(1,1000000,2);
 
 -- Calcular el saldo pendiente de pago de un cliente.
 
+SELECT * FROM pago_cuota_manejo WHERE cuota_manejo_id = 1;
+SELECT * FROM registro_cuota WHERE cuota_manejo_id = 1 LIMIT 1;
+SELECT SUM(monto_abonado)
+    FROM registro_cuota
+    WHERE cuota_manejo_id = 1;
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS fn_calc_saldo_pendiente $$
+CREATE FUNCTION fn_calc_saldo_pendiente(
+    f_cuota_manejo_id BIGINT
+)
+RETURNS DECIMAL(15,2)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+
+    DECLARE valor_pagar DECIMAL(15,2);
+    DECLARE valor_pagado DECIMAL(15,2);
+
+    SELECT SUM(monto_pagado) INTO valor_pagado
+    FROM pago_cuota_manejo
+    WHERE cuota_manejo_id = f_cuota_manejo_id;
+
+    SELECT monto_a_pagar INTO valor_pagar
+    FROM registro_cuota
+    WHERE cuota_manejo_id = f_cuota_manejo_id LIMIT 1;
+
+
+    RETURN valor_pagar - valor_pagado;
+
+END $$
+
+DELIMITER ;
+
+SELECT fn_calc_saldo_pendiente(1);
+
+
+
+
 
 -- Estimar el total de pagos realizados por tipo de tarjeta durante un período determinado.
 
