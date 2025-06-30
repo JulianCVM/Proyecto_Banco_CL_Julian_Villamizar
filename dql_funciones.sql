@@ -335,6 +335,46 @@ SELECT fn_calcular_interes_fecha(1, '2025-06-30') AS interes_calculado;
 -- Obtener el promedio de transacciones mensuales realizadas por una cuenta en los últimos 6 meses.
 
 
+SELECT COUNT(*) 
+    FROM transacciones t
+    WHERE (t.cuenta_origen_id = 2 OR t.cuenta_destino_id = 2)
+    AND t.fecha_operacion >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
+
+
+DROP FUNCTION IF EXISTS fn_calcular_promedio_mensual_rango_tiempo $$
+
+DELIMITER $$
+CREATE FUNCTION fn_calcular_promedio_mensual_rango_tiempo(
+    f_cuenta_id BIGINT,
+    f_meses_atras INT
+)
+RETURNS DECIMAL(10,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE total_transacciones_realizadas INT DEFAULT 0;
+    DECLARE valor_promedio DECIMAL(10,2) DEFAULT 0.00;
+
+    SELECT COUNT(*) INTO total_transacciones_realizadas
+    FROM transacciones t
+    WHERE (t.cuenta_origen_id = f_cuenta_id OR t.cuenta_destino_id = f_cuenta_id)
+    AND t.fecha_operacion >= DATE_SUB(CURDATE(), INTERVAL f_meses_atras MONTH);
+
+    IF f_meses_atras > 0 THEN
+        SET valor_promedio = total_transacciones_realizadas/f_meses_atras;
+    END IF;
+
+    RETURN valor_promedio;
+
+END $$
+
+DELIMITER ;
+
+SELECT fn_calcular_promedio_mensual_rango_tiempo(1,1);
+
+
+
 -- Calcular la comisión total por transacciones de una cuenta durante un período determinado.
 
 
