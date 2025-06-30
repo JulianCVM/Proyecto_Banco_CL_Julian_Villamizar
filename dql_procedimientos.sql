@@ -903,10 +903,37 @@ CALL actualizar_saldo_cuenta(1,2500000.00);
 
 
 
-14. contar_transacciones_cuenta
+-- 14. contar_transacciones_cuenta
+-- Contar cuántas transacciones tiene una cuenta
+-- Parámetros: cuenta_id
 
-Contar cuántas transacciones tiene una cuenta
-Parámetros: cuenta_id
+-- SELECT COUNT(cuenta_origen_id) AS cantidad_transacciones FROM transacciones WHERE cuenta_origen_id = 1;
+
+
+DROP PROCEDURE IF EXISTS contar_transacciones_cuenta;
+
+DELIMITER $$
+
+CREATE PROCEDURE contar_transacciones_cuenta(
+    IN p_cuenta_id BIGINT
+)
+BEGIN
+
+    START TRANSACTION;
+
+    SELECT COUNT(cuenta_origen_id) AS cantidad_transacciones 
+    FROM transacciones 
+    WHERE cuenta_origen_id = 1;
+
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL contar_transacciones_cuenta(1);
+
 
 📊 CONSULTAS (Muy Fáciles)
 15. ver_saldo_cliente
