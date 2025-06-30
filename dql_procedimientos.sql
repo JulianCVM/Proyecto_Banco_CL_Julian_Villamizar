@@ -744,10 +744,59 @@ CALL buscar_pago_referencia('PAY001');
 
 
 
-10. sumar_pagos_cuenta
+-- 10. sumar_pagos_cuenta
+-- Sumar todos los pagos de una cuenta en un mes
+-- Parámetros: cuenta_id, mes
 
-Sumar todos los pagos de una cuenta en un mes
-Parámetros: cuenta_id, mes
+
+
+-- SELECT * FROM pagos WHERE MONTH(fecha_pago) = 5;
+-- SELECT * FROM pagos WHERE cuenta_id = 1;
+-- SELECT SUM(monto) AS pago_total_mes, id, cuenta_id
+-- FROM pagos
+-- WHERE fecha_pago >= '2025-06-01'
+--   AND fecha_pago < '2025-07-01'
+--   AND cuenta_id = 1;
+-- SELECT *
+-- FROM pagos
+-- WHERE fecha_pago BETWEEN '2025-06-01' AND '2025-06-30 23:59:59';
+
+DROP PROCEDURE IF EXISTS sumar_pagos_cuenta;
+
+DELIMITER $$
+
+CREATE PROCEDURE sumar_pagos_cuenta(
+    IN p_cuenta_id BIGINT,
+    IN p_mes INT
+)
+BEGIN
+
+    DECLARE mes_pago_inicio DATE;
+    DECLARE mes_pago_fin DATE;
+
+    SET mes_pago_inicio = STR_TO_DATE(CONCAT('2025-', LPAD(p_mes,2,'0'), '-01'), '%Y-%m-%d');
+    SET mes_pago_fin = DATE_ADD(mes_pago_inicio, INTERVAL 1 MONTH);
+
+    START TRANSACTION;
+
+
+    SELECT COALESCE(SUM(monto),0) AS pago_total_mes
+    FROM pagos
+    WHERE 
+        fecha_pago >= mes_pago_inicio
+        AND fecha_pago < mes_pago_fin
+        AND cuenta_id = p_cuenta_id;
+
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+
+CALL sumar_pagos_cuenta(1, 6);
+
+
 
 🔄 ESTADOS (Súper Simples)
 11. activar_tarjeta
