@@ -865,10 +865,43 @@ CALL bloquear_tarjeta(1);
 
 SELECT * FROM tarjetas_bancarias WHERE id = 1;
 
-13. actualizar_saldo_cuenta
 
-Actualizar el saldo disponible de una cuenta
-Parámetros: cuenta_id, nuevo_saldo
+
+
+
+-- 13. actualizar_saldo_cuenta
+-- Actualizar el saldo disponible de una cuenta
+-- Parámetros: cuenta_id, nuevo_saldo
+-- SELECT * FROM cuenta WHERE id = 1;
+
+-- UPDATE cuenta
+-- SET saldo_disponible = 2500000.00
+-- WHERE id = 1;
+
+
+DROP PROCEDURE IF EXISTS actualizar_saldo_cuenta;
+
+DELIMITER $$
+
+CREATE PROCEDURE actualizar_saldo_cuenta(
+    IN p_cuenta_id BIGINT,
+    IN p_nuevo_saldo DECIMAL(15,2)
+)
+BEGIN
+
+    START TRANSACTION;
+        UPDATE cuenta
+        SET saldo_disponible = p_nuevo_saldo
+        WHERE id = p_cuenta_id;
+    COMMIT;
+END $$
+
+DELIMITER ;
+
+CALL actualizar_saldo_cuenta(1,2500000.00);
+
+
+
 
 14. contar_transacciones_cuenta
 
