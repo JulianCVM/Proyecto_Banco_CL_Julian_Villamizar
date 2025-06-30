@@ -1101,7 +1101,38 @@ SELECT @ref AS nueva_referencia;
 
 
 
-19. calcular_total_cuota
+-- 19. calcular_total_cuota
+-- Calcular el total de una cuota después de descuentos
+-- Parámetros: cuota_id
 
-Calcular el total de una cuota después de descuentos
-Parámetros: cuota_id
+SELECT * FROM cuenta_tarjeta;
+SELECT * FROM descuentos_aplicados;
+SELECT * FROM pago_cuota_manejo;
+
+
+DROP PROCEDURE IF EXISTS calcular_total_cuota;
+
+
+DELIMITER $$
+
+CREATE PROCEDURE calcular_total_cuota(
+    IN p_cuota_id BIGINT,
+    OUT total_pagado DECIMAL(15,2)
+)
+BEGIN
+    DECLARE suma_pagos DECIMAL(15,2);
+
+    SELECT COALESCE(SUM(monto_pagado),0)
+    INTO suma_pagos
+    FROM pago_cuota_manejo
+    WHERE cuota_manejo_id = p_cuota_id;
+
+    SET total_pagado = suma_pagos;
+END$$
+
+DELIMITER ;
+
+
+
+CALL calcular_total_cuota(1, @total);
+SELECT @total AS total_pagado;
