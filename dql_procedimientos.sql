@@ -1053,11 +1053,53 @@ CALL cuotas_del_mes(2025,4);
 
 
 
-🛠️ UTILIDADES (Sencillísimas)
-18. generar_referencia_pago
+-- 18. generar_referencia_pago
+-- Generar una referencia única para un nuevo pago
+-- Parámetros: prefijo (ej: "PAY")
 
-Generar una referencia única para un nuevo pago
-Parámetros: prefijo (ej: "PAY")
+DROP PROCEDURE IF EXISTS generar_referencia_pago;
+
+
+-- SELECT * FROM pagos;
+DELIMITER $$
+
+CREATE PROCEDURE generar_referencia_pago(
+    IN p_prefijo VARCHAR(10),
+    OUT nueva_referencia VARCHAR(40)
+)
+BEGIN
+
+    DECLARE ultimo_numero_referencia BIGINT DEFAULT 0;
+
+    START TRANSACTION;
+
+
+    SELECT
+        COALESCE(
+            CAST(SUBSTRING(referencia, LENGTH(p_prefijo)+1) + 0 AS UNSIGNED),
+            0
+        ) INTO ultimo_numero_referencia
+    FROM pagos
+    WHERE LEFT(referencia, LENGTH(p_prefijo)) = p_prefijo
+    ORDER BY id DESC
+    LIMIT 1;
+
+
+
+    SET nueva_referencia = CONCAT(p_prefijo, LPAD(ultimo_numero_referencia + 1, 3, '0'));
+    
+    
+    COMMIT;
+
+END $$
+
+DELIMITER ;
+
+CALL generar_referencia_pago('PAY', @ref);
+SELECT @ref AS nueva_referencia;
+
+
+
 
 19. calcular_total_cuota
 
