@@ -138,3 +138,16 @@ WHERE tarjetas_bancarias.estado_id = 4
 
 -- 13
 SELECT * FROM cuotas_manejo WHERE YEAR('2024-01-01') >= 2024 AND MONTH('2024-12-01') >= 5;
+
+
+
+-- 14
+SELECT
+        COALESCE(
+            CAST(SUBSTRING(referencia, LENGTH('PAY')+1) + 0 AS UNSIGNED),
+            0
+        )
+    FROM pagos
+    WHERE LEFT(referencia, LENGTH('PAY')) = 'PAY'
+    ORDER BY id DESC
+    LIMIT 1;
