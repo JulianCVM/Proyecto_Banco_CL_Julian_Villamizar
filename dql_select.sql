@@ -233,6 +233,10 @@ SELECT COUNT(*)
 SELECT IFNULL(SUM(cobro_operacion), 0.00) FROM transacciones WHERE cuenta_origen_id = 1;
 
 -- 28
+
+SELECT DATEDIFF(fecha_vencimiento, CURDATE())
+FROM tarjetas_bancarias
+WHERE id = 1;
 -- 29
 -- 30
 -- 31
