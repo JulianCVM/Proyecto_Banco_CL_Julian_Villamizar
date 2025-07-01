@@ -201,3 +201,28 @@ INSERT INTO transacciones (cuenta_destino_id,cuenta_origen_id,cobro_operacion,de
 SELECT * FROM cuenta WHERE id = 1;
 
 -- se acumulan y ahora suma el doble
+
+
+
+-- 9 Calcular mora automática en cuotas
+
+
+DROP TRIGGER IF EXISTS trg_calcular_mora_cuota $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_calcular_mora_cuota
+BEFORE UPDATE ON cuotas_prestamo
+FOR EACH ROW
+BEGIN
+    IF NEW.fecha_vencimiento < CURDATE() AND NEW.fecha_pago IS NULL THEN
+        SET NEW.estado_cuota_id = 6;
+    END IF;
+END$$
+
+DELIMITER ;
+
+SELECT * FROM cuotas_prestamo;
+UPDATE cuotas_prestamo SET monto_pagado = 1 WHERE id = 4;
