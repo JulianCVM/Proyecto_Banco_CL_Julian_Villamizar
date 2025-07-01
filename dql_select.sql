@@ -65,3 +65,10 @@ JOIN cuenta cu ON ct.cuenta_id = cu.id
 JOIN clientes c ON cu.cliente_id = c.id
 ORDER BY cm.fecha_inicio DESC
 LIMIT 5;
+
+
+-- 5
+SELECT tarjeta_id, monto_apertura, 1
+    FROM cuotas_manejo
+    WHERE id = 1
+    AND activo = TRUE;
