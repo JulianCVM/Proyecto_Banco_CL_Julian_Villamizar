@@ -250,6 +250,12 @@ JOIN prestamos p ON c.id = p.cuenta_id
 WHERE c.id = 1
 AND p.id = 1;
 -- 31
+
+SELECT IFNULL(SUM(monto), 0.00) *0.20
+FROM pagos p
+JOIN cuenta c ON p.cuenta_id = c.tipo_cuenta_id
+WHERE c.cliente_id = 1
+AND p.estado_pago_id = 2;
 -- 32
 -- 33
 -- 34
