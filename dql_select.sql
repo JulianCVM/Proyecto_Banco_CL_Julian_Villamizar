@@ -238,6 +238,10 @@ SELECT DATEDIFF(fecha_vencimiento, CURDATE())
 FROM tarjetas_bancarias
 WHERE id = 1;
 -- 29
+
+    SELECT limite_credito  
+    FROM tarjetas_bancarias
+    WHERE id = 1;
 -- 30
 -- 31
 -- 32
