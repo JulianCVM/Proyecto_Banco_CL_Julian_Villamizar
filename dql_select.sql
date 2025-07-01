@@ -12,4 +12,11 @@ SELECT
     JOIN clientes c ON cu.cliente_id = c.id
     WHERE tb.id = 1
     LIMIT 1;
-    
+
+
+
+-- 2
+
+SELECT valor, tipo_valor 
+    FROM descuento 
+    WHERE id = 1 AND activo = TRUE;
