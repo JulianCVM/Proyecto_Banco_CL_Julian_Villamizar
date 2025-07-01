@@ -424,7 +424,21 @@ JOIN descuentos_aplicados ON tarjetas_bancarias.id = descuentos_aplicados.tarjet
 JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id
 JOIN cuenta ON cuenta.id = cuenta_tarjeta.cuenta_id
 JOIN clientes ON clientes.id = cuenta.cliente_id;
--- 94
+-- 94 Obtener un reporte mensual de las cuotas de manejo de cada tarjeta.
+SELECT *
+FROM tarjetas_bancarias
+JOIN tipo_tarjetas ON tarjetas_bancarias.tipo_tarjeta_id = tipo_tarjetas.id
+JOIN marca_tarjeta ON tarjetas_bancarias.marca_tarjeta_id = marca_tarjeta.id
+JOIN nivel_tarjeta ON tarjetas_bancarias.nivel_tarjeta_id = nivel_tarjeta.id
+JOIN cuotas_manejo ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
+JOIN registro_cuota ON cuotas_manejo.id = registro_cuota.cuota_manejo_id
+JOIN estados_cuota ON registro_cuota.estado_cuota_id = estados_cuota.id
+JOIN cuenta_tarjeta ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+JOIN cuenta ON cuenta_tarjeta.cuenta_id = cuenta.id
+JOIN clientes ON cuenta.cliente_id = clientes.id
+WHERE YEAR(registro_cuota.fecha_corte) = YEAR(NOW())
+AND MONTH(registro_cuota.fecha_corte) = MONTH(NOW())
+ORDER BY tipo_tarjetas.nombre, tarjetas_bancarias.numero;
 -- 95
 -- 96
 -- 97
