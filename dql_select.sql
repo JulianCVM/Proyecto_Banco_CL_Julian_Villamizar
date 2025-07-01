@@ -312,6 +312,7 @@ SELECT * FROM frecuencias_pago;
 -- 49
 SELECT * FROM historial_de_pagos;
 -- 50
+SELECT * FROM historial_tarjetas;
 -- 50
 -- 51
 -- 52
