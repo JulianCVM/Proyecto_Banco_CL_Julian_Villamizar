@@ -332,6 +332,7 @@ SELECT * FROM pago_cuota_manejo;
 -- 59
 SELECT * FROM pagos;
 -- 60
+SELECT * FROM pagos_prestamo;
 -- 61
 -- 62
 -- 63
