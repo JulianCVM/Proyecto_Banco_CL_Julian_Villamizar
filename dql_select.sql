@@ -382,6 +382,8 @@ SELECT * FROM cuenta JOIN extracto_bancario ON cuenta.id = extracto_bancario.cue
 SELECT * FROM cuenta JOIN transacciones ON cuenta.id = transacciones.cuenta_origen_id;
 
 -- 82
+SELECT * FROM cuenta JOIN transacciones ON cuenta.id = transacciones.cuenta_destino_id;
+
 -- 83
 -- 84
 -- 85
