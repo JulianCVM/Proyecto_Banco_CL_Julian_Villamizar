@@ -97,3 +97,11 @@ JOIN clientes c ON cu.cliente_id = c.id
 WHERE da.descuento_id = 1 -- Solo descuentos por uso (fijos)
 ORDER BY da.fecha_aplicado DESC
 LIMIT 5;
+
+
+
+-- 8
+
+SELECT *
+        FROM cuotas_manejo
+        WHERE tarjeta_id = 1;
