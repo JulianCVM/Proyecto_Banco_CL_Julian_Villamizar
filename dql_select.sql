@@ -177,6 +177,10 @@ SELECT * FROM pago_cuota_manejo WHERE cuota_manejo_id = 1;
 
 
 -- 19
+
+SELECT * FROM registro_cuota WHERE cuota_manejo_id = 1 LIMIT 1;
+
+
 -- 20
 -- 21
 -- 22
