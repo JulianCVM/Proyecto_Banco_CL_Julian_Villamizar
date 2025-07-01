@@ -403,6 +403,8 @@ SELECT * FROM tarjetas_bancarias JOIN marca_tarjeta ON tarjetas_bancarias.marca_
 SELECT * FROM tarjetas_bancarias JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id;
 
 -- 89
+SELECT * FROM tarjetas_bancarias JOIN nivel_tarjeta ON nivel_tarjeta.id = tarjetas_bancarias.nivel_tarjeta_id;
+
 -- 90
 -- 91
 -- 92
