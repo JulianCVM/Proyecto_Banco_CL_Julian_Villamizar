@@ -324,6 +324,7 @@ SELECT * FROM metodos_de_pago_cuenta;
 -- 55
 SELECT * FROM metodos_transaccion;
 -- 56
+SELECT * FROM monedas;
 -- 57
 -- 58
 -- 59
