@@ -161,3 +161,10 @@ SELECT COALESCE(SUM(monto_pagado),0)
 
 -- 16
     SELECT 1, 1, CONCAT('Reporte mensual generado: ', CURDATE()), 1;
+
+
+-- 17
+
+SELECT valor 
+    FROM descuento
+    WHERE tipo_valor = 'PORCENTAJE';
