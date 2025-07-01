@@ -367,6 +367,8 @@ SELECT * FROM clientes JOIN cuenta ON clientes.id = cuenta.cliente_id;
 SELECT * FROM clientes JOIN tipo_cliente ON clientes.tipo_cliente_id = tipo_cliente.id;
 
 -- 77
+SELECT * FROM clientes JOIN tipo_nit ON clientes.tipo_nit_id = tipo_nit.id;
+
 -- 78
 -- 79
 -- 80
