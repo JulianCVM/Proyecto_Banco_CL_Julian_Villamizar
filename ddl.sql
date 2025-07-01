@@ -571,3 +571,88 @@ CREATE TABLE IF NOT EXISTS pago_cuota_manejo (
 
 -- HISTORIAL_DE_PAGOS:
 -- idx_pago_fecha
+
+
+
+
+-- ADMINISTRADOR
+CREATE ROLE 'admin_banco'@'%';
+
+GRANT ALL PRIVILEGES ON Banco_CL.* TO 'admin_banco'@'%';
+GRANT EXECUTE ON Banco_CL.* TO 'admin_banco'@'%';
+GRANT CREATE USER ON *.* TO 'admin_banco'@'%';
+GRANT RELOAD ON *.* TO 'admin_banco'@'%';
+
+
+
+-- OPERADOR DE PAGOS
+CREATE ROLE 'operador_pagos'@'%';
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pagos TO 'operador_pagos'@'%';
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pago_cuota_manejo TO 'operador_pagos'@'%';
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pagos_prestamo TO 'operador_pagos'@'%';
+GRANT SELECT, INSERT ON Banco_CL.historial_de_pagos TO 'operador_pagos'@'%';
+
+
+
+GRANT SELECT ON Banco_CL.clientes TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.cuenta TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.tarjetas_bancarias TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.cuotas_manejo TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.registro_cuota TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.prestamos TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.cuotas_prestamo TO 'operador_pagos'@'%';
+
+
+
+GRANT SELECT ON Banco_CL.estados_pago TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.tipos_pago TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.metodos_de_pago TO 'operador_pagos'@'%';
+GRANT SELECT ON Banco_CL.metodos_transaccion TO 'operador_pagos'@'%';
+
+
+
+
+
+
+
+
+-- GERENTE
+CREATE ROLE 'gerente_banco'@'%';
+
+GRANT SELECT ON Banco_CL.* TO 'gerente_banco'@'%';
+
+
+
+GRANT INSERT, UPDATE ON Banco_CL.descuento TO 'gerente_banco'@'%';
+GRANT UPDATE ON Banco_CL.tipo_cuota_de_manejo TO 'gerente_banco'@'%';
+GRANT UPDATE ON Banco_CL.interes TO 'gerente_banco'@'%';
+
+
+
+
+
+
+-- CONSULTOR DE TARJETAS
+CREATE ROLE 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.tarjetas_bancarias TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.cuotas_manejo TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.registro_cuota TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.descuentos_aplicados TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.historial_tarjetas TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.clientes TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.cuenta TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.cuenta_tarjeta TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.tipo_tarjetas TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.marca_tarjeta TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.nivel_tarjeta TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.tipo_cuota_de_manejo TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.eventos_tarjeta TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.estados_cuota TO 'consultor_tarjetas'@'%';
+GRANT SELECT ON Banco_CL.descuento TO 'consultor_tarjetas'@'%';
+
+
+
+
+-- AUDITOR
+CREATE ROLE 'auditor_banco'@'%';
+GRANT SELECT ON Banco_CL.* TO 'auditor_banco'@'%';
