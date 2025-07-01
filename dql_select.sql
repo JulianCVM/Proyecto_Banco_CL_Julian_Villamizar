@@ -334,6 +334,7 @@ SELECT * FROM pagos;
 -- 60
 SELECT * FROM pagos_prestamo;
 -- 61
+SELECT * FROM prestamos;
 -- 62
 -- 63
 -- 64
