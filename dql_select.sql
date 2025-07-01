@@ -320,6 +320,7 @@ SELECT * FROM marca_tarjeta;
 -- 53
 SELECT * FROM metodos_de_pago;
 -- 54
+SELECT * FROM metodos_de_pago_cuenta;
 -- 55
 -- 56
 -- 57
