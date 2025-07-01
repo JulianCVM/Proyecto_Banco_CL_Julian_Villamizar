@@ -344,6 +344,7 @@ SELECT * FROM tarjetas_bancarias;
 -- 65
 SELECT * FROM tipo_cliente;
 -- 66
+SELECT * FROM tipo_cuenta;
 -- 67
 -- 68
 -- 69
