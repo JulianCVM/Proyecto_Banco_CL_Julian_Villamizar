@@ -397,6 +397,8 @@ SELECT * FROM cuenta JOIN cuenta_tarjeta ON cuenta.id = cuenta_tarjeta.cuenta_id
 SELECT * FROM tarjetas_bancarias JOIN tipo_tarjetas ON tarjetas_bancarias.tipo_tarjeta_id = tipo_tarjetas.id;
 
 -- 87
+SELECT * FROM tarjetas_bancarias JOIN marca_tarjeta ON tarjetas_bancarias.marca_tarjeta_id = marca_tarjeta.id;
+
 -- 88
 -- 89
 -- 90
