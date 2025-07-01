@@ -346,6 +346,7 @@ SELECT * FROM tipo_cliente;
 -- 66
 SELECT * FROM tipo_cuenta;
 -- 67
+SELECT * FROM tipo_cuota_de_manejo;
 -- 68
 -- 69
 -- 70
