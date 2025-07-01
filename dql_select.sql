@@ -151,3 +151,9 @@ SELECT
     WHERE LEFT(referencia, LENGTH('PAY')) = 'PAY'
     ORDER BY id DESC
     LIMIT 1;
+
+
+-- 15
+SELECT COALESCE(SUM(monto_pagado),0)
+    FROM pago_cuota_manejo
+    WHERE cuota_manejo_id = 1;
