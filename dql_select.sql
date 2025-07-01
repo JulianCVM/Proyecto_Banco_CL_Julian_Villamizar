@@ -230,6 +230,8 @@ SELECT COUNT(*)
     WHERE (t.cuenta_origen_id = 2 OR t.cuenta_destino_id = 2)
     AND t.fecha_operacion >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
 -- 27
+SELECT IFNULL(SUM(cobro_operacion), 0.00) FROM transacciones WHERE cuenta_origen_id = 1;
+
 -- 28
 -- 29
 -- 30
