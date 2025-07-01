@@ -405,7 +405,12 @@ SELECT * FROM tarjetas_bancarias JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_i
 -- 89
 SELECT * FROM tarjetas_bancarias JOIN nivel_tarjeta ON nivel_tarjeta.id = tarjetas_bancarias.nivel_tarjeta_id;
 
--- 90
+-- 90 Obtener el listado de todas las tarjetas de los clientes junto con su cuota de manejo.
+SELECT * FROM tarjetas_bancarias 
+JOIN cuotas_manejo ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
+JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id
+JOIN cuenta ON cuenta.id = cuenta_tarjeta.cuenta_id
+JOIN clientes ON clientes.id = cuenta.cliente_id;
 -- 91
 -- 92
 -- 93
