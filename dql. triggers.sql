@@ -74,7 +74,29 @@ END $$
 DELIMITER ;
 
 INSERT INTO tarjetas_bancarias (codigo_seguridad,estado_id,fecha_emision,fecha_vencimiento,limite_credito,marca_tarjeta_id,nivel_tarjeta_id,numero,tipo_tarjeta_id) VALUES 
-('333',4,NOW(),'2027-12-31',0,1,1,'4532123456789099',1);
-SELECT * FROM descuentos_aplicados WHERE tarjeta_id = 54;
+('333',4,NOW(),'2027-12-31',0,1,1,'4532123456789091',1);
+SELECT * FROM descuentos_aplicados WHERE tarjeta_id = 53;
 
-SELECT * FROM tarjetas_bancarias WHERE id = 54; 
+SELECT * FROM tarjetas_bancarias WHERE id = 53; 
+
+
+
+-- 4 Eliminar cuotas al eliminar tarjeta
+
+DROP TRIGGER IF EXISTS trg_eliminar_cuotas_tarjeta $$
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_eliminar_cuotas_tarjeta
+BEFORE DELETE ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    DELETE FROM cuotas_manejo WHERE tarjeta_id = OLD.id;
+END $$
+DELIMITER ;
+
+DELETE FROM tarjetas_bancarias WHERE id = 55;
+INSERT INTO cuotas_manejo (activo,fecha_fin,fecha_inicio,frecuencia_pago_id,monto_apertura,tarjeta_id,tipo_cuota_manejo_id) VALUES 
+(TRUE,'2025-12-31',NOW(),4,12000.00,55,1);
+SELECT * FROM cuotas_manejo WHERE tarjeta_id = 55;
