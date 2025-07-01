@@ -375,32 +375,34 @@ SELECT fn_calcular_promedio_mensual_rango_tiempo(1,1);
 
 
 
--- Calcular la comisión total por transacciones de una cuenta durante un período determinado.
+-- Comisión total por transacciones de una cuenta
+
+SELECT IFNULL(SUM(cobro_operacion), 0.00) FROM transacciones WHERE cuenta_origen_id = 1;
+
+DROP FUNCTION IF EXISTS fn_comision_total_transacciones $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_comision_total_transacciones (
+    f_cuenta_id BIGINT
+)
+RETURNS DECIMAL(15,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_comision_total DECIMAL(15,2);
+
+    SELECT IFNULL(SUM(cobro_operacion), 0.00) INTO valor_comision_total
+    FROM transacciones 
+    WHERE cuenta_origen_id = f_cuenta_id;
+    
+
+    RETURN valor_comision_total;
 
 
--- Determinar si una tarjeta está próxima a vencer (en los próximos 90 días) y retornar días restantes.
+END $$
 
+DELIMITER ;
 
--- Calcular el porcentaje de utilización de límite de crédito de una tarjeta bancaria.
-
-
--- Obtener el monto total adeudado por un cliente sumando todos sus préstamos activos.
-
-
--- Calcular la rentabilidad generada por un cliente basada en cuotas de manejo y comisiones pagadas.
-
-
--- Determinar el tipo de cliente más frecuente por sucursal o región basado en registros.
-
-
--- Calcular los días de mora promedio de las cuotas vencidas de un cliente específico.
-
-
--- Obtener el saldo disponible ajustado de una cuenta considerando retenciones y bloqueos.
-
-
--- Calcular la tasa efectiva anual de un préstamo considerando todos los costos asociados.
-
-
--- Determinar la categoría de gasto de un cliente basada en el volumen de transacciones mensuales.
-
+SELECT fn_comision_total_transacciones(1);
