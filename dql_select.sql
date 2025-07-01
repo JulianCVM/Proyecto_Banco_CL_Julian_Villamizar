@@ -203,6 +203,11 @@ SELECT IFNULL(SUM(pcm.monto_pagado), 0.00)
         AND (DATE(p.fecha_pago) >= '2024-01-01')
         AND (DATE(p.fecha_pago) <= '2027-01-01');
 -- 23
+
+SELECT IFNULL(SUM(rc.monto_facturado), 0.00)
+    FROM registro_cuota rc
+    WHERE YEAR(rc.fecha_corte) = 2024
+    AND MONTH(rc.fecha_corte) = 6;
 -- 24
 -- 25
 -- 26
