@@ -318,6 +318,7 @@ SELECT * FROM interes;
 -- 52
 SELECT * FROM marca_tarjeta;
 -- 53
+SELECT * FROM metodos_de_pago;
 -- 54
 -- 55
 -- 56
