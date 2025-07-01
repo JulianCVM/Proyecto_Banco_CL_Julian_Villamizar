@@ -157,3 +157,7 @@ SELECT
 SELECT COALESCE(SUM(monto_pagado),0)
     FROM pago_cuota_manejo
     WHERE cuota_manejo_id = 1;
+
+
+-- 16
+    SELECT 1, 1, CONCAT('Reporte mensual generado: ', CURDATE()), 1;
