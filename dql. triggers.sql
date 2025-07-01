@@ -126,3 +126,27 @@ INSERT INTO transacciones (cuenta_destino_id,cuenta_origen_id,cobro_operacion,de
 
 SELECT * FROM transacciones WHERE cuenta_origen_id = 1;
 SELECT * FROM cuenta WHERE id = 1;
+
+
+-- 6 Registrar historial al cambiar estado tarjeta
+
+DROP TRIGGER IF EXISTS trg_historial_estado_tarjeta $$
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_historial_estado_tarjeta
+AFTER UPDATE ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    IF NEW.estado_id != OLD.estado_id THEN
+        INSERT INTO historial_tarjetas (tarjeta_id, evento_id, descripcion)
+        VALUES (NEW.id, 1, CONCAT('Estado cambiado de ', OLD.estado_id, ' a ', NEW.estado_id));
+    END IF;
+END $$
+DELIMITER ;
+
+
+SELECT * FROM tarjetas_bancarias;
+UPDATE tarjetas_bancarias SET estado_id = 4 WHERE id = 1;
+SELECT * FROM historial_tarjetas;
