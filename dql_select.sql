@@ -72,3 +72,9 @@ SELECT tarjeta_id, monto_apertura, 1
     FROM cuotas_manejo
     WHERE id = 1
     AND activo = TRUE;
+
+
+-- 6
+SELECT 1 FROM descuentos_aplicados 
+            WHERE tarjeta_id = 1
+            AND DATE(fecha_aplicado) = CURDATE()
