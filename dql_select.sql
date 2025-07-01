@@ -119,3 +119,9 @@ SELECT COALESCE(SUM(monto),0)
 SELECT COUNT(cuenta_origen_id) AS cantidad_transacciones 
     FROM transacciones 
     WHERE cuenta_origen_id = 1;
+
+
+-- 11
+SELECT saldo_disponible, id AS cuenta_id
+FROM cuenta
+WHERE cliente_id = 1;
