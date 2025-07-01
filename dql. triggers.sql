@@ -150,3 +150,26 @@ DELIMITER ;
 SELECT * FROM tarjetas_bancarias;
 UPDATE tarjetas_bancarias SET estado_id = 4 WHERE id = 1;
 SELECT * FROM historial_tarjetas;
+
+
+-- 7 Validar límite crédito al crear tarjeta
+
+DROP TRIGGER IF EXISTS trg_validar_limite_credito $$
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_validar_limite_credito
+BEFORE INSERT ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    IF NEW.limite_credito > 50000000 THEN
+        SET NEW.limite_credito = 50000000;
+    END IF;
+END $$
+DELIMITER ;
+
+SELECT * FROM tarjetas_bancarias;
+
+INSERT INTO tarjetas_bancarias (codigo_seguridad,estado_id,fecha_emision,fecha_vencimiento,limite_credito,marca_tarjeta_id,nivel_tarjeta_id,numero,tipo_tarjeta_id) VALUES 
+('333',4,NOW(),'2027-12-31',60000000,1,1,'111111111',1);
