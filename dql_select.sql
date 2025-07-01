@@ -187,6 +187,10 @@ SELECT SUM(monto_abonado)
     FROM registro_cuota
     WHERE cuota_manejo_id = 1;
 -- 21
+
+SELECT monto_a_pagar 
+    FROM registro_cuota
+    WHERE cuota_manejo_id = 1 LIMIT 1;
 -- 22
 -- 23
 -- 24
