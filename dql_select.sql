@@ -350,6 +350,7 @@ SELECT * FROM tipo_cuota_de_manejo;
 -- 68
 SELECT * FROM tipo_nit;
 -- 69
+SELECT * FROM tipo_prestamo;
 -- 70
 -- 70
 -- 71
