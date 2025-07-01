@@ -328,6 +328,7 @@ SELECT * FROM monedas;
 -- 57
 SELECT * FROM nivel_tarjeta;
 -- 58
+SELECT * FROM pago_cuota_manejo;
 -- 59
 -- 60
 -- 61
