@@ -294,6 +294,7 @@ SELECT * FROM cuotas_manejo;
 -- 40
 SELECT * FROM cuotas_prestamo;
 -- 41
+SELECT * FROM descuento;
 -- 42
 -- 43
 -- 44
