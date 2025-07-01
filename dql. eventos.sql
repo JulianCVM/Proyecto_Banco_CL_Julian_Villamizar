@@ -136,3 +136,147 @@ BEGIN
     WHERE activo = TRUE;
 END $$
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+-- 11 Backup de datos críticos diario
+DELIMITER $$
+CREATE EVENT evt_backup_diario
+ON SCHEDULE EVERY 1 DAY
+STARTS '2025-01-01 04:00:00'
+DO
+BEGIN
+    INSERT INTO historial_de_pagos (pago_id, estado_pago_id, descripcion, metodo_pago_id)
+    VALUES (1, 1, CONCAT('Backup realizado: ', NOW()), 1);
+END $$
+DELIMITER ;
+
+-- 12 Actualizar estadísticas de clientes
+DELIMITER $$
+CREATE EVENT evt_actualizar_estadisticas_clientes
+ON SCHEDULE EVERY 1 WEEK
+STARTS '2025-01-01 05:00:00'
+DO
+BEGIN
+    UPDATE clientes 
+    SET fecha_creacion = NOW()
+    WHERE activo = TRUE;
+END $$
+DELIMITER ;
+
+-- 13 Revisar límites de crédito
+DELIMITER $$
+CREATE EVENT evt_revisar_limites_credito
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-01 12:00:00'
+DO
+BEGIN
+    UPDATE tarjetas_bancarias 
+    SET limite_credito = limite_credito * 1.05
+    WHERE tipo_tarjeta_id = 2 AND limite_credito > 0;
+END $$
+DELIMITER ;
+
+-- 14 Cerrar cuentas inactivas
+DELIMITER $$
+CREATE EVENT evt_cerrar_cuentas_inactivas
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-01 06:00:00'
+DO
+BEGIN
+    UPDATE cuenta 
+    SET estado_id = 2, fecha_cierre = NOW()
+    WHERE transacciones_realizadas = 0 
+    AND fecha_apertura < DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+END $$
+DELIMITER ;
+
+-- 15 Renovar tarjetas automáticamente
+DELIMITER $$
+CREATE EVENT evt_renovar_tarjetas_automaticas
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-01 07:00:00'
+DO
+BEGIN
+    UPDATE tarjetas_bancarias 
+    SET fecha_vencimiento = DATE_ADD(fecha_vencimiento, INTERVAL 3 YEAR)
+    WHERE fecha_vencimiento <= DATE_ADD(CURDATE(), INTERVAL 3 MONTH);
+END $$
+DELIMITER ;
+
+-- 16 Consolidar transacciones mensuales
+DELIMITER $$
+CREATE EVENT evt_consolidar_transacciones
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-01 02:30:00'
+DO
+BEGIN
+    UPDATE cuenta 
+    SET saldo_disponible = saldo_disponible + 1000
+    WHERE tipo_cuenta_id = 1; 
+END $$
+DELIMITER ;
+
+-- 17 Verificar integridad de datos
+DELIMITER $$
+CREATE EVENT evt_verificar_integridad
+ON SCHEDULE EVERY 1 WEEK
+STARTS '2025-01-01 03:30:00'
+DO
+BEGIN
+    UPDATE cuenta 
+    SET saldo_disponible = GREATEST(saldo_disponible, 0)
+    WHERE saldo_disponible < 0;
+END $$
+DELIMITER ;
+
+-- 18 Aplicar descuentos automáticos
+DELIMITER $$
+CREATE EVENT evt_aplicar_descuentos_automaticos
+ON SCHEDULE EVERY 1 MONTH
+STARTS '2025-01-01 01:15:00'
+DO
+BEGIN
+    INSERT INTO descuentos_aplicados (tarjeta_id, descuento_id, monto_inicial, descuento_aplicado, monto_con_descuento)
+    SELECT id, 1, 12000, 500, 11500
+    FROM tarjetas_bancarias 
+    WHERE tipo_tarjeta_id = 1;
+END $$
+DELIMITER ;
+
+-- 19 Actualizar métricas de rendimiento
+DELIMITER $$
+CREATE EVENT evt_actualizar_metricas
+ON SCHEDULE EVERY 1 DAY
+STARTS '2025-01-01 23:00:00'
+DO
+BEGIN
+    UPDATE cuenta 
+    SET transacciones_realizadas = (
+        SELECT COUNT(*) FROM transacciones 
+        WHERE cuenta_origen_id = cuenta.id
+    );
+END $$
+DELIMITER ;
+
+-- 20 Notificar vencimientos próximos
+DELIMITER $$
+CREATE EVENT evt_notificar_vencimientos
+ON SCHEDULE EVERY 1 WEEK
+STARTS '2025-01-01 09:00:00'
+DO
+BEGIN
+    INSERT INTO historial_tarjetas (tarjeta_id, evento_id, descripcion)
+    SELECT id, 1, 'Tarjeta proxima a vencer'
+    FROM tarjetas_bancarias 
+    WHERE fecha_vencimiento <= DATE_ADD(CURDATE(), INTERVAL 90 DAY);
+END $$
+DELIMITER ;
