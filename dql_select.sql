@@ -352,7 +352,7 @@ SELECT * FROM tipo_nit;
 -- 69
 SELECT * FROM tipo_prestamo;
 -- 70
--- 70
+SELECT * FROM tipo_tarjetas;
 -- 71
 -- 72
 -- 73
