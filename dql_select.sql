@@ -338,6 +338,7 @@ SELECT * FROM prestamos;
 -- 62
 SELECT * FROM registro_cuota;
 -- 63
+SELECT * FROM registro_prestamos;
 -- 64
 -- 65
 -- 66
