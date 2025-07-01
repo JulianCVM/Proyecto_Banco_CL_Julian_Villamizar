@@ -362,6 +362,7 @@ SELECT * FROM tipos_transaccion;
 -- 74
 SELECT * FROM transacciones;
 -- 75
+SELECT * FROM clientes JOIN cuenta ON clientes.id = cuenta.cliente_id;
 -- 76
 -- 77
 -- 78
