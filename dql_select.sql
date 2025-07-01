@@ -373,6 +373,8 @@ SELECT * FROM clientes JOIN tipo_nit ON clientes.tipo_nit_id = tipo_nit.id;
 SELECT * FROM cuenta JOIN tipo_cuenta ON cuenta.tipo_cuenta_id = tipo_cuenta.id;
 
 -- 79
+SELECT * FROM cuenta JOIN monedas ON cuenta.moneda_id = monedas.id;
+
 -- 80
 -- 81
 -- 82
