@@ -439,8 +439,24 @@ JOIN clientes ON cuenta.cliente_id = clientes.id
 WHERE YEAR(registro_cuota.fecha_corte) = YEAR(NOW())
 AND MONTH(registro_cuota.fecha_corte) = MONTH(NOW())
 ORDER BY tipo_tarjetas.nombre, tarjetas_bancarias.numero;
--- 95
--- 96
--- 97
--- 98
--- 99
+-- 95 Obtener los clientes con pagos pendientes durante los últimos tres meses.
+SELECT DISTINCT
+    *
+FROM clientes 
+JOIN tipo_cliente  ON clientes.tipo_cliente_id = tipo_cliente.id
+JOIN cuenta  ON clientes.id = cuenta.cliente_id
+JOIN cuenta_tarjeta  ON cuenta.id = cuenta_tarjeta.cuenta_id
+JOIN tarjetas_bancarias  ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id
+JOIN cuotas_manejo  ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
+JOIN registro_cuota ON cuotas_manejo.id = registro_cuota.cuota_manejo_id
+WHERE registro_cuota.fecha_corte >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+AND (registro_cuota.monto_a_pagar - registro_cuota.monto_abonado) > 0  
+AND registro_cuota.estado_cuota_id IN (2, 5)
+GROUP BY clientes.id, clientes.nit, clientes.primer_nombre, clientes.primer_apellido, clientes.email, clientes.num_contacto, tipo_cliente.nombre;
+-- 96 Consultar las cuotas de manejo aplicadas a cada tipo de tarjeta en un período específico.
+
+-- 97 Generar un reporte con los descuentos aplicados durante un año.
+
+-- 98 Consultar las tarjetas con el mayor y menor monto de apertura.
+
+-- 99 Generar un reporte que muestre el total de pagos realizados por tipo de tarjeta.
