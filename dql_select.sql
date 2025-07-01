@@ -310,6 +310,7 @@ SELECT * FROM extracto_bancario;
 -- 48
 SELECT * FROM frecuencias_pago;
 -- 49
+SELECT * FROM historial_de_pagos;
 -- 50
 -- 50
 -- 51
