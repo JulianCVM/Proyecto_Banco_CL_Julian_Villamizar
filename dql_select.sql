@@ -313,10 +313,10 @@ SELECT * FROM frecuencias_pago;
 SELECT * FROM historial_de_pagos;
 -- 50
 SELECT * FROM historial_tarjetas;
--- 50
-SELECT * FROM interes;
 -- 51
+SELECT * FROM interes;
 -- 52
+SELECT * FROM marca_tarjeta;
 -- 53
 -- 54
 -- 55
