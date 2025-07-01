@@ -172,4 +172,32 @@ DELIMITER ;
 SELECT * FROM tarjetas_bancarias;
 
 INSERT INTO tarjetas_bancarias (codigo_seguridad,estado_id,fecha_emision,fecha_vencimiento,limite_credito,marca_tarjeta_id,nivel_tarjeta_id,numero,tipo_tarjeta_id) VALUES 
-('333',4,NOW(),'2027-12-31',60000000,1,1,'111111111',1);
+('333',4,NOW(),'2027-12-31',60000000,1,1,'111111112',1);
+
+
+
+-- 8 Actualizar contador de transacciones
+-- este trigger era de prueba pa ver si se duplicaba una operacion se sobre escribia o se acumulaban
+DROP TRIGGER IF EXISTS trg_contar_transacciones $$
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_contar_transacciones
+AFTER INSERT ON transacciones
+FOR EACH ROW
+BEGIN
+    UPDATE cuenta 
+    SET transacciones_realizadas = transacciones_realizadas + 1
+    WHERE id = NEW.cuenta_origen_id;
+END $$
+DELIMITER ;
+
+
+SELECT * FROM cuenta;
+INSERT INTO transacciones (cuenta_destino_id,cuenta_origen_id,cobro_operacion,descripcion,fecha_operacion,monto,referencia,tipo_transaccion_id) VALUES 
+(2,1,5000.00,'Transferencia entre cuentas de yo',NOW()-INTERVAL 15 DAY,500000.00,'TRF334',9);
+
+SELECT * FROM cuenta WHERE id = 1;
+
+-- se acumulan y ahora suma el doble
