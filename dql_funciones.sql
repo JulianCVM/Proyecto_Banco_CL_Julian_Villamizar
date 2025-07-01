@@ -406,3 +406,36 @@ END $$
 DELIMITER ;
 
 SELECT fn_comision_total_transacciones(1);
+
+
+
+--  Días para vencimiento de tarjeta
+
+SELECT DATEDIFF(fecha_vencimiento, CURDATE())
+FROM tarjetas_bancarias
+WHERE id = 1;
+
+DROP FUNCTION IF EXISTS fn_dias_vencimiento_tarjeta $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_dias_vencimiento_tarjeta(
+    f_tarjeta_id BIGINT
+)
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_dias_transcurridos INT DEFAULT 0;
+
+    SELECT DATEDIFF(fecha_vencimiento, CURDATE()) INTO valor_dias_transcurridos
+    FROM tarjetas_bancarias
+    WHERE id = f_tarjeta_id;
+
+    RETURN valor_dias_transcurridos;
+
+END $$
+
+DELIMITER ;
+SELECT fn_dias_vencimiento_tarjeta(1);
