@@ -78,3 +78,22 @@ SELECT tarjeta_id, monto_apertura, 1
 SELECT 1 FROM descuentos_aplicados 
             WHERE tarjeta_id = 1
             AND DATE(fecha_aplicado) = CURDATE()
+
+
+-- 7
+SELECT 
+    da.id,
+    tb.numero AS tarjeta,
+    da.monto_inicial,
+    da.descuento_aplicado,
+    da.monto_con_descuento,
+    da.fecha_aplicado,
+    CONCAT(c.primer_nombre, ' ', c.primer_apellido) AS cliente
+FROM descuentos_aplicados da
+JOIN tarjetas_bancarias tb ON da.tarjeta_id = tb.id
+JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+JOIN cuenta cu ON ct.cuenta_id = cu.id
+JOIN clientes c ON cu.cliente_id = c.id
+WHERE da.descuento_id = 1 -- Solo descuentos por uso (fijos)
+ORDER BY da.fecha_aplicado DESC
+LIMIT 5;
