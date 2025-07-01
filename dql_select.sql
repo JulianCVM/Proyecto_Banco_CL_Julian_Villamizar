@@ -391,6 +391,8 @@ SELECT * FROM cuenta JOIN prestamos ON cuenta.id = prestamos.cuenta_id;
 SELECT * FROM cuenta JOIN pagos ON cuenta.id = pagos.cuenta_id;
 
 -- 85
+SELECT * FROM cuenta JOIN cuenta_tarjeta ON cuenta.id = cuenta_tarjeta.cuenta_id;
+
 -- 86
 -- 87
 -- 88
