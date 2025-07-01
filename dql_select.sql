@@ -508,3 +508,7 @@ LEFT JOIN pagos  ON cuenta.id = pagos.cuenta_id AND pagos.estado_pago_id = 2
 LEFT JOIN clientes  ON cuenta.cliente_id = clientes.id
 WHERE tipo_tarjetas.activo = TRUE
 GROUP BY tipo_tarjetas.id, tipo_tarjetas.codigo, tipo_tarjetas.nombre, tipo_tarjetas.descripcion;
+
+
+-- 100
+SELECT * FROM estados JOIN registro_prestamos ON estados.id = registro_prestamos.ultimo_estado_id;
