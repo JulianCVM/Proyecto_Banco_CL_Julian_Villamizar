@@ -287,6 +287,8 @@ SELECT * FROM clientes;
 -- 37
 SELECT * FROM cuenta;
 -- 38
+SELECT * FROM cuenta_tarjeta;
+
 -- 39
 -- 40
 -- 41
