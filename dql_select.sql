@@ -271,6 +271,10 @@ SELECT COUNT(*)
     FROM cuenta 
     WHERE cliente_id = 1;
 -- 34
+
+SELECT TIMESTAMPDIFF(MONTH, fecha_apertura, CURDATE()) 
+    FROM cuenta 
+    WHERE id = 1;
 -- 35
 -- 36
 -- 37
