@@ -209,6 +209,13 @@ SELECT IFNULL(SUM(rc.monto_facturado), 0.00)
     WHERE YEAR(rc.fecha_corte) = 2024
     AND MONTH(rc.fecha_corte) = 6;
 -- 24
+SELECT
+        COUNT(CASE WHEN cp.estado_cuota_id = 6 THEN 1 END),
+        COUNT (*)
+    FROM cuotas_prestamo cp
+    JOIN prestamos pr ON cp.prestamo_id = pr.id
+    JOIN cuenta c ON pr.cuenta_id = c.id
+    WHERE c.cliente_id = 1;
 -- 25
 -- 26
 -- 27
