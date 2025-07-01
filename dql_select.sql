@@ -217,6 +217,12 @@ SELECT
     JOIN cuenta c ON pr.cuenta_id = c.id
     WHERE c.cliente_id = 1;
 -- 25
+
+SELECT pr.monto_aprobado, i.valor, DATEDIFF('2024-01-01', DATE(pr.fecha_desembolso))
+    FROM prestamos pr
+    JOIN interes i ON pr.interes_id = i.id
+    WHERE pr.id = 1
+    AND pr.fecha_desembolso IS NOT NULL;
 -- 26
 -- 27
 -- 28
