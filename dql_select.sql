@@ -105,3 +105,10 @@ LIMIT 5;
 SELECT *
         FROM cuotas_manejo
         WHERE tarjeta_id = 1;
+
+
+-- 9
+
+SELECT COALESCE(SUM(monto),0)
+    FROM pagos
+    WHERE cuenta_id = 1;
