@@ -243,6 +243,12 @@ WHERE id = 1;
     FROM tarjetas_bancarias
     WHERE id = 1;
 -- 30
+
+SELECT monto_aprobado - saldo_restante
+FROM cuenta c 
+JOIN prestamos p ON c.id = p.cuenta_id
+WHERE c.id = 1
+AND p.id = 1;
 -- 31
 -- 32
 -- 33
