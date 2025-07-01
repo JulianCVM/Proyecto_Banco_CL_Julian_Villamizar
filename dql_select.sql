@@ -314,6 +314,7 @@ SELECT * FROM historial_de_pagos;
 -- 50
 SELECT * FROM historial_tarjetas;
 -- 50
+SELECT * FROM interes;
 -- 51
 -- 52
 -- 53
