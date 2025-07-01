@@ -125,3 +125,12 @@ SELECT COUNT(cuenta_origen_id) AS cantidad_transacciones
 SELECT saldo_disponible, id AS cuenta_id
 FROM cuenta
 WHERE cliente_id = 1;
+
+
+-- 12
+SELECT *
+FROM tarjetas_bancarias
+LEFT JOIN cuenta_tarjeta ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+LEFT JOIN cuenta ON cuenta_tarjeta.cuenta_id = cuenta.id
+WHERE tarjetas_bancarias.estado_id = 4
+    AND (cuenta.cliente_id = 1);
