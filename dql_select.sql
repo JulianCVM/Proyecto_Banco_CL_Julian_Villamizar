@@ -308,6 +308,7 @@ SELECT * FROM eventos_tarjeta;
 -- 47
 SELECT * FROM extracto_bancario;
 -- 48
+SELECT * FROM frecuencias_pago;
 -- 49
 -- 50
 -- 50
