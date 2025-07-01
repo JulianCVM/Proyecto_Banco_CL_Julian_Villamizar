@@ -283,6 +283,7 @@ SELECT COUNT(*)
     WHERE c.cliente_id = 1
     AND p.saldo_restante > 0;
 -- 36
+SELECT * FROM clientes;
 -- 37
 -- 38
 -- 39
