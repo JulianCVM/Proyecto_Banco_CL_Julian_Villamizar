@@ -356,6 +356,7 @@ SELECT * FROM tipo_tarjetas;
 -- 71
 SELECT * FROM tipos_operacion;
 -- 72
+SELECT * FROM tipos_pago;
 -- 73
 -- 74
 -- 75
