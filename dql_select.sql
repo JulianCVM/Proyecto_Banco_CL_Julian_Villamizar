@@ -411,7 +411,10 @@ JOIN cuotas_manejo ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
 JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id
 JOIN cuenta ON cuenta.id = cuenta_tarjeta.cuenta_id
 JOIN clientes ON clientes.id = cuenta.cliente_id;
--- 91
+-- 91 Consultar el historial de pagos de un cliente específico.
+SELECT * FROM historial_de_pagos 
+JOIN pagos ON pagos.id = historial_de_pagos.pago_id
+WHERE pagos.cuenta_id = 1;
 -- 92
 -- 93
 -- 94
