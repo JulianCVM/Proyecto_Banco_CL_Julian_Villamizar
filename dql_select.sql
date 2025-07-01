@@ -326,6 +326,7 @@ SELECT * FROM metodos_transaccion;
 -- 56
 SELECT * FROM monedas;
 -- 57
+SELECT * FROM nivel_tarjeta;
 -- 58
 -- 59
 -- 60
