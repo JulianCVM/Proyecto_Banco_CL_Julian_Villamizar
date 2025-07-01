@@ -597,3 +597,102 @@ END $$
 DELIMITER ;
 
 SELECT fn_cliente_comun();
+
+
+--  17  Contar cuentas de un cliente
+DELIMITER $$
+CREATE FUNCTION fn_contar_cuentas(
+    f_cliente_id BIGINT
+) 
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE cantidad_cuentas INT DEFAULT 0;
+    
+    SELECT COUNT(*) INTO cantidad_cuentas
+    FROM cuenta 
+    WHERE cliente_id = f_cliente_id;
+    
+    RETURN cantidad_cuentas;
+END $$
+DELIMITER ;
+
+
+SELECT fn_contar_cuentas(1);
+
+
+
+-- 18 Verificar si cliente es VIP
+DROP FUNCTION IF EXISTS fn_es_vip $$
+
+DELIMITER $$
+CREATE FUNCTION fn_es_vip(
+    f_cliente_id BIGINT
+) 
+RETURNS BOOLEAN
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE valor_tipo_id BIGINT;
+    
+    SELECT tipo_cliente_id INTO valor_tipo_id
+    FROM clientes 
+    WHERE id = f_cliente_id;
+    
+    RETURN (valor_tipo_id = 4); -- 4 = VIP
+END $$
+DELIMITER ;
+
+SELECT fn_es_vip(1);
+
+-- 19 Obtener edad de cuenta en meses
+
+DROP FUNCTION IF EXISTS fn_edad_cuenta_meses $$
+
+DELIMITER $$
+CREATE FUNCTION fn_edad_cuenta_meses(
+    f_cuenta_id BIGINT
+) 
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE edad_meses INT DEFAULT 0;
+    
+    SELECT TIMESTAMPDIFF(MONTH, fecha_apertura, CURDATE()) INTO edad_meses
+    FROM cuenta 
+    WHERE id = f_cuenta_id;
+    
+    RETURN IFNULL(edad_meses, 0);
+END $$
+DELIMITER ;
+
+SELECT fn_edad_cuenta_meses(1);
+
+
+
+-- 20 Verificar si tiene préstamos activos
+DROP FUNCTION IF EXISTS fn_tiene_prestamos_activos $$
+
+DELIMITER $$
+CREATE FUNCTION fn_tiene_prestamos_activos(
+    f_cliente_id BIGINT
+) 
+RETURNS BOOLEAN
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    DECLARE cantidad INT DEFAULT 0;
+    
+    SELECT COUNT(*) INTO cantidad
+    FROM prestamos p
+    JOIN cuenta c ON p.cuenta_id = c.id
+    WHERE c.cliente_id = f_cliente_id
+    AND p.saldo_restante > 0;
+    
+    RETURN (cantidad > 0);
+END $$
+DELIMITER ;
+
+SELECT fn_tiene_prestamos_activos(1);
