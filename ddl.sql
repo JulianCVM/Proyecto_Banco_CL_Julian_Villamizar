@@ -3,9 +3,12 @@ CREATE DATABASE Banco_CL
 
 
 USE Banco_CL;
--- DROP DATABASE Banco_CL;
+DROP DATABASE Banco_CL;
 
 -- Eliminar tablas en orden correcto para evitar errores de FK
+
+
+
 DROP TABLE IF EXISTS pago_cuota_manejo;
 DROP TABLE IF EXISTS pagos_prestamo;
 DROP TABLE IF EXISTS historial_de_pagos;
@@ -245,8 +248,8 @@ CREATE TABLE IF NOT EXISTS clientes (
     tipo_nit_id BIGINT NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id),
-    FOREIGN KEY (tipo_nit_id) REFERENCES tipo_nit(id),
+    FOREIGN KEY (tipo_cliente_id) REFERENCES tipo_cliente(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_nit_id) REFERENCES tipo_nit(id) ON DELETE CASCADE,
     INDEX idx_nit (nit),
     INDEX idx_email (email)
 );
@@ -263,11 +266,11 @@ CREATE TABLE IF NOT EXISTS cuenta (
     fecha_apertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_cierre TIMESTAMP NULL,
     interes_id BIGINT NOT NULL,
-    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
-    FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuenta(id),
-    FOREIGN KEY (estado_id) REFERENCES estados(id),
-    FOREIGN KEY (moneda_id) REFERENCES monedas(id),
-    FOREIGN KEY (interes_id) REFERENCES interes(id),
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuenta(id)ON DELETE CASCADE,
+    FOREIGN KEY (estado_id) REFERENCES estados(id) ON DELETE CASCADE,
+    FOREIGN KEY (moneda_id) REFERENCES monedas(id) ON DELETE CASCADE,
+    FOREIGN KEY (interes_id) REFERENCES interes(id) ON DELETE CASCADE,
     INDEX idx_numero (numero),
     INDEX idx_cliente (cliente_id),
     CHECK (saldo_disponible >= 0)
@@ -279,8 +282,8 @@ CREATE TABLE IF NOT EXISTS metodos_de_pago_cuenta (
     cuenta_id BIGINT NOT NULL,
     fecha_asociacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id),
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id),
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id) ON DELETE CASCADE,
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id) ON DELETE CASCADE,
     UNIQUE KEY uk_metodo_cuenta (metodo_pago_id, cuenta_id)
 );
 
@@ -295,10 +298,10 @@ CREATE TABLE IF NOT EXISTS tarjetas_bancarias (
     marca_tarjeta_id BIGINT NOT NULL,
     nivel_tarjeta_id BIGINT NOT NULL,
     limite_credito DECIMAL(15,2) DEFAULT 0,
-    FOREIGN KEY (estado_id) REFERENCES estados(id),
-    FOREIGN KEY (tipo_tarjeta_id) REFERENCES tipo_tarjetas(id),
-    FOREIGN KEY (marca_tarjeta_id) REFERENCES marca_tarjeta(id),
-    FOREIGN KEY (nivel_tarjeta_id) REFERENCES nivel_tarjeta(id),
+    FOREIGN KEY (estado_id) REFERENCES estados(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_tarjeta_id) REFERENCES tipo_tarjetas(id) ON DELETE CASCADE,
+    FOREIGN KEY (marca_tarjeta_id) REFERENCES marca_tarjeta(id) ON DELETE CASCADE,
+    FOREIGN KEY (nivel_tarjeta_id) REFERENCES nivel_tarjeta(id) ON DELETE CASCADE,
     INDEX idx_numero_tarjeta (numero)
 );
 
@@ -309,8 +312,8 @@ CREATE TABLE IF NOT EXISTS cuenta_tarjeta (
     tarjeta_id BIGINT NOT NULL,
     fecha_asociacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id),
-    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id),
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id) ON DELETE CASCADE,
     UNIQUE KEY uk_cuenta_tarjeta (cuenta_id, tarjeta_id)
 );
 
@@ -327,11 +330,11 @@ CREATE TABLE IF NOT EXISTS prestamos (
     frecuencia_pago_id BIGINT NOT NULL,
     estado_id BIGINT NOT NULL,
     saldo_restante DECIMAL(15,2) NOT NULL DEFAULT 0,
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id),
-    FOREIGN KEY (tipo_prestamo_id) REFERENCES tipo_prestamo(id),
-    FOREIGN KEY (interes_id) REFERENCES interes(id),
-    FOREIGN KEY (frecuencia_pago_id) REFERENCES frecuencias_pago(id),
-    FOREIGN KEY (estado_id) REFERENCES estados(id),
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_prestamo_id) REFERENCES tipo_prestamo(id) ON DELETE CASCADE,
+    FOREIGN KEY (interes_id) REFERENCES interes(id) ON DELETE CASCADE,
+    FOREIGN KEY (frecuencia_pago_id) REFERENCES frecuencias_pago(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_id) REFERENCES estados(id) ON DELETE CASCADE,
     INDEX idx_cuenta (cuenta_id),
     CHECK (monto_solicitado > 0),
     CHECK (monto_aprobado >= 0),
@@ -347,9 +350,9 @@ CREATE TABLE IF NOT EXISTS cuotas_manejo (
     frecuencia_pago_id BIGINT NOT NULL,
     fecha_fin DATE NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id),
-    FOREIGN KEY (tipo_cuota_manejo_id) REFERENCES tipo_cuota_de_manejo(id),
-    FOREIGN KEY (frecuencia_pago_id) REFERENCES frecuencias_pago(id)
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_cuota_manejo_id) REFERENCES tipo_cuota_de_manejo(id) ON DELETE CASCADE,
+    FOREIGN KEY (frecuencia_pago_id) REFERENCES frecuencias_pago(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS registro_cuota (
@@ -362,8 +365,8 @@ CREATE TABLE IF NOT EXISTS registro_cuota (
     estado_cuota_id BIGINT NOT NULL,
     monto_a_pagar DECIMAL(15,2) NOT NULL,
     monto_abonado DECIMAL(15,2) NOT NULL DEFAULT 0,
-    FOREIGN KEY (cuota_manejo_id) REFERENCES cuotas_manejo(id),
-    FOREIGN KEY (estado_cuota_id) REFERENCES estados_cuota(id),
+    FOREIGN KEY (cuota_manejo_id) REFERENCES cuotas_manejo(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_cuota_id) REFERENCES estados_cuota(id) ON DELETE CASCADE,
     CHECK (monto_facturado >= 0),
     CHECK (monto_a_pagar >= 0),
     CHECK (monto_abonado >= 0)
@@ -380,9 +383,9 @@ CREATE TABLE IF NOT EXISTS extracto_bancario (
     referencia VARCHAR(30) NOT NULL UNIQUE,
     descripcion VARCHAR(120) NOT NULL,
     metodo_transaccion_id BIGINT NOT NULL,
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id),
-    FOREIGN KEY (tipo_operacion_id) REFERENCES tipos_operacion(id),
-    FOREIGN KEY (metodo_transaccion_id) REFERENCES metodos_transaccion(id),
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_operacion_id) REFERENCES tipos_operacion(id) ON DELETE CASCADE,
+    FOREIGN KEY (metodo_transaccion_id) REFERENCES metodos_transaccion(id) ON DELETE CASCADE,
     INDEX idx_referencia (referencia),
     INDEX idx_cuenta_fecha (cuenta_id, fecha_inicial_extracto)
 );
@@ -397,9 +400,9 @@ CREATE TABLE IF NOT EXISTS transacciones (
     fecha_operacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cobro_operacion DECIMAL(15,2) NOT NULL DEFAULT 0,
     referencia VARCHAR(30) NOT NULL UNIQUE,
-    FOREIGN KEY (cuenta_origen_id) REFERENCES cuenta(id),
-    FOREIGN KEY (cuenta_destino_id) REFERENCES cuenta(id),
-    FOREIGN KEY (tipo_transaccion_id) REFERENCES tipos_transaccion(id),
+    FOREIGN KEY (cuenta_origen_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (cuenta_destino_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_transaccion_id) REFERENCES tipos_transaccion(id) ON DELETE CASCADE,
     INDEX idx_referencia_trans (referencia),
     INDEX idx_cuenta_origen (cuenta_origen_id),
     INDEX idx_fecha (fecha_operacion),
@@ -414,8 +417,8 @@ CREATE TABLE IF NOT EXISTS descuentos_aplicados (
     descuento_aplicado DECIMAL(15,2) NOT NULL,
     monto_con_descuento DECIMAL(15,2) NOT NULL,
     fecha_aplicado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id),
-    FOREIGN KEY (descuento_id) REFERENCES descuento(id),
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id) ON DELETE CASCADE,
+    FOREIGN KEY (descuento_id) REFERENCES descuento(id) ON DELETE CASCADE,
     CHECK (monto_inicial >= 0),
     CHECK (descuento_aplicado >= 0),
     CHECK (monto_con_descuento >= 0)
@@ -428,8 +431,8 @@ CREATE TABLE IF NOT EXISTS historial_tarjetas (
     descripcion VARCHAR(120) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     usuario_id BIGINT NULL, -- Para auditoria
-    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id),
-    FOREIGN KEY (evento_id) REFERENCES eventos_tarjeta(id),
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_bancarias(id) ON DELETE CASCADE,
+    FOREIGN KEY (evento_id) REFERENCES eventos_tarjeta(id) ON DELETE CASCADE,
     INDEX idx_tarjeta_fecha (tarjeta_id, fecha_registro)
 );
 
@@ -442,8 +445,8 @@ CREATE TABLE IF NOT EXISTS registro_prestamos (
     monto_restante DECIMAL(15,2) NOT NULL,
     tiempo_restante_meses SMALLINT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (prestamo_id) REFERENCES prestamos(id),
-    FOREIGN KEY (ultimo_estado_id) REFERENCES estados(id),
+    FOREIGN KEY (prestamo_id) REFERENCES prestamos(id) ON DELETE CASCADE,
+    FOREIGN KEY (ultimo_estado_id) REFERENCES estados(id) ON DELETE CASCADE,
     CHECK (ultimo_pago >= 0),
     CHECK (monto_restante >= 0)
 );
@@ -459,8 +462,8 @@ CREATE TABLE IF NOT EXISTS cuotas_prestamo (
     estado_cuota_id BIGINT NOT NULL,
     fecha_pago TIMESTAMP NULL,
     monto_pagado DECIMAL(15,2) DEFAULT 0,
-    FOREIGN KEY (prestamo_id) REFERENCES prestamos(id),
-    FOREIGN KEY (estado_cuota_id) REFERENCES estados_cuota(id),
+    FOREIGN KEY (prestamo_id) REFERENCES prestamos(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_cuota_id) REFERENCES estados_cuota(id) ON DELETE CASCADE,
     UNIQUE KEY uk_prestamo_cuota (prestamo_id, numero_cuota),
     CHECK (monto_cuota > 0),
     CHECK (numero_cuota > 0)
@@ -476,10 +479,10 @@ CREATE TABLE IF NOT EXISTS pagos (
     referencia VARCHAR(40) NOT NULL UNIQUE,
     descripcion VARCHAR(120) NOT NULL,
     metodo_transaccion_id BIGINT NOT NULL,
-    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id),
-    FOREIGN KEY (tipo_pago_id) REFERENCES tipos_pago(id),
-    FOREIGN KEY (estado_pago_id) REFERENCES estados_pago(id),
-    FOREIGN KEY (metodo_transaccion_id) REFERENCES metodos_transaccion(id),
+    FOREIGN KEY (cuenta_id) REFERENCES cuenta(id) ON DELETE CASCADE,
+    FOREIGN KEY (tipo_pago_id) REFERENCES tipos_pago(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_pago_id) REFERENCES estados_pago(id) ON DELETE CASCADE,
+    FOREIGN KEY (metodo_transaccion_id) REFERENCES metodos_transaccion(id) ON DELETE CASCADE,
     INDEX idx_referencia_pago (referencia),
     CHECK (monto > 0)
 );
@@ -492,9 +495,9 @@ CREATE TABLE IF NOT EXISTS historial_de_pagos (
     descripcion VARCHAR(120) NOT NULL,
     metodo_pago_id BIGINT NOT NULL,
     usuario_id BIGINT NULL, -- Para auditoria
-    FOREIGN KEY (pago_id) REFERENCES pagos(id),
-    FOREIGN KEY (estado_pago_id) REFERENCES estados_pago(id),
-    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id),
+    FOREIGN KEY (pago_id) REFERENCES pagos(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_pago_id) REFERENCES estados_pago(id) ON DELETE CASCADE,
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id) ON DELETE CASCADE,
     INDEX idx_pago_fecha (pago_id, fecha_registro)
 );
 
@@ -506,9 +509,9 @@ CREATE TABLE IF NOT EXISTS pagos_prestamo (
     fecha_pago TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     metodo_pago_id BIGINT NOT NULL,
     descripcion VARCHAR(120) NOT NULL,
-    FOREIGN KEY (cuota_prestamo_id) REFERENCES cuotas_prestamo(id),
-    FOREIGN KEY (pago_id) REFERENCES pagos(id),
-    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id),
+    FOREIGN KEY (cuota_prestamo_id) REFERENCES cuotas_prestamo(id) ON DELETE CASCADE,
+    FOREIGN KEY (pago_id) REFERENCES pagos(id) ON DELETE CASCADE,
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id) ON DELETE CASCADE,
     CHECK (monto_pagado > 0)
 );
 
@@ -519,9 +522,9 @@ CREATE TABLE IF NOT EXISTS pago_cuota_manejo (
     monto_pagado DECIMAL(15,2) NOT NULL,
     fecha_pago TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     metodo_pago_id BIGINT NOT NULL,
-    FOREIGN KEY (cuota_manejo_id) REFERENCES cuotas_manejo(id),
-    FOREIGN KEY (pago_id) REFERENCES pagos(id),
-    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id),
+    FOREIGN KEY (cuota_manejo_id) REFERENCES cuotas_manejo(id) ON DELETE CASCADE,
+    FOREIGN KEY (pago_id) REFERENCES pagos(id) ON DELETE CASCADE,
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_de_pago(id) ON DELETE CASCADE,
     CHECK (monto_pagado > 0)
 );
 
