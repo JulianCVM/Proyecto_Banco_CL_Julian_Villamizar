@@ -192,6 +192,16 @@ SELECT monto_a_pagar
     FROM registro_cuota
     WHERE cuota_manejo_id = 1 LIMIT 1;
 -- 22
+
+SELECT IFNULL(SUM(pcm.monto_pagado), 0.00)
+        FROM tarjetas_bancarias tb
+        JOIN cuotas_manejo cm ON tb.id = cm.tarjeta_id
+        JOIN pago_cuota_manejo pcm ON cm.id = pcm.cuota_manejo_id
+        JOIN pagos p ON pcm.pago_id = p.id
+        WHERE tb.id = 1
+        AND p.estado_pago_id = 2  
+        AND (DATE(p.fecha_pago) >= '2024-01-01')
+        AND (DATE(p.fecha_pago) <= '2027-01-01');
 -- 23
 -- 24
 -- 25
