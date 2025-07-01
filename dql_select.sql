@@ -112,3 +112,10 @@ SELECT *
 SELECT COALESCE(SUM(monto),0)
     FROM pagos
     WHERE cuenta_id = 1;
+
+
+
+-- 10
+SELECT COUNT(cuenta_origen_id) AS cantidad_transacciones 
+    FROM transacciones 
+    WHERE cuenta_origen_id = 1;
