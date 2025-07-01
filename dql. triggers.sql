@@ -248,3 +248,121 @@ DELIMITER ;
 
 INSERT INTO pagos (cuenta_id,descripcion,estado_pago_id,fecha_pago,metodo_transaccion_id,monto,referencia,tipo_pago_id) VALUES 
 (1,'Pago cuota prestamo personal mes 1',2,NOW()-INTERVAL 30 DAY,4,245000.00,'PAY444',1);
+
+
+
+-- 11Actualizar saldo restante préstamo
+
+DROP TRIGGER IF EXISTS trg_actualizar_saldo_prestamo $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_actualizar_saldo_prestamo
+AFTER INSERT ON pagos_prestamo
+FOR EACH ROW
+BEGIN
+    UPDATE prestamos
+    SET saldo_restante = saldo_restante - NEW.monto_pagado
+    WHERE id = (SELECT prestamo_id FROM cuotas_prestamo WHERE id = NEW.cuota_prestamo_id);
+END$$
+
+DELIMITER ;
+
+INSERT INTO pagos_prestamo (cuota_prestamo_id,pago_id,monto_pagado,fecha_pago,metodo_pago_id,descripcion) VALUES 
+(1,1,10.00,NOW()-INTERVAL 30 DAY,2,'Pago cuota 1 prestamo personal Julian');
+
+
+-- 12 Bloquear eliminación de cliente con deudas
+
+DROP TRIGGER IF EXISTS trg_validar_eliminar_cliente $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_validar_eliminar_cliente
+BEFORE DELETE ON clientes
+FOR EACH ROW
+BEGIN
+    DECLARE valor_deudas INT DEFAULT 0;
+
+
+    SELECT COUNT(*) 
+    INTO valor_deudas 
+    FROM prestamos p 
+    JOIN cuenta c 
+    ON p.cuenta_id = c.id 
+    WHERE c.cliente_id = OLD.id 
+    AND p.saldo_restante > 0;
+    
+    IF valor_deudas > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede eliminar cliente con deudas';
+    END IF;
+END$$
+
+DELIMITER ;
+
+SELECT * FROM clientes;
+
+
+-- 13 Actualizar estado cuenta al cerrar
+
+DROP TRIGGER IF EXISTS trg_cerrar_cuenta $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_cerrar_cuenta
+BEFORE UPDATE ON cuenta
+FOR EACH ROW
+BEGIN
+    IF NEW.fecha_cierre IS NOT NULL AND OLD.fecha_cierre IS NULL THEN
+        SET NEW.estado_id = 2;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+
+-- 14 Generar cuota manejo nueva tarjeta
+
+DROP TRIGGER IF EXISTS trg_generar_cuota_nueva_tarjeta $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_generar_cuota_nueva_tarjeta
+AFTER INSERT ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    INSERT INTO cuotas_manejo (tarjeta_id, tipo_cuota_manejo_id, monto_apertura, frecuencia_pago_id, fecha_fin)
+    VALUES (NEW.id, 1, 12000.00, 4, DATE_ADD(CURDATE(), INTERVAL 1 YEAR));
+END$$
+
+DELIMITER ;
+
+
+
+-- 15 Validar fecha vencimiento tarjeta
+
+DROP TRIGGER IF EXISTS trg_validar_vencimiento_tarjeta $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_validar_vencimiento_tarjeta
+BEFORE INSERT ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    IF NEW.fecha_vencimiento <= CURDATE() THEN
+        SET NEW.fecha_vencimiento = DATE_ADD(CURDATE(), INTERVAL 3 YEAR);
+    END IF;
+END$$
+
+DELIMITER ;
