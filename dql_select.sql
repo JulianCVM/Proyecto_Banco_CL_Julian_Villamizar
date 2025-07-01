@@ -330,6 +330,7 @@ SELECT * FROM nivel_tarjeta;
 -- 58
 SELECT * FROM pago_cuota_manejo;
 -- 59
+SELECT * FROM pagos;
 -- 60
 -- 61
 -- 62
