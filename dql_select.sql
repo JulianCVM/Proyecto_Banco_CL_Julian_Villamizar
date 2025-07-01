@@ -463,7 +463,15 @@ JOIN registro_cuota  ON cuotas_manejo.id = registro_cuota.cuota_manejo_id
 WHERE registro_cuota.fecha_corte BETWEEN '2024-01-01' AND '2025-12-31'
 GROUP BY tipo_tarjetas.id, tipo_tarjetas.codigo, tipo_tarjetas.nombre, tipo_tarjetas.descripcion;
 -- 97 Generar un reporte con los descuentos aplicados durante un año.
-
+SELECT 
+    *
+FROM descuento 
+LEFT JOIN descuentos_aplicados  ON descuento.id = descuentos_aplicados.descuento_id
+    AND YEAR(descuentos_aplicados.fecha_aplicado) = 2024 
+LEFT JOIN tarjetas_bancarias  ON descuentos_aplicados.tarjeta_id = tarjetas_bancarias.id
+LEFT JOIN tipo_tarjetas  ON tarjetas_bancarias.tipo_tarjeta_id = tipo_tarjetas.id
+WHERE descuento.activo = TRUE
+GROUP BY descuento.id, descuento.codigo, descuento.nombre, descuento.descripcion, descuento.tipo_valor, descuento.valor;
 -- 98 Consultar las tarjetas con el mayor y menor monto de apertura.
 
 -- 99 Generar un reporte que muestre el total de pagos realizados por tipo de tarjeta.
