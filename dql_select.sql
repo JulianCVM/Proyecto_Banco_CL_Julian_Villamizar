@@ -292,6 +292,7 @@ SELECT * FROM cuenta_tarjeta;
 -- 39
 SELECT * FROM cuotas_manejo;
 -- 40
+SELECT * FROM cuotas_prestamo;
 -- 41
 -- 42
 -- 43
