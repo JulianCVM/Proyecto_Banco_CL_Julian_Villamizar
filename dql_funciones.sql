@@ -517,3 +517,42 @@ END $$
 DELIMITER ;
 
 SELECT fn_prestamo_gasto(1,1);
+
+
+-- Rentabilidad básica por cliente
+
+SELECT IFNULL(SUM(monto), 0.00) *0.20
+FROM pagos p
+JOIN cuenta c ON p.cuenta_id = c.tipo_cuenta_id
+WHERE c.cliente_id = 1
+AND p.estado_pago_id = 2;
+
+
+DROP FUNCTION IF NOT EXISTS fn_rentabilidad_cliente $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_rentabilidad_cliente (
+    f_id_cliente BIGINT
+)
+RETURNS DECIMAL(15,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_rentabilidad DECIMAL(15,2) DEFAULT 0.00;
+
+    SELECT IFNULL(SUM(monto), 0.00) INTO valor_rentabilidad
+    FROM pagos p
+    JOIN cuenta c ON p.cuenta_id = c.tipo_cuenta_id
+    WHERE c.cliente_id = f_id_cliente
+    AND p.estado_pago_id = 2;
+
+-- a considereacion de que haya una excelente y buenisima rentabilidad del 20%
+    RETURN valor_rentabilidad * 0.20;
+
+END $$
+
+DELIMITER ;
+
+SELECT fn_rentabilidad_cliente(1);
