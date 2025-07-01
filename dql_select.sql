@@ -360,6 +360,7 @@ SELECT * FROM tipos_pago;
 -- 73
 SELECT * FROM tipos_transaccion;
 -- 74
+SELECT * FROM transacciones;
 -- 75
 -- 76
 -- 77
