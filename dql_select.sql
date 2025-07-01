@@ -300,6 +300,7 @@ SELECT * FROM descuentos_aplicados;
 -- 43
 SELECT * FROM estados;
 -- 44
+SELECT * FROM estados_cuota;
 -- 45
 -- 46
 -- 47
