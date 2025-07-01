@@ -483,5 +483,28 @@ JOIN nivel_tarjeta  ON tarjetas_bancarias.nivel_tarjeta_id = nivel_tarjeta.id
 JOIN estados  ON tarjetas_bancarias.estado_id = estados.id
 JOIN cuenta_tarjeta  ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
 JOIN cuenta  ON cuenta_tarjeta.cuenta_id = cuenta.id
-JOIN clientes  ON cuenta.cliente_id = clientes.id;
+JOIN clientes  ON cuenta.cliente_id = clientes.id
+ORDER BY cuotas_manejo.monto_apertura;
 -- 99 Generar un reporte que muestre el total de pagos realizados por tipo de tarjeta.
+SELECT 
+    tipo_tarjetas.codigo AS codigo_tipo,
+    tipo_tarjetas.nombre AS tipo_tarjeta,
+    tipo_tarjetas.descripcion,
+    COUNT(DISTINCT pago_cuota_manejo.id) AS total_pagos_cuotas_manejo,
+    COUNT(DISTINCT CASE WHEN pagos.tipo_pago_id = 3 THEN pagos.id END) AS total_pagos_credito,
+    (COUNT(DISTINCT pago_cuota_manejo.id) + COUNT(DISTINCT CASE WHEN pagos.tipo_pago_id = 3 THEN pagos.id END)) AS total_pagos_general,
+    (COALESCE(SUM(pago_cuota_manejo.monto_pagado), 0) + 
+    COALESCE(SUM(CASE WHEN pagos.tipo_pago_id = 3 THEN pagos.monto END), 0)) AS monto_total_general,
+    COUNT(DISTINCT clientes.id) AS clientes_que_pagaron,
+    MIN(pago_cuota_manejo.fecha_pago) AS primer_pago_registrado,
+    MAX(pago_cuota_manejo.fecha_pago) AS ultimo_pago_registrado
+FROM tipo_tarjetas 
+LEFT JOIN tarjetas_bancarias  ON tipo_tarjetas.id = tarjetas_bancarias.tipo_tarjeta_id
+LEFT JOIN cuotas_manejo  ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
+LEFT JOIN pago_cuota_manejo  ON cuotas_manejo.id = pago_cuota_manejo.cuota_manejo_id
+LEFT JOIN cuenta_tarjeta  ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+LEFT JOIN cuenta  ON cuenta_tarjeta.cuenta_id = cuenta.id
+LEFT JOIN pagos  ON cuenta.id = pagos.cuenta_id AND pagos.estado_pago_id = 2
+LEFT JOIN clientes  ON cuenta.cliente_id = clientes.id
+WHERE tipo_tarjetas.activo = TRUE
+GROUP BY tipo_tarjetas.id, tipo_tarjetas.codigo, tipo_tarjetas.nombre, tipo_tarjetas.descripcion;
