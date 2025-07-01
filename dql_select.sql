@@ -348,6 +348,7 @@ SELECT * FROM tipo_cuenta;
 -- 67
 SELECT * FROM tipo_cuota_de_manejo;
 -- 68
+SELECT * FROM tipo_nit;
 -- 69
 -- 70
 -- 70
