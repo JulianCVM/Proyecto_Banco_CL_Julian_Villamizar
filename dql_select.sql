@@ -182,6 +182,10 @@ SELECT * FROM registro_cuota WHERE cuota_manejo_id = 1 LIMIT 1;
 
 
 -- 20
+
+SELECT SUM(monto_abonado)
+    FROM registro_cuota
+    WHERE cuota_manejo_id = 1;
 -- 21
 -- 22
 -- 23
