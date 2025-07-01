@@ -276,6 +276,12 @@ SELECT TIMESTAMPDIFF(MONTH, fecha_apertura, CURDATE())
     FROM cuenta 
     WHERE id = 1;
 -- 35
+
+SELECT COUNT(*) 
+    FROM prestamos p
+    JOIN cuenta c ON p.cuenta_id = c.id
+    WHERE c.cliente_id = 1
+    AND p.saldo_restante > 0;
 -- 36
 -- 37
 -- 38
