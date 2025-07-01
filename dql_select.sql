@@ -340,6 +340,7 @@ SELECT * FROM registro_cuota;
 -- 63
 SELECT * FROM registro_prestamos;
 -- 64
+SELECT * FROM tarjetas_bancarias;
 -- 65
 -- 66
 -- 67
