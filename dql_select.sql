@@ -322,6 +322,7 @@ SELECT * FROM metodos_de_pago;
 -- 54
 SELECT * FROM metodos_de_pago_cuenta;
 -- 55
+SELECT * FROM metodos_transaccion;
 -- 56
 -- 57
 -- 58
