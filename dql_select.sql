@@ -302,6 +302,7 @@ SELECT * FROM estados;
 -- 44
 SELECT * FROM estados_cuota;
 -- 45
+SELECT * FROM estados_pago;
 -- 46
 -- 47
 -- 48
