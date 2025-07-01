@@ -379,6 +379,8 @@ SELECT * FROM cuenta JOIN monedas ON cuenta.moneda_id = monedas.id;
 SELECT * FROM cuenta JOIN extracto_bancario ON cuenta.id = extracto_bancario.cuenta_id;
 
 -- 81
+SELECT * FROM cuenta JOIN transacciones ON cuenta.id = transacciones.cuenta_origen_id;
+
 -- 82
 -- 83
 -- 84
