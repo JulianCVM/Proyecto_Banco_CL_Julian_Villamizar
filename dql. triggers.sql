@@ -226,3 +226,25 @@ DELIMITER ;
 
 SELECT * FROM cuotas_prestamo;
 UPDATE cuotas_prestamo SET monto_pagado = 1 WHERE id = 4;
+
+
+--  10 Registrar pago en historial
+
+DROP TRIGGER IF EXISTS trg_historial_pago $$
+
+
+DELIMITER $$
+
+
+CREATE TRIGGER trg_historial_pago
+AFTER INSERT ON pagos
+FOR EACH ROW
+BEGIN
+    INSERT INTO historial_de_pagos (pago_id, estado_pago_id, descripcion, metodo_pago_id)
+    VALUES (NEW.id, NEW.estado_pago_id, 'Pago registrado automáticamente', 1);
+END$$
+
+DELIMITER ;
+
+INSERT INTO pagos (cuenta_id,descripcion,estado_pago_id,fecha_pago,metodo_transaccion_id,monto,referencia,tipo_pago_id) VALUES 
+(1,'Pago cuota prestamo personal mes 1',2,NOW()-INTERVAL 30 DAY,4,245000.00,'PAY444',1);
