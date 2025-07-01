@@ -366,3 +366,75 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+-- 16 Actualizar registro préstamo al pagar
+DROP TRIGGER IF EXISTS trg_actualizar_registro_prestamo $$
+
+DELIMITER $$
+CREATE TRIGGER trg_actualizar_registro_prestamo
+AFTER INSERT ON pagos_prestamo
+FOR EACH ROW
+BEGIN
+    INSERT INTO registro_prestamos (prestamo_id, ultimo_pago, fecha_ultimo_pago, ultimo_estado_id, monto_restante, tiempo_restante_meses)
+    SELECT p.id, NEW.monto_pagado, NOW(), p.estado_id, p.saldo_restante, p.plazo_meses
+    FROM prestamos p 
+    JOIN cuotas_prestamo cp ON p.id = cp.prestamo_id
+    WHERE cp.id = NEW.cuota_prestamo_id;
+END $$
+DELIMITER ;
+
+-- 17 Activar tarjeta automáticamente
+DROP TRIGGER IF EXISTS trg_activar_tarjeta_automatica $$
+
+DELIMITER $$
+CREATE TRIGGER trg_activar_tarjeta_automatica
+BEFORE INSERT ON tarjetas_bancarias
+FOR EACH ROW
+BEGIN
+    SET NEW.estado_id = 4;
+END $$
+DELIMITER ;
+
+-- 18 Validar monto mínimo transacción
+DROP TRIGGER IF EXISTS trg_validar_monto_minimo $$
+
+DELIMITER $$
+CREATE TRIGGER trg_validar_monto_minimo
+BEFORE INSERT ON transacciones
+FOR EACH ROW
+BEGIN
+    IF NEW.monto < 1000 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Monto mínimo es $1,000';
+    END IF;
+END $$
+DELIMITER ;
+
+-- 19 Generar extracto al hacer transacción
+DROP TRIGGER IF EXISTS trg_generar_extracto $$
+
+DELIMITER $$
+CREATE TRIGGER trg_generar_extracto
+AFTER INSERT ON transacciones
+FOR EACH ROW
+BEGIN
+    INSERT INTO extracto_bancario (cuenta_id, fecha_inicial_extracto, fecha_final_extracto, monto, saldo_post_operacion, tipo_operacion_id, referencia, descripcion, metodo_transaccion_id)
+    SELECT NEW.cuenta_origen_id, CURDATE(), CURDATE(), NEW.monto, 
+        (SELECT saldo_disponible FROM cuenta WHERE id = NEW.cuenta_origen_id),
+        9, NEW.referencia, NEW.descripcion, 1;
+END $$
+DELIMITER ;
+
+-- 20 Actualizar cliente activo al crear cuenta
+DROP TRIGGER IF EXISTS trg_activar_cliente $$
+DELIMITER $$
+CREATE TRIGGER trg_activar_cliente
+AFTER INSERT ON cuenta
+FOR EACH ROW
+BEGIN
+    UPDATE clientes 
+    SET activo = TRUE 
+    WHERE id = NEW.cliente_id;
+END $$
+DELIMITER ;
