@@ -415,7 +415,8 @@ JOIN clientes ON clientes.id = cuenta.cliente_id;
 SELECT * FROM historial_de_pagos 
 JOIN pagos ON pagos.id = historial_de_pagos.pago_id
 WHERE pagos.cuenta_id = 1;
--- 92
+-- 92 Obtener el total de cuotas de manejo pagadas durante un mes determinado.
+SELECT * FROM cuotas_manejo WHERE fecha_fin < CURDATE();
 -- 93
 -- 94
 -- 95
