@@ -298,6 +298,7 @@ SELECT * FROM descuento;
 -- 42
 SELECT * FROM descuentos_aplicados;
 -- 43
+SELECT * FROM estados;
 -- 44
 -- 45
 -- 46
