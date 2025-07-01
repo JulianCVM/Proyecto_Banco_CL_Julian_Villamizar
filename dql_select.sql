@@ -285,6 +285,7 @@ SELECT COUNT(*)
 -- 36
 SELECT * FROM clientes;
 -- 37
+SELECT * FROM cuenta;
 -- 38
 -- 39
 -- 40
