@@ -100,3 +100,29 @@ DELETE FROM tarjetas_bancarias WHERE id = 55;
 INSERT INTO cuotas_manejo (activo,fecha_fin,fecha_inicio,frecuencia_pago_id,monto_apertura,tarjeta_id,tipo_cuota_manejo_id) VALUES 
 (TRUE,'2025-12-31',NOW(),4,12000.00,55,1);
 SELECT * FROM cuotas_manejo WHERE tarjeta_id = 55;
+
+
+
+-- 5 Actualizar saldo cuenta al insertar transacción
+DROP TRIGGER IF EXISTS trg_actualizar_saldo_transaccion $$
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_actualizar_saldo_transaccion
+AFTER INSERT ON transacciones
+FOR EACH ROW
+BEGIN
+    UPDATE cuenta
+            SET saldo_disponible = saldo_disponible - NEW.monto,
+            transacciones_realizadas = transacciones_realizadas + 1
+        WHERE id = NEW.cuenta_origen_id;
+END $$
+DELIMITER ;
+
+DESCRIBE  cuenta;
+INSERT INTO transacciones (cuenta_destino_id,cuenta_origen_id,cobro_operacion,descripcion,fecha_operacion,monto,referencia,tipo_transaccion_id) VALUES 
+(2,1,5000.00,'Transferencia entre cuentas de yo',NOW()-INTERVAL 15 DAY,500000.00,'TRF333',9);
+
+SELECT * FROM transacciones WHERE cuenta_origen_id = 1;
+SELECT * FROM cuenta WHERE id = 1;
