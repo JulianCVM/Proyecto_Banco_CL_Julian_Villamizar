@@ -385,6 +385,8 @@ SELECT * FROM cuenta JOIN transacciones ON cuenta.id = transacciones.cuenta_orig
 SELECT * FROM cuenta JOIN transacciones ON cuenta.id = transacciones.cuenta_destino_id;
 
 -- 83
+SELECT * FROM cuenta JOIN prestamos ON cuenta.id = prestamos.cuenta_id;
+
 -- 84
 -- 85
 -- 86
