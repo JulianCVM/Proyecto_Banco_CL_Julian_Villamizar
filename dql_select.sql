@@ -224,6 +224,11 @@ SELECT pr.monto_aprobado, i.valor, DATEDIFF('2024-01-01', DATE(pr.fecha_desembol
     WHERE pr.id = 1
     AND pr.fecha_desembolso IS NOT NULL;
 -- 26
+
+SELECT COUNT(*) 
+    FROM transacciones t
+    WHERE (t.cuenta_origen_id = 2 OR t.cuenta_destino_id = 2)
+    AND t.fecha_operacion >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
 -- 27
 -- 28
 -- 29
