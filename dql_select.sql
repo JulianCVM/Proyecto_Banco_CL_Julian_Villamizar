@@ -257,6 +257,14 @@ JOIN cuenta c ON p.cuenta_id = c.tipo_cuenta_id
 WHERE c.cliente_id = 1
 AND p.estado_pago_id = 2;
 -- 32
+
+SELECT tc.nombre
+FROM clientes c
+JOIN tipo_cliente tc
+ON c.tipo_cliente_id = tc.id
+GROUP BY tc.nombre
+ORDER BY COUNT(*) DESC
+LIMIT 1;
 -- 33
 -- 34
 -- 35
