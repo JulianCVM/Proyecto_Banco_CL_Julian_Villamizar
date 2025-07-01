@@ -473,5 +473,15 @@ LEFT JOIN tipo_tarjetas  ON tarjetas_bancarias.tipo_tarjeta_id = tipo_tarjetas.i
 WHERE descuento.activo = TRUE
 GROUP BY descuento.id, descuento.codigo, descuento.nombre, descuento.descripcion, descuento.tipo_valor, descuento.valor;
 -- 98 Consultar las tarjetas con el mayor y menor monto de apertura.
-
+SELECT 
+    *
+FROM cuotas_manejo 
+JOIN tarjetas_bancarias ON cuotas_manejo.tarjeta_id = tarjetas_bancarias.id
+JOIN tipo_tarjetas  ON tarjetas_bancarias.tipo_tarjeta_id = tipo_tarjetas.id
+JOIN marca_tarjeta  ON tarjetas_bancarias.marca_tarjeta_id = marca_tarjeta.id
+JOIN nivel_tarjeta  ON tarjetas_bancarias.nivel_tarjeta_id = nivel_tarjeta.id
+JOIN estados  ON tarjetas_bancarias.estado_id = estados.id
+JOIN cuenta_tarjeta  ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
+JOIN cuenta  ON cuenta_tarjeta.cuenta_id = cuenta.id
+JOIN clientes  ON cuenta.cliente_id = clientes.id;
 -- 99 Generar un reporte que muestre el total de pagos realizados por tipo de tarjeta.
