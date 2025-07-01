@@ -48,3 +48,20 @@ LEFT JOIN descuentos_aplicados da ON cm.tarjeta_id = da.tarjeta_id
 LEFT JOIN descuento d ON da.descuento_id = d.id
 ORDER BY cm.fecha_inicio DESC
 LIMIT 10;
+
+-- 4
+SELECT 
+    cm.id,
+    tb.numero AS tarjeta,
+    cm.monto_apertura,
+    tcm.nombre AS tipo_cuota,
+    cm.fecha_inicio,
+    CONCAT(c.primer_nombre, ' ', c.primer_apellido) AS cliente
+FROM cuotas_manejo cm
+JOIN tarjetas_bancarias tb ON cm.tarjeta_id = tb.id
+JOIN tipo_cuota_de_manejo tcm ON cm.tipo_cuota_manejo_id = tcm.id
+JOIN cuenta_tarjeta ct ON tb.id = ct.tarjeta_id
+JOIN cuenta cu ON ct.cuenta_id = cu.id
+JOIN clientes c ON cu.cliente_id = c.id
+ORDER BY cm.fecha_inicio DESC
+LIMIT 5;
