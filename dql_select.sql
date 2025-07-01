@@ -265,7 +265,11 @@ ON c.tipo_cliente_id = tc.id
 GROUP BY tc.nombre
 ORDER BY COUNT(*) DESC
 LIMIT 1;
+
 -- 33
+SELECT COUNT(*) 
+    FROM cuenta 
+    WHERE cliente_id = 1;
 -- 34
 -- 35
 -- 36
