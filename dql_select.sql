@@ -342,6 +342,7 @@ SELECT * FROM registro_prestamos;
 -- 64
 SELECT * FROM tarjetas_bancarias;
 -- 65
+SELECT * FROM tipo_cliente;
 -- 66
 -- 67
 -- 68
