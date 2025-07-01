@@ -358,6 +358,7 @@ SELECT * FROM tipos_operacion;
 -- 72
 SELECT * FROM tipos_pago;
 -- 73
+SELECT * FROM tipos_transaccion;
 -- 74
 -- 75
 -- 76
