@@ -439,3 +439,43 @@ END $$
 
 DELIMITER ;
 SELECT fn_dias_vencimiento_tarjeta(1);
+
+
+-- Porcentaje de uso de crédito
+
+SELECT limite_credito FROM tarjetas_bancarias WHERE id = 1;
+
+DROP FUNCTION IF EXISTS fn_porcentaje_creido $$
+
+
+DELIMITER $$
+
+CREATE FUNCTION fn_porcentaje_creido (
+    f_tarjeta_id BIGINT
+)   
+RETURNS DECIMAL(5,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE valor_limite_credito DECIMAL (5,2);
+
+    SELECT limite_credito  INTO valor_limite_credito
+    FROM tarjetas_bancarias
+    WHERE id = f_tarjeta_id;
+
+    -- El limite actual del credito es del 75%
+    IF valor_limite_credito > 0 THEN
+        RETURN 75.00;
+    END IF;
+    
+    RETURN 0.00;
+
+END $$
+
+DELIMITER ;
+SELECT fn_porcentaje_creido(1)
+
+
+
+-- Total adeudado por cliente
