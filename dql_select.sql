@@ -454,7 +454,14 @@ AND (registro_cuota.monto_a_pagar - registro_cuota.monto_abonado) > 0
 AND registro_cuota.estado_cuota_id IN (2, 5)
 GROUP BY clientes.id, clientes.nit, clientes.primer_nombre, clientes.primer_apellido, clientes.email, clientes.num_contacto, tipo_cliente.nombre;
 -- 96 Consultar las cuotas de manejo aplicadas a cada tipo de tarjeta en un período específico.
-
+SELECT 
+    *
+FROM tipo_tarjetas
+JOIN tarjetas_bancarias  ON tipo_tarjetas.id = tarjetas_bancarias.tipo_tarjeta_id
+JOIN cuotas_manejo ON tarjetas_bancarias.id = cuotas_manejo.tarjeta_id
+JOIN registro_cuota  ON cuotas_manejo.id = registro_cuota.cuota_manejo_id
+WHERE registro_cuota.fecha_corte BETWEEN '2024-01-01' AND '2025-12-31'
+GROUP BY tipo_tarjetas.id, tipo_tarjetas.codigo, tipo_tarjetas.nombre, tipo_tarjetas.descripcion;
 -- 97 Generar un reporte con los descuentos aplicados durante un año.
 
 -- 98 Consultar las tarjetas con el mayor y menor monto de apertura.
