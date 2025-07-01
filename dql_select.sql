@@ -134,3 +134,7 @@ LEFT JOIN cuenta_tarjeta ON tarjetas_bancarias.id = cuenta_tarjeta.tarjeta_id
 LEFT JOIN cuenta ON cuenta_tarjeta.cuenta_id = cuenta.id
 WHERE tarjetas_bancarias.estado_id = 4
     AND (cuenta.cliente_id = 1);
+
+
+-- 13
+SELECT * FROM cuotas_manejo WHERE YEAR('2024-01-01') >= 2024 AND MONTH('2024-12-01') >= 5;
