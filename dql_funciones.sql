@@ -478,4 +478,42 @@ SELECT fn_porcentaje_creido(1)
 
 
 
--- Total adeudado por cliente
+-- 14 Total monto gastado por cliente de un prestamo
+
+SELECT * FROM prestamos;
+SELECT monto_aprobado - saldo_restante
+FROM cuenta c 
+JOIN prestamos p ON c.id = p.cuenta_id
+WHERE c.id = 1
+AND p.id = 1;
+
+
+DROP FUNCTION IF NOT EXISTS fn_prestamo_gasto $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_prestamo_gasto(
+    f_cuenta_id BIGINT,
+    f_prestamo_id BIGINT
+)
+RETURNS DECIMAL(15,2)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE monto_prestamo_gastado DECIMAL(15,2) DEFAULT 0.00;
+
+    SELECT monto_aprobado - saldo_restante INTO monto_prestamo_gastado
+    FROM cuenta c 
+    JOIN prestamos p ON c.id = p.cuenta_id
+    WHERE c.id = f_cuenta_id
+    AND p.id = f_prestamo_id;
+
+
+    RETURN monto_prestamo_gastado;
+
+END $$
+
+DELIMITER ;
+
+SELECT fn_prestamo_gasto(1,1);
