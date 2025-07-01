@@ -306,6 +306,7 @@ SELECT * FROM estados_pago;
 -- 46
 SELECT * FROM eventos_tarjeta;
 -- 47
+SELECT * FROM extracto_bancario;
 -- 48
 -- 49
 -- 50
