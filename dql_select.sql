@@ -416,8 +416,14 @@ SELECT * FROM historial_de_pagos
 JOIN pagos ON pagos.id = historial_de_pagos.pago_id
 WHERE pagos.cuenta_id = 1;
 -- 92 Obtener el total de cuotas de manejo pagadas durante un mes determinado.
-SELECT * FROM cuotas_manejo WHERE fecha_fin < CURDATE();
--- 93
+SELECT * FROM cuotas_manejo WHERE fecha_inicio < NOW();
+-- 93 Consultar las cuotas de manejo de los clientes con descuento aplicado.
+SELECT * FROM cuotas_manejo
+JOIN tarjetas_bancarias ON cuotas_manejo.tarjeta_id = tarjetas_bancarias.id
+JOIN descuentos_aplicados ON tarjetas_bancarias.id = descuentos_aplicados.tarjeta_id
+JOIN cuenta_tarjeta ON cuenta_tarjeta.tarjeta_id = tarjetas_bancarias.id
+JOIN cuenta ON cuenta.id = cuenta_tarjeta.cuenta_id
+JOIN clientes ON clientes.id = cuenta.cliente_id;
 -- 94
 -- 95
 -- 96
