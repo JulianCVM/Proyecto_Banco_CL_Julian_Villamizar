@@ -556,3 +556,44 @@ END $$
 DELIMITER ;
 
 SELECT fn_rentabilidad_cliente(1);
+
+
+
+-- 16 Tipo de cliente más común
+
+SELECT tc.nombre
+FROM clientes c
+JOIN tipo_cliente tc
+ON c.tipo_cliente_id = tc.id
+GROUP BY tc.nombre
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+
+DROP FUNCTION IF EXISTS fn_cliente_comun $$
+
+DELIMITER $$
+
+CREATE FUNCTION fn_cliente_comun()
+RETURNS VARCHAR(255)
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+    DECLARE tipoo_cliente_comun VARCHAR(255);
+
+    SELECT tc.nombre INTO tipoo_cliente_comun
+    FROM clientes c
+    JOIN tipo_cliente tc
+    ON c.tipo_cliente_id = tc.id
+    GROUP BY tc.nombre
+    ORDER BY COUNT(*) DESC
+    LIMIT 1;
+
+    RETURN tipoo_cliente_comun;
+
+END $$
+
+DELIMITER ;
+
+SELECT fn_cliente_comun();
