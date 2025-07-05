@@ -656,3 +656,88 @@ GRANT SELECT ON Banco_CL.descuento TO 'consultor_tarjetas'@'%';
 -- AUDITOR
 CREATE ROLE 'auditor_banco'@'%';
 GRANT SELECT ON Banco_CL.* TO 'auditor_banco'@'%';
+
+USE Banco_CL;
+
+CREATE ROLE IF NOT EXISTS AdministradorGeneral;
+GRANT ALL PRIVILEGES ON Banco_CL.* TO AdministradorGeneral;
+GRANT EXECUTE ON Banco_CL.* TO AdministradorGeneral;
+GRANT CREATE USER, RELOAD ON *.* TO AdministradorGeneral;
+
+CREATE USER IF NOT EXISTS 'jefe_sistema'@'%' IDENTIFIED BY 'Sistema123!';
+GRANT AdministradorGeneral TO 'jefe_sistema'@'%';
+SET DEFAULT ROLE AdministradorGeneral TO 'jefe_sistema'@'%';
+
+
+CREATE ROLE IF NOT EXISTS GestorPagos;
+
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pagos TO GestorPagos;
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pago_cuota_manejo TO GestorPagos;
+GRANT SELECT, INSERT, UPDATE ON Banco_CL.pagos_prestamo TO GestorPagos;
+GRANT SELECT, INSERT ON Banco_CL.historial_de_pagos TO GestorPagos;
+
+GRANT SELECT ON Banco_CL.clientes TO GestorPagos;
+GRANT SELECT ON Banco_CL.cuenta TO GestorPagos;
+GRANT SELECT ON Banco_CL.tarjetas_bancarias TO GestorPagos;
+GRANT SELECT ON Banco_CL.cuotas_manejo TO GestorPagos;
+GRANT SELECT ON Banco_CL.registro_cuota TO GestorPagos;
+GRANT SELECT ON Banco_CL.prestamos TO GestorPagos;
+GRANT SELECT ON Banco_CL.cuotas_prestamo TO GestorPagos;
+
+GRANT SELECT ON Banco_CL.estados_pago TO GestorPagos;
+GRANT SELECT ON Banco_CL.tipos_pago TO GestorPagos;
+GRANT SELECT ON Banco_CL.metodos_de_pago TO GestorPagos;
+GRANT SELECT ON Banco_CL.metodos_transaccion TO GestorPagos;
+
+CREATE USER IF NOT EXISTS 'cajero_pagos'@'%' IDENTIFIED BY 'Caja456!';
+GRANT GestorPagos TO 'cajero_pagos'@'%';
+SET DEFAULT ROLE GestorPagos TO 'cajero_pagos'@'%';
+
+
+CREATE ROLE IF NOT EXISTS GerenteOperaciones;
+
+GRANT SELECT ON Banco_CL.* TO GerenteOperaciones;
+GRANT INSERT, UPDATE ON Banco_CL.descuento TO GerenteOperaciones;
+GRANT UPDATE ON Banco_CL.tipo_cuota_de_manejo TO GerenteOperaciones;
+GRANT UPDATE ON Banco_CL.interes TO GerenteOperaciones;
+
+CREATE USER IF NOT EXISTS 'gerente_comercial'@'%' IDENTIFIED BY 'Gerencia789!';
+GRANT GerenteOperaciones TO 'gerente_comercial'@'%';
+SET DEFAULT ROLE GerenteOperaciones TO 'gerente_comercial'@'%';
+
+
+CREATE ROLE IF NOT EXISTS AnalistaTarjetas;
+
+GRANT SELECT ON Banco_CL.tarjetas_bancarias TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.cuotas_manejo TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.registro_cuota TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.descuentos_aplicados TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.historial_tarjetas TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.clientes TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.cuenta TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.cuenta_tarjeta TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.tipo_tarjetas TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.marca_tarjeta TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.nivel_tarjeta TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.tipo_cuota_de_manejo TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.eventos_tarjeta TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.estados_cuota TO AnalistaTarjetas;
+GRANT SELECT ON Banco_CL.descuento TO AnalistaTarjetas;
+
+CREATE USER IF NOT EXISTS 'analista_tarjetas'@'%' IDENTIFIED BY 'Analisis321!';
+GRANT AnalistaTarjetas TO 'analista_tarjetas'@'%';
+SET DEFAULT ROLE AnalistaTarjetas TO 'analista_tarjetas'@'%';
+
+
+CREATE ROLE IF NOT EXISTS AuditorFinanciero;
+
+GRANT SELECT ON Banco_CL.* TO AuditorFinanciero;
+
+CREATE USER IF NOT EXISTS 'auditor_interno'@'%' IDENTIFIED BY 'Auditor007!';
+GRANT AuditorFinanciero TO 'auditor_interno'@'%';
+SET DEFAULT ROLE AuditorFinanciero TO 'auditor_interno'@'%';
+
+-- ==================================
+-- Aplicar los cambios
+-- ==================================
+FLUSH PRIVILEGES;
